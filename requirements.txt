@@ -1,1 +1,2 @@
 quantuminspire
+numpy
