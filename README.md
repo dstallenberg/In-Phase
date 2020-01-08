@@ -9,6 +9,12 @@ Collaborators:
     
 ## Installing from source
 
+Clone the project
 ```
 git clone https://github.com/dstallenberg/QEP-PhaseEstimation.git
 ```
+
+Open the project in your favorite IDE
+
+
+
