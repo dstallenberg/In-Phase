@@ -10,4 +10,5 @@ setup(
     author_email='',
     description='Quantum phase estimation',
     python_requires='>=3.6',
+    install_requires=['matplotlib>=2.1', 'numpy', 'quantuminspire'],
 )
