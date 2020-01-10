@@ -119,7 +119,7 @@ def matrix_to_qsharp(A, control, nancilla, **kwargs):
     code += '\n'.join(['' + gate.to_qsharp_command()
                       for gate in matrix_to_gates(A, **kwargs)])
 
-    code+='\n'
+    code+='\n': :q
     for i in range(0, n):
         code+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
         control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
