@@ -10,13 +10,10 @@ import numpy as np
 from collections import OrderedDict
 
 def plot_results(result, nancillas, qubits, p_succes):
-	correction_number = 0
-	for i in range(qubits):
-		correction_number+=2**(nancillas+i)
 	print("Given the desired bit accuracy and probability of succes, {0} ancillas will be used resulting in a {1:0.3f} probability of succes.".format(nancillas, p_succes))
-	binary_keys = ['{0:0{pad}b}'.format(int(k)-correction_number, pad=nancillas) for k in result['histogram'].keys()]
+	binary_keys = [str(bin(int(k)))[2+qubits::] for k in result['histogram'].keys()]
 	
-	fig = plt.figure(figsize=(int(len(result['histogram'])/5),3))
+	fig = plt.figure(figsize=(8,3))
 	ax = plt.gca()
 	
 	ax.set_title("Phase estimation with {0}-bit accuracy and probability {1:0.3f}".format(nancillas, p_succes))
