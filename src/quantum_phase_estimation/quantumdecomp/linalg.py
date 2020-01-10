@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.quantumdecomp.utils import is_orthogonal, is_real
+from src.quantum_phase_estimation.quantumdecomp.utils import is_orthogonal, is_real
 
 
 def _dot(a, b):

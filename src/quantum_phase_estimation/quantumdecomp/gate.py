@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.quantumdecomp.two_level_unitary import TwoLevelUnitary
+from src.quantum_phase_estimation.quantumdecomp.two_level_unitary import TwoLevelUnitary
 
 
 class Gate:
