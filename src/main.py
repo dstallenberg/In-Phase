@@ -45,5 +45,8 @@ print(result['raw_text'])
 print(result['execution_time_in_seconds'])
 print(result['histogram'])
 
-plt.bar(result['histogram'].keys(), result['histogram'].values())
+binary_keys = ["{0:04b}".format(int(k)-0b110000) for k in result['histogram'].keys()]
+
+plt.bar(binary_keys, result['histogram'].values())
+plt.xticks(rotation = 'vertical')
 plt.show()
