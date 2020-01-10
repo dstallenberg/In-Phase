@@ -32,12 +32,25 @@ prep_z q[0:{total - 1}]
         if operation == 'I':
             continue
 
+        # If the operation is more complex we make sure to put QASM on the first line of the operation (arbitrary U)
+        if 'QASM' in operation:
+            operation = '\n'.join(operation.split('\n')[1:])
+            final_qasm += operation
+            continue
+
+        # If there are multiple qubits
+        # if qubits > 1:
+        #     controls = []
+        #     controls.extend(range(nancillas - 1, total - 1))
+        #     final_qasm += transform_controlled_unitary_to_toffoli(operation, controls, total - 1)
+        # else:
+
         if qubits > 1:
-            controls = []
-            controls.extend(range(nancillas - 1, total - 1))
-            final_qasm += transform_controlled_unitary_to_toffoli(operation, controls, total - 1)
-        else:
-            final_qasm += f'C{operation} q[{i}], q[{total - 1}]\n'
+            # This is weird why do we have multiple qubits while the operation is a single non controlled operation
+            print('This is weird why do we have multiple qubits while the operation is a single non controlled operation')
+
+        # If the operation is a simple quantum bit
+        final_qasm += f'C{operation} q[{i}], q[{total - 1}]\n'
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
 
