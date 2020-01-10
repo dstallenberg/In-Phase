@@ -12,7 +12,6 @@ qubits {total}
 prep_z q[0:{total - 1}]
 
 # Create superposition
-{{ H q[0:{nancillas - 1}] | X q[{nancillas}:{total - 1}] }}
 """
     if nancillas == 1 and qubits == 1:
         final_qasm += f'{{ H q[0] | X q[1] }}'

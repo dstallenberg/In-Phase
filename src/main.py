@@ -31,7 +31,7 @@ qi = QuantumInspireAPI(QI_URL, authentication)
 
 ## Variables
 nancillas = 4
-qubits = 1
+qubits = 2
 unitary_operation = 'Z'
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
