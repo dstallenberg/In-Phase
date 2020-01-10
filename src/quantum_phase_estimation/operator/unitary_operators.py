@@ -8,7 +8,12 @@ def get_unitary_operators_array(operator, nancillas):
         arg = operator[1]
         operator = operator[0]
 
-    matrix = operator_to_matrix(operator, arg)
+    if isinstance(operator, (np.ndarray, np.generic)):
+        # It is a matrix
+        matrix = operator
+    else:
+        # It is an operator key
+        matrix = operator_to_matrix(operator, arg)
 
     # print(matrix)
     array = []
@@ -20,9 +25,15 @@ def get_unitary_operators_array(operator, nancillas):
             result_matrix = np.dot(matrix, result_matrix)
             # print(result_matrix)
 
-        # print(result_matrix)
-        # print(matrix_to_operator(result_matrix))
-        array.append(matrix_to_operator(result_matrix))
+        result_operator = matrix_to_operator(result_matrix)
+
+        if 'Invalid' in result_operator:
+            # TODO Beer/Daniel
+            # result_operator = result_matrix
+            print('lets go')
+
+
+        array.append(result_operator)
 
     return array
 
