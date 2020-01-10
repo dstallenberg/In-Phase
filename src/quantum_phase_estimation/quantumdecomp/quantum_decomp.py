@@ -108,7 +108,7 @@ def matrix_to_qsharp(A, **kwargs):
     """
     code = '\n'.join(['' + gate.to_qsharp_command()
                       for gate in matrix_to_gates(A, **kwargs)])
-    return code
+    return 'QASM' + '\n' + code
 
 
 def matrix_to_cirq_circuit(A, **kwargs):
