@@ -79,6 +79,14 @@ def operator_to_matrix(operator, arg=None):
                           [0, 1, 0, 0],
                           [0, 0, 0, 1],
                           [0, 0, 1, 0]]),
+        'CX': np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 0, 1],
+                        [0, 0, 1, 0]]),
+        'CY': np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 0, -1j],
+                        [0, 0, 1j, 0]]),
         'CZ': np.array([[1, 0, 0, 0],
                         [0, 1, 0, 0],
                         [0, 0, 1, 0],
@@ -129,6 +137,14 @@ def matrix_to_operator(matrix, arg=None):
                                  [0, 1, 0, 0],
                                  [0, 0, 0, 1],
                                  [0, 0, 1, 0]])): 'CNOT',
+        matrix_to_hash(np.array([[1, 0, 0, 0],
+                                 [0, 1, 0, 0],
+                                 [0, 0, 0, 1],
+                                 [0, 0, 1, 0]])): 'CX',
+        matrix_to_hash(np.array([[1, 0, 0, 0],
+                                 [0, 1, 0, 0],
+                                 [0, 0, 0, -1j],
+                                 [0, 0, 1j, 0]])): 'CY',
         matrix_to_hash(np.array([[1, 0, 0, 0],
                                  [0, 1, 0, 0],
                                  [0, 0, 1, 0],
@@ -205,15 +221,20 @@ def matrix_to_operator(matrix, arg=None):
             return 'Invalid operator'
     return 'Something went wrong'
 
-def transform_controlled_unitary_to_toffoli(operator, controls, qubit):
-    result = ''
-    if operator == 'Z':
-        result += f'H q[{qubit}]\n'
-        controls_string = ', '.join(map(lambda c: f'q[{c}]', controls))
-        result += f'Toffoli {controls_string}, q[{qubit}]\n'
-        result += f'H q[{qubit}]\n'
-    else:
+
+def find_controlled_equivalent(operator, control_bits, qubit):
+    controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
+    result = {
+        'X': f'''CNOT {controls_string}, q[{qubit}]\n''',
+        'Y': f'''Sdag q[{qubit}]\nCNOT {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
+        'Z': f'''CZ {controls_string}, q[{qubit}]\n''',
+        'CX': f'''Toffoli {controls_string}, q[{qubit}]\n''',
+        'CY': f'''Sdag q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
+        'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
+        'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
+    }.get(operator, 'Invalid operator')
+
+    if result == 'Invalid operator':
         raise Exception('Operator not supported yet!')
 
     return result
-

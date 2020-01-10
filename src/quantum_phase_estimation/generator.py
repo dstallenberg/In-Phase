@@ -1,5 +1,5 @@
 from src.quantum_phase_estimation.circuit.fourier_transform import generate_inverse_qft
-from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, transform_controlled_unitary_to_toffoli
+from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, transform_controlled_unitary_to_toffoli, find_controlled_equivalent
 
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
@@ -32,7 +32,7 @@ prep_z q[0:{total - 1}]
         if operation == 'I':
             continue
 
-        # If the operation is more complex we make sure to put QASM on the first line of the operation (arbitrary U)
+        # If the operation is more complex we make sure to put QASM on the first line of the operation (arbitrary unitary operation)
         if 'QASM' in operation:
             operation = '\n'.join(operation.split('\n')[1:])
             final_qasm += operation
@@ -45,12 +45,14 @@ prep_z q[0:{total - 1}]
         #     final_qasm += transform_controlled_unitary_to_toffoli(operation, controls, total - 1)
         # else:
 
-        if qubits > 1:
+        if qubits > 2:
             # This is weird why do we have multiple qubits while the operation is a single non controlled operation
-            print('This is weird why do we have multiple qubits while the operation is a single non controlled operation')
+            raise Exception('This is weird why do we have more than 3 qubits while the operation is a single non controlled operation')
 
-        # If the operation is a simple quantum bit
-        final_qasm += f'C{operation} q[{i}], q[{total - 1}]\n'
+        # If the operation is a single or double quantum unitary operation
+        controls = [i]
+        controls.extend(range(nancillas - 1, total - 1))
+        final_qasm += find_controlled_equivalent(operation, controls, total - 1) #f'C{operation} q[{i}], q[{total - 1}]\n'
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
 

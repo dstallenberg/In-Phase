@@ -10,6 +10,9 @@ import numpy as np
 from collections import OrderedDict
 
 def plot_results(result, nancillas, qubits, p_succes):
+	if result['raw_text'] and len(result['raw_text']) > 1:
+		raise Exception(result['raw_text'])
+
 	correction_number = 0
 	for i in range(qubits):
 		correction_number+=2**(nancillas+i)
