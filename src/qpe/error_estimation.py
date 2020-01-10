@@ -12,7 +12,7 @@ def error_estimate(desired_bit_accuracy, probability_of_succes):
 	epsilon = 1-probability_of_succes
 	t = desired_bit_accuracy + np.ceil(np.log2(2+1/(2*epsilon)))
 	calc_probability_of_succes(2**(t-desired_bit_accuracy)-1)
-	return t, calc_probability_of_succes(2**(t-desired_bit_accuracy)-1)
+	return int(t), calc_probability_of_succes(2**(t-desired_bit_accuracy)-1)
 	
 
 def calc_probability_of_succes(e):

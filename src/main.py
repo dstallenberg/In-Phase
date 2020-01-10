@@ -5,6 +5,9 @@ from quantuminspire.api import QuantumInspireAPI
 import matplotlib.pyplot as plt
 
 from src.qpe.quantum_phase_estimation import generate_quantum_inspire_code
+from src.qpe.error_estimation import error_estimate
+from src.qpe.plot_results import plot_results
+
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -30,7 +33,13 @@ authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication)
 
 ## Variables
-nancillas = 4
+desired_bit_accuracy = 3
+p_succes_min = 0.8
+
+nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
+
+print(nancillas, p_succes)
+
 qubits = 2
 unitary_operation = 'Z'
 
@@ -45,8 +54,4 @@ print(result['raw_text'])
 print(result['execution_time_in_seconds'])
 print(result['histogram'])
 
-binary_keys = ["{0:04b}".format(int(k)-0b110000) for k in result['histogram'].keys()]
-
-plt.bar(binary_keys, result['histogram'].values())
-plt.xticks(rotation = 'vertical')
-plt.show()
+plot_results(result)
