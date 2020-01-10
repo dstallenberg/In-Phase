@@ -13,12 +13,12 @@ Referecnes:
 
 import numpy as np
 
-from src.quantumdecomp.gate import GateSingle, GateFC, apply_on_qubit, gates_to_matrix
-from src.quantumdecomp.gate2 import Gate2
-from src.quantumdecomp.decompose_2x2 import su_to_gates
-from src.quantumdecomp.linalg import orthonormal_eigensystem
-from src.quantumdecomp.optimize import optimize_gates
-from src.quantumdecomp.utils import cast_to_real, is_real, is_special_unitary, is_unitary
+from src.quantum_phase_estimation.quantumdecomp.gate import GateSingle, GateFC, apply_on_qubit, gates_to_matrix
+from src.quantum_phase_estimation.quantumdecomp.gate2 import Gate2
+from src.quantum_phase_estimation.quantumdecomp.decompose_2x2 import su_to_gates
+from src.quantum_phase_estimation.quantumdecomp.linalg import orthonormal_eigensystem
+from src.quantum_phase_estimation.quantumdecomp.optimize import optimize_gates
+from src.quantum_phase_estimation.quantumdecomp.utils import cast_to_real, is_real, is_special_unitary, is_unitary
 
 
 # "Magic basis". Columns are Phi vectors defined in [2].

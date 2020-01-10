@@ -1,8 +1,8 @@
 import math
 import numpy as np
 
-from src.quantumdecomp.decompose_2x2 import unitary2x2_to_gates
-from src.quantumdecomp.utils import PAULI_X, is_unitary, is_power_of_two
+from src.quantum_phase_estimation.quantumdecomp.decompose_2x2 import unitary2x2_to_gates
+from src.quantum_phase_estimation.quantumdecomp.utils import PAULI_X, is_unitary, is_power_of_two
 
 
 class TwoLevelUnitary:
@@ -60,7 +60,7 @@ class TwoLevelUnitary:
 
     def to_fc_gates(self):
         """Returns list of fully controlled gates implementing this matrix."""
-        from src.quantumdecomp.gate import GateFC
+        from src.quantum_phase_estimation.quantumdecomp.gate import GateFC
 
         self.order_indices()
         qubit_id_mask = self.index1 ^ self.index2

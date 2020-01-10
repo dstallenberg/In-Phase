@@ -1,6 +1,6 @@
 import numpy as np
 
-from src.quantumdecomp.utils import PAULI_X
+from src.quantum_phase_estimation.quantumdecomp.utils import PAULI_X
 
 
 class Gate2:

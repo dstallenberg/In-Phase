@@ -1,10 +1,10 @@
 import numpy as np
 
-from src.quantumdecomp.decompose_4x4 import decompose_4x4_optimal
-from src.quantumdecomp.gate import GateFC, GateSingle
-from src.quantumdecomp.optimize import optimize_gates
-from src.quantumdecomp.two_level_unitary import TwoLevelUnitary
-from src.quantumdecomp.utils import PAULI_X, is_unitary, is_special_unitary, is_power_of_two
+from src.quantum_phase_estimation.quantumdecomp.decompose_4x4 import decompose_4x4_optimal
+from src.quantum_phase_estimation.quantumdecomp.gate import GateFC, GateSingle
+from src.quantum_phase_estimation.quantumdecomp.optimize import optimize_gates
+from src.quantum_phase_estimation.quantumdecomp.two_level_unitary import TwoLevelUnitary
+from src.quantum_phase_estimation.quantumdecomp.utils import PAULI_X, is_unitary, is_special_unitary, is_power_of_two
 
 
 def two_level_decompose(A):
