@@ -1,0 +1,4 @@
+Done	Dimitri's code begrijpen (Nu met zijn allen!)
+Open	gate decomposition moet uitgezocht worden (Beer en Daniel)
+Open	Phase estimation algoritme implementeren (Dimitri)
+Done	Fout kwantizeren (Mio) 

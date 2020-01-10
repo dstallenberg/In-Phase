@@ -43,10 +43,6 @@ prep_z q[0:{total - 1}]
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
-    if nancillas == 1:
-        final_qasm += f'Measure q[0]'
-    else:
-        final_qasm += f'Measure q[0:{nancillas - 1}]'
 
     # for i in range(total - 1):
     #     if i != 0:
