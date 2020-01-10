@@ -2,10 +2,10 @@
 Group 7
 
 Collaborators:
-* Beer
+* Beer de Zoeten
 * Daniel Vlaardingerbroek
 * Dimitri Stallenberg
-* Mio
+* Mio Poortvliet
     
 ## Installing from source
 
