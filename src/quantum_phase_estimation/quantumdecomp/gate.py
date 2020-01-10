@@ -74,7 +74,7 @@ class GateFC(Gate):
     def without_flips(self):
         return GateFC(self.gate2, self.qubit_id, self.qubit_count, flip_mask=0)
 
-    def to_qsharp_command(self):
+    def to_qsharp_command(self, nancillas):
         # On one qubit controlled gate is just single-qubit gate.
         if self.qubit_count == 1:
             return GateSingle(self.gate2, self.qubit_id, 1).to_qsharp_command()
@@ -85,19 +85,21 @@ class GateFC(Gate):
         control_ids = [
             i for i in range(
                 self.qubit_count) if i != self.qubit_id]
-        controls = '' + ', '.join(['q[%d]' % i for i in control_ids]) + ''
+        controls = '' + ', '.join(['q[%d]' % (i + nancillas) for i in control_ids]) + ''
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
-            return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s q[%d] %.15f' % (
-                controls + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, self.gate2.arg, controls + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -self.gate2.arg)
+
+            return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s q[%d], %.15f' % (
+                controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, self.gate2.arg, controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -self.gate2.arg)
+
         elif self.gate2.name == 'R1':
             return 'CR %s, q[%d], %.15f' % (
-                controls + nancillas, self.qubit_id + nancillas, self.gate2.arg)
+                controls, self.qubit_id + nancillas, self.gate2.arg)
         elif self.gate2.name == 'X':
             if self.qubit_count == 2:
                 return 'CNOT q[%d], q[%d]' % (
                     control_ids[0] + nancillas, self.qubit_id + nancillas)
-            return 'CX %s, q[%d]' % (controls + nancillas, self.qubit_id + nancillas)
+            return 'CX %s, q[%d]' % (controls, self.qubit_id + nancillas)
 
     def to_matrix(self):
         matrix_size = 2**self.qubit_count
