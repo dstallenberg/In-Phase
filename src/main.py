@@ -5,6 +5,9 @@ from quantuminspire.api import QuantumInspireAPI
 import matplotlib.pyplot as plt
 
 from src.qpe.quantum_phase_estimation import generate_quantum_inspire_code
+from src.qpe.error_estimation import error_estimate
+from src.qpe.plot_results import plot_results
+
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -30,20 +33,23 @@ authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Titel')
 
 ## Variables
-nancillas = 4
+desired_bit_accuracy = 3
+p_succes_min = 0.8
+
+nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
+
 qubits = 2
 unitary_operation = 'Z'
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
-print(final_qasm)
+#print(final_qasm)
 
 backend_type = qi.get_backend_type_by_name('QX single-node simulator')
 result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
 
-print(result['raw_text'])
-print(result['execution_time_in_seconds'])
-print(result['histogram'])
+#print(result['raw_text'])
+#print(result['execution_time_in_seconds'])
+#print(result['histogram'])
 
-plt.bar(result['histogram'].keys(), result['histogram'].values())
-plt.show()
+plot_results(result, nancillas, qubits, p_succes)

@@ -1,0 +1,31 @@
+notulen 10/01/2020
+
+In qcc staat matrix decomposition.
+
+Wat gaan we doen?
+Matrix decmposition in het programma
+
+a: matrix decomposition voor een 2x2 matrix.
+b: matrix decomposition voor een nxn matrix.
+c: Een programma waarmee je elke unitary matrix kan simuleren en de phase kan bepalen
+d: 
+
+dimitri: van matrix naar letter ( gates) en andersom
+
+Met zijn allen Dimitr's code begrijpen
+
+Als we eerder klaar zijn kunnen we altijd menno mailen
+
+Maakt de verhouding ancillas tegen qubits uit? Nee. Hoe meer ancilla, hoe hoger de precisie.
+Maakt niet uit voor het algoritme. Dit beperkt wel ons circuit.
+
+Wat is de foutmarge van de phase estimation? Uitzoeken hoe dat precies zit. Zit daar een distributie achter?
+
+
+
+todo:
+Dimitri's code begrijpen (Nu met zijn allen!)
+gate decomposition moet uitgezocht worden (Beer en Daniel)
+Phase estimation algoritme implementeren (Dimitri)
+Fout kwantizeren (Mio)
+
