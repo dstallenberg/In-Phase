@@ -25,6 +25,6 @@ def generate_inverse_qft(qubits):
         k = (qubits - 1) - i
         for j in range(k):
             iQFT.append(f'CR q[{k}], q[{j}], {-math.pi/float(2**(k - j))}')
-        iQFT.append(f'H q[{k}]')
+    iQFT.append(f'H q[0:{qubits-1}]')
 
     return '\n'.join(iQFT)
