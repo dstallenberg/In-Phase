@@ -2,6 +2,7 @@ import numpy as np
 
 from src.quantum_phase_estimation.quantumdecomp.two_level_unitary import TwoLevelUnitary
 
+""" NUMBER OF ANCILLA BITS"""
 
 class Gate:
     """Represents gate acting on register of qubits."""
@@ -88,15 +89,15 @@ class GateFC(Gate):
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
             return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s q[%d] %.15f' % (
-                controls, self.qubit_id, self.gate2.name, self.qubit_id, self.gate2.arg, controls, self.qubit_id, self.gate2.name, self.qubit_id, -self.gate2.arg)
+                controls + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, self.gate2.arg, controls + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -self.gate2.arg)
         elif self.gate2.name == 'R1':
             return 'CR %s, q[%d], %.15f' % (
-                controls, self.qubit_id, self.gate2.arg)
+                controls + nancillas, self.qubit_id + nancillas, self.gate2.arg)
         elif self.gate2.name == 'X':
             if self.qubit_count == 2:
                 return 'CNOT q[%d], q[%d]' % (
-                    control_ids[0], self.qubit_id)
-            return 'CX %s, q[%d]' % (controls, self.qubit_id)
+                    control_ids[0] + nancillas, self.qubit_id + nancillas)
+            return 'CX %s, q[%d]' % (controls + nancillas, self.qubit_id + nancillas)
 
     def to_matrix(self):
         matrix_size = 2**self.qubit_count
