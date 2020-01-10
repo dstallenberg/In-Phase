@@ -27,7 +27,7 @@ def get_authentication():
 
 
 authentication = get_authentication()
-qi = QuantumInspireAPI(QI_URL, authentication)
+qi = QuantumInspireAPI(QI_URL, authentication, 'Titel')
 
 ## Variables
 nancillas = 4
