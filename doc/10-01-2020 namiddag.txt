@@ -1,22 +1,28 @@
 1. Probleem met quantum inspire en het antwoord van Richard en Pieter
-
+Dit hebben we omzeild door niet te measuren maar bits weg te gooien.
 
 2. Wat is er gedaan vandaag?
-
+Beer: Dat algoritme gevonden voor qdecomposition en dieze geparsed naar qasm en dat werkt.
+Daniel: De cswap gevonden en geimplementeerd zodat ie voor en na de code van beer de qubits swapt. En geleerd hoe je met git om moet gaan!
+Dimitri: Project setup, test gemaakt, unitary uitgebreid ons geholpen met git (onze bugs fixen)
+Mio: klassieke postprocessing en dat geformat, en error afschatting
 
 3. Wat moet er nog gebeuren?
-
+Unitary operations: stroomlijnen van de code. Documentation kan beter.
+Controlled dingen toevoegen voor efficienter rekenen en niet elke keer zo een huge ding te maken.
 
 4. Waar gaan we verder naartoe?
-
+Na woensdag kjken wat zij er van zeggen. Suggesties om door te werken? We weten het niet zo.
 
 5. Wat gaan we maandag doen?
-
+Maandag dingen aan elkaar breien? Alles afmaken, daarna een mail sturen. Bugs uithalen. Extensive testen.
+Paar leuke unitarys fixen om te flexen.
 
 6. Naam voor ons project
-
+Dit weekend brainstormen. Maandag hebben we allemaal een suggestie, beste krijgt gratis koffie.
 
 7. Vragen aan Menno
-
+Wat nu? Maybe woensdag met Menno meeten? Eerder? In ieder geval een mail met de vraag "Wat nu?".
 
 8. Wvttk
+Niks.
