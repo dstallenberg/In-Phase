@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 from src.quantum_phase_estimation.quantumdecomp.decompose_4x4 import decompose_4x4_optimal
 from src.quantum_phase_estimation.quantumdecomp.gate import GateFC, GateSingle
@@ -99,16 +100,33 @@ def matrix_to_gates(A, **kwargs):
     return gates
 
 
-def matrix_to_qsharp(A, **kwargs):
+def matrix_to_qsharp(A, control, nancilla, **kwargs):
     """Given unitary matrix A, retuns Q# code which implements
     action of this matrix on register of qubits called `qs`.
 
     Input: A - 2^N x 2^N unitary matrix.
     Returns: string - Q# code.
     """
-    code = '\n'.join(['' + gate.to_qsharp_command()
+    code = ""
+    n = int(math.log(A.shape[0],2))
+    for i in range(0, n):
+        code+=("prep_z q[%d] \n" % (nancilla+n+i))
+
+    for i in range(0, n):
+        code+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
+        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+
+    code += '\n'.join(['' + gate.to_qsharp_command()
                       for gate in matrix_to_gates(A, **kwargs)])
+
+    code+='\n'
+    for i in range(0, n):
+        code+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
+        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+
     return code
+
+".shape for dimension"
 
 
 def matrix_to_cirq_circuit(A, **kwargs):

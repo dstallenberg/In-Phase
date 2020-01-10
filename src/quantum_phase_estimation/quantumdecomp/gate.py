@@ -87,7 +87,7 @@ class GateFC(Gate):
         controls = '' + ', '.join(['q[%d]' % i for i in control_ids]) + ''
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
-            return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s q[%d] %.15f' % (
+            return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s, q[%d] %.15f' % (
                 controls, self.qubit_id, self.gate2.name, self.qubit_id, self.gate2.arg, controls, self.qubit_id, self.gate2.name, self.qubit_id, -self.gate2.arg)
         elif self.gate2.name == 'R1':
             return 'CR1 %s, q[%d], %.15f' % (
