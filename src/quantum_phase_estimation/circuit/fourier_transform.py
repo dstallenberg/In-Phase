@@ -1,5 +1,6 @@
 import math
 
+
 def generate_qft(qubits):
     if qubits < 1:
         raise Exception('For QFT generation qubits must be larger or equal to 1!')
@@ -14,6 +15,7 @@ def generate_qft(qubits):
 
     return '\n'.join(QFT)
 
+
 def generate_inverse_qft(qubits):
     if qubits < 1:
         raise Exception('For inverse QFT generation qubits must be larger or equal to 1!')
@@ -22,7 +24,7 @@ def generate_inverse_qft(qubits):
     for i in range(qubits):
         k = (qubits - 1) - i
         for j in range(k):
-            iQFT.append(f'CR q[{j}], q[{k}], {-math.pi/float(2**(k - j))}')
+            iQFT.append(f'CR q[{k}], q[{j}], {-math.pi/float(2**(k - j))}')
         iQFT.append(f'H q[{k}]')
 
     return '\n'.join(iQFT)

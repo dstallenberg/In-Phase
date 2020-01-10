@@ -4,7 +4,7 @@ from quantuminspire.credentials import load_account, get_token_authentication, g
 from quantuminspire.api import QuantumInspireAPI
 import matplotlib.pyplot as plt
 
-from src.qpe.quantum_phase_estimation import generate_quantum_inspire_code
+from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -27,7 +27,7 @@ def get_authentication():
 
 
 authentication = get_authentication()
-qi = QuantumInspireAPI(QI_URL, authentication)
+qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 ## Variables
 nancillas = 4
@@ -44,6 +44,7 @@ result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=
 print(result['raw_text'])
 print(result['execution_time_in_seconds'])
 print(result['histogram'])
+print(result)
 
 plt.bar(result['histogram'].keys(), result['histogram'].values())
 plt.show()

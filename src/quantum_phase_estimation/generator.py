@@ -1,5 +1,6 @@
-from src.qpe.QFT import generate_inverse_qft
-from src.qpe.unitary_operators import get_unitary_operators_array, transform_controlled_unitary_to_toffoli
+from src.quantum_phase_estimation.circuit.fourier_transform import generate_inverse_qft
+from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, transform_controlled_unitary_to_toffoli
+
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
     total = nancillas + qubits
