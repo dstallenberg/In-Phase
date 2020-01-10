@@ -1,6 +1,6 @@
 import numpy as np
 import cmath
-
+import src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qsharp
 
 def get_unitary_operators_array(operator, nancillas):
     arg = None
@@ -29,7 +29,7 @@ def get_unitary_operators_array(operator, nancillas):
 
         if 'Invalid' in result_operator:
             # TODO Beer/Daniel
-            # result_operator = result_matrix
+            result_operator = matrix_to_qsharp(result_matrix)
             print('lets go')
 
 
