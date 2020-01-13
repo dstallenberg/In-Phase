@@ -40,7 +40,6 @@ prep_z q[0:{total - 1}]
 
     final_qasm += '\n# Apply controlled unitary operations\n'
 
-    print(unitary_operation)
     unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
 
     for i in range(nancillas):
