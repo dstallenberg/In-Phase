@@ -6,7 +6,7 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
-        for i in range(20, 0, -1):
+        for i in range(nancillas+2*qubits, 0, -1):
             if f'q[{i}]' in unitary_operation:
                 unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
             if f'q[{i}]' in custom_prepare:
