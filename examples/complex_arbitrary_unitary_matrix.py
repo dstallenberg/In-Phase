@@ -8,7 +8,7 @@ from quantuminspire.api import QuantumInspireAPI
 from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
-from src.quantum_phase_estimation.classical_postprocessing import print_result, find_maximum
+from src.quantum_phase_estimation.classical_postprocessing import print_result
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')

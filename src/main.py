@@ -47,15 +47,11 @@ qubits = 1#int(np.log2(unitary_operation.shape[0]))
  or with a matrix respresentation of U."""
 
 unitary_operation = f'''QASM
-Rz q[0], 1'''
-
-initial = """prep_z q[0]
-x q[0]
-"""
+CZ q[0], q[1]'''
 
 """Generate and print QASM code"""
 
-final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation, initial)
+final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 print(final_qasm)
 
 """"Calculate results using QuantumInspire"""
