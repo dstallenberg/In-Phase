@@ -2,15 +2,19 @@ from src.quantum_phase_estimation.circuit.fourier_transform import generate_inve
 from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, find_controlled_equivalent
 from src.quantum_phase_estimation.optimizer import optimize
 
-def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
+def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user'):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
-        for i in range(20, 0, -1):
+        for i in range(nancillas+2*qubits, 0, -1):
             if f'q[{i}]' in unitary_operation:
+                print(unitary_operation)
                 unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
+                print(unitary_operation)
 
-    print(unitary_operation)
+            if f'q[{i}]' in custom_prepare:
+                custom_prepare = custom_prepare.replace(f'q[{i}]', f'q[{i + nancillas}]')
+
     total = nancillas + qubits
     final_qasm = f"""version 1.0
 
@@ -18,6 +22,9 @@ qubits {total + qubits}
 
 # Prepare qubits
 prep_z q[0:{total - 1}]
+
+# Custom prepare
+{custom_prepare}
 
 # Create superposition
 """
@@ -61,8 +68,7 @@ prep_z q[0:{total - 1}]
         controls = [i]
         controls.extend(range(nancillas - 1, total - 1))
 
-        print(operation)
-        final_qasm += find_controlled_equivalent(operation, controls, total - 1)
+        final_qasm += find_controlled_equivalent(operation, controls, total - 1, nancillas, qubits)
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
 

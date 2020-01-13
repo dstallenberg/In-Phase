@@ -14,6 +14,11 @@ def optimize(qasm_code, total_qubits):
                 if i == j:
                     continue
 
+                for k in range(total_qubits):
+                    # SWAP gate
+                    qasm_code = qasm_code.replace(f'Toffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\n', '')
+
+
                 for double in double_operators:
                     qasm_code = qasm_code.replace(f'{double} q[{i}], q[{j}]\n{double} q[{i}], q[{j}]\n', '')
 
@@ -27,11 +32,15 @@ def can_optimize(qasm_code, total_qubits):
         for single in single_operators:
             if f'{single} q[{i}]\n{single} q[{i}]\n' in qasm_code:
                 return True
-
-    for i in range(total_qubits):
         for j in range(total_qubits):
             if i == j:
                 continue
+
+            for k in range(total_qubits):
+                # SWAP gate
+                if f'Toffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\n' in qasm_code:
+                    return True
+
             for double in double_operators:
                 if f'{double} q[{i}], q[{j}]\n{double} q[{i}], q[{j}]\n' in qasm_code:
                     return True
