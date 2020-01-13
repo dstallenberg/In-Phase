@@ -1,5 +1,5 @@
 from src.quantum_phase_estimation.circuit.fourier_transform import generate_inverse_qft
-from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, transform_controlled_unitary_to_toffoli, find_controlled_equivalent
+from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, find_controlled_equivalent
 
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
@@ -7,7 +7,7 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
 
     final_qasm = f"""version 1.0
 
-qubits {total}
+qubits {total + qubits}
 
 # Prepare qubits
 prep_z q[0:{total - 1}]
@@ -25,7 +25,7 @@ prep_z q[0:{total - 1}]
 
     final_qasm += '\n# Apply controlled unitary operations\n'
 
-    unitary_operations = get_unitary_operators_array(unitary_operation, nancillas)
+    unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
 
     for i in range(nancillas):
         operation = unitary_operations[i]

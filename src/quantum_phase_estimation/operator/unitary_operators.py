@@ -1,9 +1,10 @@
 import numpy as np
 import cmath
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qsharp
+from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
-def get_unitary_operators_array(operator, nancillas):
+def get_unitary_operators_array(operator, nancillas, qubits):
     arg = None
     if isinstance(operator, list):
         arg = operator[1]
@@ -12,6 +13,22 @@ def get_unitary_operators_array(operator, nancillas):
     if isinstance(operator, (np.ndarray, np.generic)):
         # It is a matrix
         matrix = operator
+    elif 'QASM' in operator:
+        array = []
+
+        for i in range(1, nancillas + 1):
+            power = 2 ** (nancillas - i)
+
+            operation = '\n'.join(operator.split('\n')[1:])
+            result_operation = operation
+            for j in range(power - 1):
+                result_operation += operation
+
+            result_operation = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operation)
+
+            array.append(result_operation)
+
+        return array
     else:
         # It is an operator key
         matrix = operator_to_matrix(operator, arg)

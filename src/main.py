@@ -39,8 +39,14 @@ p_succes_min = 0.95
 
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
+
+nancillas = 4 # TODO remove this hardcoded
 qubits = 2
-unitary_operation = 'X' #np.array([[0, 1], [1, 0]])
+unitary_operation = 'QASM\nH q[4]\nCNOT q[4], q[5]\nH q[4]\n' #'X' #np.array([[0, 1], [1, 0]])
+
+# TODO check if QASM en then replace q[0] with q[ancilla] etc
+# if 'QASM' in unitary_operation:
+
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
