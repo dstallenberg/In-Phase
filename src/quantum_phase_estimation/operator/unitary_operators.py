@@ -202,18 +202,17 @@ def matrix_to_operator(matrix, arg=None):
         }.get(hash_of_matrix, 'Invalid operator: The given matrix does not require an argument or the matrix is invalid')
     else:
         # No argument is given so we try to find the R gate ourselves
-        # TODO check which R gate
         if matrix.shape == (2, 2):
             # R
             if matrix[0][1] == 0 and matrix[1][0] == 0:
                 # Rz
-                return 2*math.acos(matrix[0,0].real)
+                return 2 * cmath.acos(matrix[0,0].real)
             elif isinstance(matrix[1, 0], complex):
                 # Rx
-                return 2*math.acos(matrix[0,0])
+                return 2 * cmath.acos(matrix[0,0])
             else:
                 # Ry
-                return 2*math.acos(matrix[0,0])
+                return 2 * cmath.acos(matrix[0,0])
         elif matrix.shape == (4, 4):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
@@ -224,6 +223,10 @@ def matrix_to_operator(matrix, arg=None):
                     if np.isclose(polar_coords[0], 1):
                         # Check whether r_coord equals 1
                         phi = polar_coords[1]
+
+                        if phi == np.isclose(phi, 0):
+                            return 'CR ' + str(phi)
+
                         k = cmath.log(-(2 * cmath.pi) / phi, 2).real
                         if isinstance(k, int) or k.is_integer():
                             return 'CRk ' + str(int(k))
