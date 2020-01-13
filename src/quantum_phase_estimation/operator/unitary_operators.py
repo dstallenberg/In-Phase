@@ -225,6 +225,9 @@ def matrix_to_operator(matrix, arg=None):
                         # Check whether r_coord equals 1
                         phi = polar_coords[1]
 
+                        if phi == np.isclose(phi, 0):
+                            return 'CR ' + str(phi)
+
                         k = cmath.log(-(2 * cmath.pi) / phi, 2).real
                         if isinstance(k, int) or k.is_integer():
                             return 'CRk ' + str(int(k))
