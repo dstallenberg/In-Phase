@@ -124,7 +124,13 @@ def operator_to_matrix(operator, arg=None):
                              [0, 0, 0, 0, 0, 0, 1, 0]])
     }.get(operator, 'Invalid operator: The given operator does not exist: ' + operator)
 
+
 def matrix_to_operator(matrix, arg=None):
+    eye = np.identity(matrix.shape[0])
+
+    if np.isclose(matrix, eye).all():
+        return 'I'
+
     operator = {
         'X': np.array([[0, 1],
                        [1, 0]]),
@@ -134,8 +140,6 @@ def matrix_to_operator(matrix, arg=None):
                        [0, -1]]),
         'H': (1/2**0.5) * np.array([[1, 1],
                                     [1, -1]]),
-        'I': np.array([[1, 0],
-                       [0, 1]]),
         'S': np.array([[1, 0],
                        [0, 1j]]),
         'Sdag': np.array([[1, 0],

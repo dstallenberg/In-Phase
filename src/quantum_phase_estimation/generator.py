@@ -5,7 +5,7 @@ from src.quantum_phase_estimation.optimizer import optimize
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user'):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
-    if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
+    if isinstance(unitary_operation, str) and 'QASM' in unitary_operation and not unitary_operation.endswith('\n'):
         unitary_operation += "\n"
 
     for i in range(nancillas+2*qubits, -1, -1):
@@ -21,7 +21,7 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
 
 qubits {total + qubits}
 
-# Prepare qubits
+# Prepare qubits \n.preparation\n
 prep_z q[0:{total - 1}]
 
 # Custom prepare
@@ -38,7 +38,7 @@ prep_z q[0:{total - 1}]
     else:
         final_qasm += f'{{ H q[0:{nancillas - 1}] | X q[{nancillas}:{total - 1}] }}'
 
-    final_qasm += '\n# Apply controlled unitary operations\n'
+    final_qasm += '\n# Apply controlled unitary operations\n.controlled_unitary_operations\n '
 
     unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
 
@@ -70,7 +70,7 @@ prep_z q[0:{total - 1}]
 
         final_qasm += find_controlled_equivalent(operation, controls, total - 1, nancillas, qubits)
 
-    final_qasm += '\n# Apply inverse quantum phase estimation\n'
+    final_qasm += '\n# Apply inverse quantum phase estimation\n.Inverse_Quantum_Fourier_Transform\n'
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
