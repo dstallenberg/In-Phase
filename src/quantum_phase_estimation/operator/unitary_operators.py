@@ -250,6 +250,6 @@ def find_controlled_equivalent(operator, control_bits, qubit):
     }.get(operator, 'Invalid operator')
 
     if result == 'Invalid operator':
-        raise Exception('Operator not supported yet!')
+        raise Exception('Operator not supported yet! Operator: ' + operator)
 
     return result
