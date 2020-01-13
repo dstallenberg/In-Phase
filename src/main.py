@@ -43,6 +43,7 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 qubits = 1#int(np.log2(unitary_operation.shape[0]))
 
+
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 

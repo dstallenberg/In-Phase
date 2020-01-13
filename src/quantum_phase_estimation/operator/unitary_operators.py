@@ -1,5 +1,6 @@
 import numpy as np
 import cmath
+import string
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qasm
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
@@ -43,6 +44,7 @@ def get_unitary_operators_array(operator, nancillas, qubits):
 
         result_matrix = result_matrix.round(decimals=5)
 
+        print(result_matrix)
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
@@ -177,8 +179,9 @@ def matrix_to_operator(matrix, arg=None):
     }
 
     for key, value in operator.items():
-        if np.isclose(matrix, value).all():
-            return key
+        if matrix.shape == value.shape:
+            if np.isclose(matrix, value).all():
+                return key
 
     if arg is not None:
         arg = float(arg)
@@ -221,6 +224,7 @@ def matrix_to_operator(matrix, arg=None):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
                 # This checks if the matrix is diagonalized
+                print(matrix)
                 if matrix[0][0] == matrix[1][1] == matrix[2][2] == 1:
                     # This checks whether the first 3 diagonal entries are 1
                     polar_coords = cmath.polar(matrix[3][3])

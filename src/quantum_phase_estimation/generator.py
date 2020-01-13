@@ -65,7 +65,7 @@ prep_z q[0:{total - 1}]
             raise Exception('This is weird why do we have more than 3 qubits while the operation is a single non controlled operation')
 
         # If the operation is a single or double quantum unitary operation
-        controls = [i]
+        controls = []
         controls.extend(range(nancillas - 1, total - 1))
 
         final_qasm += find_controlled_equivalent(operation, controls, total - 1, nancillas, qubits)
