@@ -1,10 +1,11 @@
 from src.quantum_phase_estimation.circuit.fourier_transform import generate_inverse_qft
 from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, find_controlled_equivalent
-
+from src.quantum_phase_estimation.optimizer import optimize
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
-    if 'QASM' in unitary_operation:
+
+    if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
         for i in range(20, 0, -1):
             print(i)
             if f'q[{i}]' in unitary_operation:
@@ -65,6 +66,7 @@ prep_z q[0:{total - 1}]
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
+    final_qasm = optimize(final_qasm, nancillas + qubits + qubits)
 
     # for i in range(total - 1):
     #     if i != 0:
