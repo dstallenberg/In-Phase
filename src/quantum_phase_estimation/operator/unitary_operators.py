@@ -41,13 +41,14 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         result_matrix = matrix
         for j in range(power - 1):
             result_matrix = np.dot(matrix, result_matrix)
-            # print(result_matrix)
+        print(result_matrix)
 
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
-            result_operator = matrix_to_qsharp(result_matrix) #, i, nancillas)
+            result_operator = matrix_to_qsharp(result_matrix, i, nancillas)
 
+        print(result_operator)
         array.append(result_operator)
 
     return array
