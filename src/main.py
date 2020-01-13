@@ -46,7 +46,7 @@ qubits = 2#int(np.log2(unitary_operation.shape[0]))
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 
-unitary_operation = f'''QASM CZ q[0], q[1]'''
+unitary_operation = "QASM CZ q[0] q[1]"
 
 """Generate and print QASM code"""
 
