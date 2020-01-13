@@ -107,24 +107,24 @@ def matrix_to_qsharp(A, control, nancilla, **kwargs):
     Input: A - 2^N x 2^N unitary matrix.
     Returns: string - Q# code.
     """
+    n = int(math.log(A.shape[0],2))
 
     code_org = '\n'.join(['' + gate.to_qsharp_command(nancilla)
                       for gate in matrix_to_gates(A, **kwargs)])
 
-    code = U_to_CU(control, nancilla, code_org)
+    code = U_to_CU(n, control, nancilla, code_org)
 
     return 'QASM' + '\n' + code
 
-def U_to_CU(control, nancilla, code):
+def U_to_CU(n, control, nancilla, code):
     code_tot = ""
-    n = int(math.log(A.shape[0],2))
 
     for i in range(0, n):
         code_tot+=("prep_z q[%d] \n" % (nancilla+n+i))
 
     for i in range(0, n):
         code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
-        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+        control, nancilla+i, nancilla+i+n, control, nancilla + i + n, nancilla + i, control, nancilla + i, nancilla + i + n))
 
     code_tot += code
 
