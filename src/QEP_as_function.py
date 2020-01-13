@@ -26,7 +26,7 @@ def find_qubits_from_unitary(unitary):
 	if type(unitary) == np.ndarray:
 		return int(np.log2(unitary.shape[0]))
 	else:
-		result = [e for e in re.split("[^0-9]", unitary) if e != '']
+		result = [e for e in re.split("[^0-9.]", unitary) if e != '' and not '.' in e]
 		return max(map(int, result)) + 1
 		
 def get_authentication():
@@ -85,5 +85,6 @@ def estimate_phase(unitary,
 			  nancillas)
 	
 if __name__ == "__main__":
-	estimate_phase("""QASM\nRz q[0], 1.57075""",
+	estimate_phase("""QASM
+Rz q[0], 1.57075""",
 				desired_bit_accuracy = 3)
