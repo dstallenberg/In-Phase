@@ -41,6 +41,8 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         for j in range(power - 1):
             result_matrix = np.dot(matrix, result_matrix)
 
+        result_matrix = result_matrix.round(decimals=5)
+
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
@@ -120,99 +122,97 @@ def operator_to_matrix(operator, arg=None):
                              [0, 0, 0, 0, 0, 0, 1, 0]])
     }.get(operator, 'Invalid operator: The given operator does not exist: ' + operator)
 
-
-def matrix_to_hash (matrix):
-    # converts matrix to tuple to be able to hash it
-    return hash(tuple(map(tuple, matrix.astype(complex))))
-
-
 def matrix_to_operator(matrix, arg=None):
-    hash_of_matrix = matrix_to_hash(matrix)
-
     operator = {
-        matrix_to_hash(np.array([[0, 1],
-                                 [1, 0]])): 'X',
-        matrix_to_hash(np.array([[0, -1j],
-                                 [1j, 0]])): 'Y',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, -1]])): 'Z',
-        matrix_to_hash((1/2**0.5) * np.array([[1, 1],
-                                              [1, -1]])): 'H',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, 1]])): 'I',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, 1j]])): 'S',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, -1j]])): 'Sdag',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, cmath.exp((1j * cmath.pi) / 4)]])): 'T',
-        matrix_to_hash(np.array([[1, 0],
-                                 [0, cmath.exp((-1j * cmath.pi) / 4)]])): 'Tdag',
-        matrix_to_hash(np.array([[1, 0, 0, 0],
-                                 [0, 1, 0, 0],
-                                 [0, 0, 0, 1],
-                                 [0, 0, 1, 0]])): 'CNOT',
-        matrix_to_hash(np.array([[1, 0, 0, 0],
-                                 [0, 1, 0, 0],
-                                 [0, 0, 0, 1],
-                                 [0, 0, 1, 0]])): 'CX',
-        matrix_to_hash(np.array([[1, 0, 0, 0],
-                                 [0, 1, 0, 0],
-                                 [0, 0, 0, -1j],
-                                 [0, 0, 1j, 0]])): 'CY',
-        matrix_to_hash(np.array([[1, 0, 0, 0],
-                                 [0, 1, 0, 0],
-                                 [0, 0, 1, 0],
-                                 [0, 0, 0, -1]])): 'CZ',
-        matrix_to_hash(np.array([[1, 0, 0, 0],
-                                 [0, 0, 1, 0],
-                                 [0, 1, 0, 0],
-                                 [0, 0, 0, 1]])): 'SWAP',
-        matrix_to_hash(np.array([[1, 0, 0, 0, 0, 0, 0, 0],
-                                 [0, 1, 0, 0, 0, 0, 0, 0],
-                                 [0, 0, 1, 0, 0, 0, 0, 0],
-                                 [0, 0, 0, 1, 0, 0, 0, 0],
-                                 [0, 0, 0, 0, 1, 0, 0, 0],
-                                 [0, 0, 0, 0, 0, 1, 0, 0],
-                                 [0, 0, 0, 0, 0, 0, 0, 1],
-                                 [0, 0, 0, 0, 0, 0, 1, 0]])): 'Toffoli'
-    }.get(hash_of_matrix, 'No matches')
+        'X': np.array([[0, 1],
+                       [1, 0]]),
+        'Y': np.array([[0, -1j],
+                       [1j, 0]]),
+        'Z': np.array([[1, 0],
+                       [0, -1]]),
+        'H': (1/2**0.5) * np.array([[1, 1],
+                                    [1, -1]]),
+        'I': np.array([[1, 0],
+                       [0, 1]]),
+        'S': np.array([[1, 0],
+                       [0, 1j]]),
+        'Sdag': np.array([[1, 0],
+                          [0, -1j]]),
+        'T': np.array([[1, 0],
+                       [0, cmath.exp((1j * cmath.pi) / 4)]]),
+        'Tdag': np.array([[1, 0],
+                          [0, cmath.exp((-1j * cmath.pi) / 4)]]),
+        'CNOT': np.array([[1, 0, 0, 0],
+                          [0, 1, 0, 0],
+                          [0, 0, 0, 1],
+                          [0, 0, 1, 0]]),
+        'CX': np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 0, 1],
+                        [0, 0, 1, 0]]),
+        'CY': np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 0, -1j],
+                        [0, 0, 1j, 0]]),
+        'CZ': np.array([[1, 0, 0, 0],
+                        [0, 1, 0, 0],
+                        [0, 0, 1, 0],
+                        [0, 0, 0, -1]]),
+        'SWAP': np.array([[1, 0, 0, 0],
+                          [0, 0, 1, 0],
+                          [0, 1, 0, 0],
+                          [0, 0, 0, 1]]),
+        'Toffoli': np.array([[1, 0, 0, 0, 0, 0, 0, 0],
+                             [0, 1, 0, 0, 0, 0, 0, 0],
+                             [0, 0, 1, 0, 0, 0, 0, 0],
+                             [0, 0, 0, 1, 0, 0, 0, 0],
+                             [0, 0, 0, 0, 1, 0, 0, 0],
+                             [0, 0, 0, 0, 0, 1, 0, 0],
+                             [0, 0, 0, 0, 0, 0, 0, 1],
+                             [0, 0, 0, 0, 0, 0, 1, 0]])
+    }
 
-    if operator != 'No matches':
-        return operator
+    for key, value in operator.items():
+        if np.isclose(matrix, value).all():
+            return key
 
     if arg is not None:
         arg = float(arg)
-        return {
-            matrix_to_hash(np.array([[cmath.cos(arg / 2), -1j * cmath.sin(arg / 2)],
-                                     [1j * cmath.sin(arg / 2), cmath.cos(arg / 2)]])): 'Rx ' + str(arg),
-            matrix_to_hash(np.array([[cmath.cos(arg / 2), -cmath.sin(arg / 2)],
-                                     [cmath.sin(arg / 2), cmath.cos(arg / 2)]])): 'Ry ' + str(arg),
-            matrix_to_hash(np.array([[cmath.exp(-1j * arg / 2), 0],
-                                     [0, cmath.exp(1j * arg / 2)]])): 'Rz ' + str(arg),
-            matrix_to_hash(np.array([[1, 0, 0, 0],
-                                     [0, 1, 0, 0],
-                                     [0, 0, 1, 0],
-                                     [0, 0, 0, cmath.exp(arg * 1j)]])): 'CR ' + str(arg),
-            matrix_to_hash(np.array([[1, 0, 0, 0],
-                                     [0, 1, 0, 0],
-                                     [0, 0, 1, 0],
-                                     [0, 0, 0, cmath.exp((2 * cmath.pi * 1j) / 2**arg)]])): 'CRk ' + str(arg),
+        operators = {
+            'Rx': np.array([[cmath.cos(arg / 2), -1j * cmath.sin(arg / 2)],
+                            [1j * cmath.sin(arg / 2), cmath.cos(arg / 2)]]),
+            'Ry': np.array([[cmath.cos(arg / 2), -cmath.sin(arg / 2)],
+                            [cmath.sin(arg / 2), cmath.cos(arg / 2)]]),
+            'Rz': np.array([[cmath.exp(-1j * arg / 2), 0],
+                            [0, cmath.exp(1j * arg / 2)]]),
+            'CR': np.array([[1, 0, 0, 0],
+                            [0, 1, 0, 0],
+                            [0, 0, 1, 0],
+                            [0, 0, 0, cmath.exp(arg * 1j)]]),
+            'CRk': np.array([[1, 0, 0, 0],
+                             [0, 1, 0, 0],
+                             [0, 0, 1, 0],
+                             [0, 0, 0, cmath.exp((2 * cmath.pi * 1j) / 2 ** arg)]]),
+        }
 
-        }.get(hash_of_matrix, 'Invalid operator: The given matrix does not require an argument or the matrix is invalid')
+        for key, value in operators.items():
+            if np.isclose(matrix, value).all():
+                return key + ' ' + str(arg)
+
+        return 'Invalid operator: The given matrix does not require an argument or the matrix is invalid'
     else:
         # No argument is given so we try to find the R gate ourselves
         if matrix.shape == (2, 2):
             # R
             if matrix[0][1] == 0 and matrix[1][0] == 0:
                 # Rz
-                return 2 * cmath.acos(matrix[0,0].real)
+                return 'Rz ' + str(2 * cmath.acos(matrix[0, 0].real).real)
             elif isinstance(matrix[1, 0], complex):
                 # Rx
-                return 2 * cmath.acos(matrix[0,0])
+                return 'Rx ' + str(2 * cmath.acos(matrix[0, 0]).real)
             else:
                 # Ry
-                return 2 * cmath.acos(matrix[0,0])
+                return 'Ry ' + str(2 * cmath.acos(matrix[0, 0]).real)
         elif matrix.shape == (4, 4):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
@@ -224,7 +224,7 @@ def matrix_to_operator(matrix, arg=None):
                         # Check whether r_coord equals 1
                         phi = polar_coords[1]
 
-                        if phi == np.isclose(phi, 0):
+                        if np.isclose(phi, 0):
                             return 'CR ' + str(phi)
 
                         k = cmath.log(-(2 * cmath.pi) / phi, 2).real
@@ -239,7 +239,7 @@ def matrix_to_operator(matrix, arg=None):
     return 'Something went wrong'
 
 
-def find_controlled_equivalent(operator, control_bits, qubit):
+def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits):
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
     result = {
         'X': f'''CNOT {controls_string}, q[{qubit}]\n''',
@@ -249,7 +249,7 @@ def find_controlled_equivalent(operator, control_bits, qubit):
         'CY': f'''Sdag q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
         'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
-    }.get(operator, 'Invalid operator')
+    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, operator + f' q[{qubit}]'))
 
     if result == 'Invalid operator':
         raise Exception('Operator not supported yet! Operator: ' + operator)

@@ -6,9 +6,15 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
-        for i in range(20, 0, -1):
+        print('test')
+        print(unitary_operation)
+        for i in range(20, -1, -1):
+            print(i)
             if f'q[{i}]' in unitary_operation:
+                print(unitary_operation)
                 unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
+                print(unitary_operation)
+
             if f'q[{i}]' in custom_prepare:
                 custom_prepare = custom_prepare.replace(f'q[{i}]', f'q[{i + nancillas}]')
 
@@ -65,7 +71,7 @@ prep_z q[0:{total - 1}]
         controls = [i]
         controls.extend(range(nancillas - 1, total - 1))
 
-        final_qasm += find_controlled_equivalent(operation, controls, total - 1)
+        final_qasm += find_controlled_equivalent(operation, controls, total - 1, nancillas, qubits)
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
 

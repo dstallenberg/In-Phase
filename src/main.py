@@ -34,16 +34,16 @@ authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 ## Variables
-desired_bit_accuracy = 3
-p_succes_min = 0.5
+desired_bit_accuracy = 5
+p_succes_min = 0.8
 
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
-qubits = 2#int(np.log2(unitary_operation.shape[0]))
+qubits = 1#int(np.log2(unitary_operation.shape[0]))
 
 w = np.exp((2j/3) * np.pi)
 unitary_operation = f'''QASM
-CZ q[0], q[1]
+Rz q[0], -1
 '''
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
