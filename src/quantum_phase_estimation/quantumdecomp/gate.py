@@ -17,15 +17,15 @@ class GateSingle(Gate):
         self.qubit_id = qubit_id
         self.qubit_count = qubit_count
 
-    def to_qsharp_command(self):
+    def to_qsharp_command(self, nancillas):
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
             return '%s(%.15f, q[%d]);' % (
-                self.gate2.name, -self.gate2.arg, self.qubit_id)
+                self.gate2.name, -self.gate2.arg, self.qubit_id + nancillas)
         elif self.gate2.name == 'R1':
-            return 'R1(%.15f, q[%d]);' % (self.gate2.arg, self.qubit_id)
+            return 'R1(%.15f, q[%d]);' % (self.gate2.arg, self.qubit_id + nancillas)
         elif self.gate2.name == 'X':
-            return 'X q[%d]' % (self.qubit_id)
+            return 'X q[%d]' % (self.qubit_id + nancillas)
 
     def to_matrix(self):
         """Tensor product I x I x ... x `gate2.to_matrix()` x I x ... x I."""

@@ -35,18 +35,21 @@ qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 ## Variables
 desired_bit_accuracy = 8
-p_succes_min = 0.95
+p_succes_min = 0.5
 
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
-
-nancillas = 4 # TODO remove this hardcoded
 qubits = 2
-unitary_operation = 'QASM\nH q[4]\nCNOT q[4], q[5]\nH q[4]\n' #'X' #np.array([[0, 1], [1, 0]])
+unitary_operation = 'QASM\nH q[0]\nCNOT q[0], q[1]\nH q[0]\n' #'X' #np.array([[0, 1], [1, 0]])
 
-# TODO check if QASM en then replace q[0] with q[ancilla] etc
-# if 'QASM' in unitary_operation:
+# Check if QASM en then replace q[i] with q[i + nancilla] etc
+if 'QASM' in unitary_operation:
+    for i in range(20, 0, -1):
+        print(i)
+        if f'q[{i}]' in unitary_operation:
+            unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
 
+print(unitary_operation)
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 

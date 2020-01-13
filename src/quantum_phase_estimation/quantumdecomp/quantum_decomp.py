@@ -14,6 +14,7 @@ def two_level_decompose(A):
     Matrices are listed in application order, i.e. if aswer is [u_1, u_2, u_3],
     it means A = u_3 u_2 u_1.
     """
+
     def make_eliminating_matrix(a, b):
         """Returns unitary matrix U, s.t. [a, b] U = [c, 0].
 
@@ -100,41 +101,49 @@ def matrix_to_gates(A, **kwargs):
     return gates
 
 
-def matrix_to_qsharp(A, control, nancilla, **kwargs):
-    """Given unitary matrix A, retuns Q# code which implements
-    action of this matrix on register of qubits called `qs`.
+"""This is the function used in the decomposition process. maxtrix_to_qasm takes the Unitary A, 
+  the number of control bits, and the number of ancilla bits. It outputs a string containing the 
+  decomposition of A in QuantumInspire components"""
 
-    Input: A - 2^N x 2^N unitary matrix.
-    Returns: string - Q# code.
-    """
-    n = int(math.log(A.shape[0],2))
+
+def matrix_to_qasm(A, control, nancilla, **kwargs):
+
+    n = int(math.log(A.shape[0], 2))
 
     code_org = '\n'.join(['' + gate.to_qsharp_command(nancilla)
-                      for gate in matrix_to_gates(A, **kwargs)])
+                          for gate in matrix_to_gates(A, **kwargs)])
 
     code = U_to_CU(n, control, nancilla, code_org)
 
     return 'QASM' + '\n' + code
 
+
 def U_to_CU(n, control, nancilla, code):
-    code_tot = ""
+    code_tot = "{"
 
     for i in range(0, n):
-        code_tot+=("prep_z q[%d] \n" % (nancilla+n+i))
+        code_tot += ("prep_z q[%d]" % (nancilla + n + i))
+        if i < n - 1:
+            code_tot += "|"
+
+    code_tot += "} \n"
 
     for i in range(0, n):
-        code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
-        control, nancilla+i, nancilla+i+n, control, nancilla + i + n, nancilla + i, control, nancilla + i, nancilla + i + n))
+        code_tot += ("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" % (
+            control, nancilla + i, nancilla + i + n, control, nancilla + i + n, nancilla + i, control, nancilla + i,
+            nancilla + i + n))
 
     code_tot += code
 
-    code_tot+='\n'
+    code_tot += '\n'
 
     for i in range(0, n):
-        code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
-        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+        code_tot += ("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" % (
+            control, nancilla + i, nancilla + i + n, control, nancilla + i + n, nancilla + i, control, nancilla + i,
+            nancilla + i + n))
 
     return code_tot
+
 
 def matrix_to_cirq_circuit(A, **kwargs):
     """Converts unitary matrix to Cirq circuit. """
@@ -170,5 +179,5 @@ def matrix_to_cirq_circuit(A, **kwargs):
         elif isinstance(gate, GateSingle):
             cirquit.append(gate_to_cirq(gate.gate2).on(qubits[gate.qubit_id]))
         else:
-            raise RuntimeError('Unknown gate type.')
+            RuntimeError('Unknown gate type.')
     return cirquit
