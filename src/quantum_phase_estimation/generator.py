@@ -4,7 +4,7 @@ from src.quantum_phase_estimation.optimizer import optimize
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user'):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
-
+    unitary_operation += "\n"
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
         for i in range(nancillas+2*qubits, 0, -1):
             if f'q[{i}]' in unitary_operation:
