@@ -47,7 +47,7 @@ def print_result(processed_tuple, desired_accuracy, nancillas):
 	"""Prints the phase shift in radians."""
 	print("Phase shift is {0:0.{accuracy}f}+/-{1:0.{accuracy}f} radians for binary string {2}".format(
 			binary_fraction_to_decimal(processed_tuple, desired_accuracy, nancillas)*2*np.pi,
-			2**-desired_accuracy*np.pi, 
+			2**(-desired_accuracy+1)*np.pi, 
 			processed_tuple[1][processed_tuple[0].argmax()],
 			accuracy=decimal_accuracy(desired_accuracy)
 			)
