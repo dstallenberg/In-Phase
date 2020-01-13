@@ -1,6 +1,6 @@
 import numpy as np
 import cmath
-from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qsharp
+from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qasm
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
@@ -252,6 +252,6 @@ def find_controlled_equivalent(operator, control_bits, qubit):
     }.get(operator, 'Invalid operator')
 
     if result == 'Invalid operator':
-        raise Exception('Operator not supported yet!')
+        raise Exception('Operator not supported yet! Operator: ' + operator)
 
     return result
