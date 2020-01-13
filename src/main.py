@@ -41,11 +41,11 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 print(nancillas)
 
-unitary_operation = np.array([[1, 0, 0, 0],[0, 1, 0, 0],[0, 0, 0, 1],[0, 0, 1, 0]])
-qubits = int(np.log2(unitary_operation.shape[0]))
+unitary_operation = """QASM
+CR q[0], q[1], -1
+"""
+qubits = 2#int(np.log2(unitary_operation.shape[0]))
 	
-# Check if QASM en then replace q[i] with q[i + nancilla] etc
-print(unitary_operation)
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
@@ -54,7 +54,7 @@ final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 backend_type = qi.get_backend_type_by_name('QX single-node simulator')
 
 result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
-print(result)
+
 if nancillas < 5:
 	plot_results(result, nancillas, qubits, p_succes)
 	
