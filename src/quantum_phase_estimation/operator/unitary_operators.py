@@ -5,6 +5,7 @@ from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
 def get_unitary_operators_array(operator, nancillas, qubits):
+    print(operator)
     arg = None
     if isinstance(operator, list):
         arg = operator[1]
@@ -202,18 +203,17 @@ def matrix_to_operator(matrix, arg=None):
         }.get(hash_of_matrix, 'Invalid operator: The given matrix does not require an argument or the matrix is invalid')
     else:
         # No argument is given so we try to find the R gate ourselves
-        # TODO check which R gate
         if matrix.shape == (2, 2):
             # R
             if matrix[0][1] == 0 and matrix[1][0] == 0:
                 # Rz
-                return 'TODO'
+                return 2 * cmath.acos(matrix[0,0].real)
             elif isinstance(matrix[1, 0], complex):
                 # Rx
-                return 'TODO'
+                return 2 * cmath.acos(matrix[0,0])
             else:
                 # Ry
-                return 'TODO'
+                return 2 * cmath.acos(matrix[0,0])
         elif matrix.shape == (4, 4):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:

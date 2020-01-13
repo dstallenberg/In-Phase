@@ -8,7 +8,7 @@ from quantuminspire.api import QuantumInspireAPI
 from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
-from src.quantum_phase_estimation.classical_postprocessing import print_result, find_maximum
+from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -40,19 +40,10 @@ p_succes_min = 0.5
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 unitary_operation = """QASM
-prep_X q[1]
-CR q[0], q[1], -1.
+CR q[0], q[1], -1
 """
 qubits = 2#int(np.log2(unitary_operation.shape[0]))
 	
-# Check if QASM en then replace q[i] with q[i + nancilla] etc
-if 'QASM' in unitary_operation:
-    for i in range(20, 0, -1):
-        #print(i)
-        if f'q[{i}]' in unitary_operation:
-            unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
-
-#print(unitary_operation)
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
@@ -62,6 +53,7 @@ backend_type = qi.get_backend_type_by_name('QX single-node simulator')
 
 result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
 
-plot_results(result, nancillas, qubits, p_succes)
-
-print_result(find_maximum(result), desired_bit_accuracy, nancillas)
+if nancillas < 5:
+	plot_results(result, nancillas, qubits, p_succes)
+	
+print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, nancillas)

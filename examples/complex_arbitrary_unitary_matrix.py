@@ -42,11 +42,10 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 qubits = 2
 
 w = np.exp((2j/3) * np.pi)
-
-unitary_operation = np.array([[1, 1, 1, 0],
-                              [1, w, w * w, 0],
-                              [1, w * w, w, 0],
-                              [0, 0, 0, -1j*np.sqrt(3)]]) / np.sqrt(3)
+unitary_operation = np.array([[1, 0, 0, 0],
+                              [0, 1, 0, 0],
+                              [0, 0, 0, 1],
+                              [0, 0, 1, 0]])
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
