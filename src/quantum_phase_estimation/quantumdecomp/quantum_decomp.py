@@ -140,8 +140,6 @@ def U_to_CU(n, control, nancilla, code):
 
     code_tot += code
 
-    code_tot += '\n'
-
     for i in range(0, n):
         code_tot += ("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" % (
             control, nancilla + i, nancilla + i + n, control, nancilla + i + n, nancilla + i, control, nancilla + i,
