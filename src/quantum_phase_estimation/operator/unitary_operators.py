@@ -41,10 +41,11 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         for j in range(power - 1):
             result_matrix = np.dot(matrix, result_matrix)
 
+        print(result_matrix)
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
-            result_operator = matrix_to_qasm(result_matrix, i, nancillas)
+            result_operator = matrix_to_qasm(result_matrix, i-1, nancillas)
 
         array.append(result_operator)
 
@@ -217,6 +218,7 @@ def matrix_to_operator(matrix, arg=None):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
                 # This checks if the matrix is diagonalized
+                print(matrix)
                 if matrix[0][0] == matrix[1][1] == matrix[2][2] == 1:
                     # This checks whether the first 3 diagonal entries are 1
                     polar_coords = cmath.polar(matrix[3][3])
@@ -224,7 +226,7 @@ def matrix_to_operator(matrix, arg=None):
                         # Check whether r_coord equals 1
                         phi = polar_coords[1]
 
-                        if phi == np.isclose(phi, 0):
+                        if np.isclose(phi, 0):
                             return 'CR ' + str(phi)
 
                         k = cmath.log(-(2 * cmath.pi) / phi, 2).real
