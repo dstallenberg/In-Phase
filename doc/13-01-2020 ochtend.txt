@@ -1,12 +1,17 @@
-1. Lekker weekend gehad?
-
+﻿1. Lekker weekend gehad?
+Nice om geen huiswerk te hebben.
 
 2. Namen bedacht?
+InPhase, KWEPPE (Kwantum Eindproject Phase Estimator).
 
+Wordt InPhase
 
 3. Nog ideeën, vragen of onduidelijkheden?
 - Hoe werkt dit met meer dan één qubit? (hoe interpreteer je dan de output)
-
+Wat betekent het??? Het is de eigenvalue, dus het maakt uit in welke staat je de ding initialiseert.
+Eigenvectoren, puntje uit Menno's mail: "Classical methods dealing with linear transformations always calculate the 
+eigenvalues and eigenvectors simultaneously. With QPE the eigenvector needs to be known beforehand.
+Analyse some algorithms using the QPE and explain how these introduce the eigenvector."
 
 4. Wat gaan we vandaag doen + taakverdeling
 Wat we vrijdag hadden: "Unitary operations: stroomlijnen van de code. Documentation kan beter.
@@ -14,4 +19,17 @@ Controlled dingen toevoegen voor efficienter rekenen en niet elke keer zo een hu
 "Maandag dingen aan elkaar breien? Alles afmaken, daarna een mail sturen. Bugs uithalen. Extensive testen.
 Paar leuke unitarys fixen om te flexen."
 
+-	Qasm code er in gooien. (al gedaan, maar moet nog debugged worden) [Dimitri]
+-	In principe is controlled dingen toevoegen voor efficienter rekenen al gedaan. Veel gates zijn gedaan. 
+	CSWAP en andere gates nog toevoegen voor optimisation. [Dimitri]
+-	Beer en Daniel's ding moet er nog in gemaakt worden en zorgen dat het goed werkt. [Beer en Daniel]
+-	Eigenvectoren Uitzoeken [Mio]
+-	Punt 4 van Menno's mail [Mio]
+-	Documenten [Beer gaat er mee beginnen]
+-	Testen met een 4x4 matrix. []
+-	Het project de naam geven. []
+- 	Wat er uit het huge ding komt of eigen qasm verder optimaliseren mbv identities? (optioneel) []
+-	Menno mailen wanneer de tijd rijp is [Mio]
+
 5. w.v.t.t.k.
+Niks
