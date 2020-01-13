@@ -49,7 +49,8 @@ def estimate_phase(unitary,
 				   p_succes_min = 0.5, 
 				   initial = "# No initialization given",
 				   print_qasm = False,
-				   graph = False):
+				   graph = False,
+				   max_qubits = 26):
 	
 	
 	
@@ -64,6 +65,10 @@ def estimate_phase(unitary,
 	""""Specify the number of qubits in the initial state """
 	
 	qubits = find_qubits_from_unitary(unitary)#int(np.log2(unitary_operation.shape[0]))
+	
+	
+	if 2*qubits + nancillas > max_qubits:
+		raise ValueError(f"Need more qubits than allowed! (need {2*qubits + nancillas}, maximum is {max_qubits})")
 	
 	"""Generate and print QASM code"""
 	
@@ -85,6 +90,7 @@ def estimate_phase(unitary,
 			  nancillas)
 	
 if __name__ == "__main__":
-	estimate_phase("""QASM
+	for i in range(5):
+		estimate_phase("""QASM
 Rz q[0], 1.57075""",
-				desired_bit_accuracy = 3)
+					desired_bit_accuracy = 20)
