@@ -5,6 +5,7 @@ from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
 def get_unitary_operators_array(operator, nancillas, qubits):
+    print(operator)
     arg = None
     if isinstance(operator, list):
         arg = operator[1]
@@ -224,7 +225,6 @@ def matrix_to_operator(matrix, arg=None):
                     if np.isclose(polar_coords[0], 1):
                         # Check whether r_coord equals 1
                         phi = polar_coords[1]
-
                         k = cmath.log(-(2 * cmath.pi) / phi, 2).real
                         if isinstance(k, int) or k.is_integer():
                             return 'CRk ' + str(int(k))

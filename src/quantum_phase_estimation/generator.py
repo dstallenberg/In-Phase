@@ -5,6 +5,8 @@ from src.quantum_phase_estimation.optimizer import optimize
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
+    print(unitary_operation)
+    print(nancillas)
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
         for i in range(20, 0, -1):
             #print(i)
@@ -34,7 +36,7 @@ prep_z q[0:{total - 1}]
     final_qasm += '\n# Apply controlled unitary operations\n'
 
     unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
-
+    print(unitary_operations)
     for i in range(nancillas):
         operation = unitary_operations[i]
         if operation == 'I':
@@ -60,6 +62,7 @@ prep_z q[0:{total - 1}]
         # If the operation is a single or double quantum unitary operation
         controls = [i]
         controls.extend(range(nancillas - 1, total - 1))
+        print(controls)
         final_qasm += find_controlled_equivalent(operation, controls, total - 1)
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
@@ -73,4 +76,5 @@ prep_z q[0:{total - 1}]
     #         final_qasm += f'H q[{i}]\n'
     #     final_qasm += f'Measure_{unitary_operation.lower()} q[{i}]\n'
 
+    print(final_qasm)
     return final_qasm
