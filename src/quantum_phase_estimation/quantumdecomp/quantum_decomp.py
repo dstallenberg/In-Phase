@@ -107,26 +107,34 @@ def matrix_to_qsharp(A, control, nancilla, **kwargs):
     Input: A - 2^N x 2^N unitary matrix.
     Returns: string - Q# code.
     """
-    code = ""
-    n = int(math.log(A.shape[0],2))
-    for i in range(0, n):
-        code+=("prep_z q[%d] \n" % (nancilla+n+i))
 
-    for i in range(0, n):
-        code+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
-        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
-
-    code += '\n'.join(['' + gate.to_qsharp_command(nancilla)
+    code_org = '\n'.join(['' + gate.to_qsharp_command(nancilla)
                       for gate in matrix_to_gates(A, **kwargs)])
 
-    code+='\n'
-    for i in range(0, n):
-        code+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
-        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+    code = U_to_CU(control, nancilla, code_org)
 
     return 'QASM' + '\n' + code
 
+def U_to_CU(control, nancilla, code):
+    code_tot = ""
+    n = int(math.log(A.shape[0],2))
 
+    for i in range(0, n):
+        code_tot+=("prep_z q[%d] \n" % (nancilla+n+i))
+
+    for i in range(0, n):
+        code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
+        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+
+    code_tot += code
+
+    code_tot+='\n'
+
+    for i in range(0, n):
+        code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
+        control, nancilla+i, nancilla+i+n, control, nancilla+i+n, nancilla+i, control, nancilla+i, nancilla+i+n))
+
+    return code_tot
 
 def matrix_to_cirq_circuit(A, **kwargs):
     """Converts unitary matrix to Cirq circuit. """

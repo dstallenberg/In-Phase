@@ -1,0 +1,17 @@
+1. Lekker weekend gehad?
+
+
+2. Namen bedacht?
+
+
+3. Nog ideeën, vragen of onduidelijkheden?
+- Hoe werkt dit met meer dan één qubit? (hoe interpreteer je dan de output)
+
+
+4. Wat gaan we vandaag doen + taakverdeling
+Wat we vrijdag hadden: "Unitary operations: stroomlijnen van de code. Documentation kan beter.
+Controlled dingen toevoegen voor efficienter rekenen en niet elke keer zo een huge ding te maken."
+"Maandag dingen aan elkaar breien? Alles afmaken, daarna een mail sturen. Bugs uithalen. Extensive testen.
+Paar leuke unitarys fixen om te flexen."
+
+5. w.v.t.t.k.
