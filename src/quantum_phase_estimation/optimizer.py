@@ -8,15 +8,14 @@ def optimize(qasm_code, total_qubits):
     while can_optimize(qasm_code, total_qubits):
         for i in range(total_qubits):
             for single in single_operators:
-                qasm_code = qasm_code.replace(f'{single} q[{i}]\nH q[{i}]\n', '')
+                qasm_code = qasm_code.replace(f'{single} q[{i}]\n{single} q[{i}]\n', '')
 
             for j in range(total_qubits):
                 if i == j:
                     continue
 
                 for double in double_operators:
-                    qasm_code = qasm_code.replace(f'{double} q[{i}], q[{j}]\nCNOT q[{i}], q[{j}]\n', '')
-                    qasm_code = qasm_code.replace(f'{double} q[{i}], q[{j}]\nCZ q[{i}], q[{j}]\n')
+                    qasm_code = qasm_code.replace(f'{double} q[{i}], q[{j}]\n{double} q[{i}], q[{j}]\n', '')
 
 
     return qasm_code
@@ -25,14 +24,16 @@ def optimize(qasm_code, total_qubits):
 def can_optimize(qasm_code, total_qubits):
 
     for i in range(total_qubits):
-        if f'H q[{i}]\nH q[{i}]\n' in qasm_code:
-            return True
+        for single in single_operators:
+            if f'{single} q[{i}]\n{single} q[{i}]\n' in qasm_code:
+                return True
 
     for i in range(total_qubits):
         for j in range(total_qubits):
             if i == j:
                 continue
-            if f'CNOT q[{i}], q[{j}]\nCNOT q[{i}], q[{j}]\n' in qasm_code:
-                return True
+            for double in double_operators:
+                if f'{double} q[{i}], q[{j}]\n{double} q[{i}], q[{j}]\n' in qasm_code:
+                    return True
 
     return False
