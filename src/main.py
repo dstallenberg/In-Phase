@@ -39,11 +39,13 @@ p_succes_min = 0.5
 
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
-unitary_operation = """QASM
-prep_X q[1]
-CR q[0], q[1], -1
-"""
-qubits = 2#int(np.log2(unitary_operation.shape[0]))
+w = np.exp((2j/3) * np.pi)
+unitary_operation = np.array([[1,1,1,0],
+     [1,w,w*w,0],
+    [1,w*w,w,0],
+     [0,0,0,-1j*np.sqrt(3)]]) / np.sqrt(3)
+
+qubits = 2  #int(np.log2(unitary_operation.shape[0]))
 	
 # Check if QASM en then replace q[i] with q[i + nancilla] etc
 if 'QASM' in unitary_operation:
@@ -56,7 +58,7 @@ if 'QASM' in unitary_operation:
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
-#print(final_qasm)
+print(final_qasm)
 
 backend_type = qi.get_backend_type_by_name('QX single-node simulator')
 
