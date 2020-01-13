@@ -21,9 +21,9 @@ class GateSingle(Gate):
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
             return '%s(%.15f, q[%d]);' % (
-                self.gate2.name, -self.gate2.arg, self.qubit_id + nancillas)
+                self.gate2.name, -round(self.gate2.arg, 10), self.qubit_id + nancillas)
         elif self.gate2.name == 'R1':
-            return 'R1(%.15f, q[%d]);' % (self.gate2.arg, self.qubit_id + nancillas)
+            return 'R1(%.15f, q[%d]);' % (round(self.gate2.arg, 10), self.qubit_id + nancillas)
         elif self.gate2.name == 'X':
             return 'X q[%d]' % (self.qubit_id + nancillas)
 
@@ -90,11 +90,11 @@ class GateFC(Gate):
             # QSharp uses different sign.
 
             return 'CNOT %s, q[%d] \n%s q[%d], %.15f \nCNOT %s, q[%d] \n%s q[%d], %.15f' % (
-                controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, self.gate2.arg, controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -self.gate2.arg)
+                controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, round(self.gate2.arg, 10), controls, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -round(self.gate2.arg, 10))
 
         elif self.gate2.name == 'R1':
             return 'CR %s, q[%d], %.15f' % (
-                controls, self.qubit_id + nancillas, self.gate2.arg)
+                controls, self.qubit_id + nancillas, round(self.gate2.arg, 10))
         elif self.gate2.name == 'X':
             if self.qubit_count == 2:
                 return 'CNOT q[%d], q[%d]' % (

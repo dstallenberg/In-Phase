@@ -1,6 +1,6 @@
 import numpy as np
 import cmath
-from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qsharp
+from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qasm
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
@@ -33,7 +33,6 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         # It is an operator key
         matrix = operator_to_matrix(operator, arg)
 
-    # print(matrix)
     array = []
     for i in range(1, nancillas + 1):
         power = 2**(nancillas - i)
@@ -41,12 +40,11 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         result_matrix = matrix
         for j in range(power - 1):
             result_matrix = np.dot(matrix, result_matrix)
-            # print(result_matrix)
 
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
-            result_operator = matrix_to_qsharp(result_matrix) #, i, nancillas)
+            result_operator = matrix_to_qasm(result_matrix, i, nancillas)
 
         array.append(result_operator)
 
@@ -252,6 +250,6 @@ def find_controlled_equivalent(operator, control_bits, qubit):
     }.get(operator, 'Invalid operator')
 
     if result == 'Invalid operator':
-        raise Exception('Operator not supported yet!')
+        raise Exception('Operator not supported yet! Operator: ' + operator)
 
     return result

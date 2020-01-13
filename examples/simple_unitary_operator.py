@@ -1,5 +1,4 @@
 import os
-import numpy as np
 
 from getpass import getpass
 from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
@@ -34,29 +33,17 @@ authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 ## Variables
-desired_bit_accuracy = 3
+desired_bit_accuracy = 8
 p_succes_min = 0.5
 
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
-unitary_operation = """QASM
-prep_X q[1]
-CR q[0], q[1], -1.
-"""
-qubits = 2#int(np.log2(unitary_operation.shape[0]))
-	
-# Check if QASM en then replace q[i] with q[i + nancilla] etc
-if 'QASM' in unitary_operation:
-    for i in range(20, 0, -1):
-        #print(i)
-        if f'q[{i}]' in unitary_operation:
-            unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
-
-#print(unitary_operation)
+qubits = 1
+unitary_operation = 'X'
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
-#print(final_qasm)
+print(final_qasm)
 
 backend_type = qi.get_backend_type_by_name('QX single-node simulator')
 
@@ -64,4 +51,4 @@ result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=
 
 plot_results(result, nancillas, qubits, p_succes)
 
-print_result(find_maximum(result), desired_bit_accuracy, nancillas)
+print_result(find_maximum(result), desired_bit_accuracy, qubits)
