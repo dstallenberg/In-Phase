@@ -1,8 +1,16 @@
 from src.quantum_phase_estimation.circuit.fourier_transform import generate_inverse_qft
 from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, find_controlled_equivalent
-
+from src.quantum_phase_estimation.optimizer import optimize
 
 def generate_quantum_inspire_code(nancillas, qubits, unitary_operation):
+    # Check if QASM en then replace q[i] with q[i + nancilla] etc
+
+    if isinstance(unitary_operation, str) and 'QASM' in unitary_operation:
+        for i in range(20, 0, -1):
+            print(i)
+            if f'q[{i}]' in unitary_operation:
+                unitary_operation = unitary_operation.replace(f'q[{i}]', f'q[{i + nancillas}]')
+
     total = nancillas + qubits
 
     final_qasm = f"""version 1.0
@@ -52,12 +60,13 @@ prep_z q[0:{total - 1}]
         # If the operation is a single or double quantum unitary operation
         controls = [i]
         controls.extend(range(nancillas - 1, total - 1))
-        final_qasm += find_controlled_equivalent(operation, controls, total - 1) #f'C{operation} q[{i}], q[{total - 1}]\n'
+        final_qasm += find_controlled_equivalent(operation, controls, total - 1)
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n'
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
+    final_qasm = optimize(final_qasm, nancillas + qubits + qubits)
 
     # for i in range(total - 1):
     #     if i != 0:
