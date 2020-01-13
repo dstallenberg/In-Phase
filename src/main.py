@@ -41,11 +41,8 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 print(nancillas)
 
-unitary_operation = """QASM
-prep_X q[1]
-CR q[0], q[1], -1
-"""
-qubits = 2#int(np.log2(unitary_operation.shape[0]))
+unitary_operation = np.array([[1, 0, 0, 0],[0, 1, 0, 0],[0, 0, 0, 1],[0, 0, 1, 0]])
+qubits = int(np.log2(unitary_operation.shape[0]))
 	
 # Check if QASM en then replace q[i] with q[i + nancilla] etc
 print(unitary_operation)
