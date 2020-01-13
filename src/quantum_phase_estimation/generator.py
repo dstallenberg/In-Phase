@@ -19,7 +19,6 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
                 custom_prepare = custom_prepare.replace(f'q[{i}]', f'q[{i + nancillas}]')
 
     total = nancillas + qubits
-
     final_qasm = f"""version 1.0
 
 qubits {total + qubits}
