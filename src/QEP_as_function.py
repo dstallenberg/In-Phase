@@ -85,12 +85,13 @@ def estimate_phase(unitary,
 	if graph:
 	    plot_results(result, nancillas, qubits, p_succes)
 	
-	return print_result(remove_degeneracy(result, nancillas), 
-			  desired_bit_accuracy, 
+	fraction, error = print_result(remove_degeneracy(result, nancillas), 
+			  desired_bit_accuracy,
 			  nancillas)
+	return fraction, error, p_succes
 	
 if __name__ == "__main__":
-	for i in range(5):
-		estimate_phase("""QASM
+	for i in range(1):
+		print(estimate_phase("""QASM
 Rz q[0], 1.57075""",
-					desired_bit_accuracy = 20)
+					desired_bit_accuracy = 10))
