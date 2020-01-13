@@ -68,6 +68,7 @@ def estimate_phase(unitary,
 	"""Generate and print QASM code"""
 	
 	final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial)
+	
 	if print_qasm:
 		print(final_qasm)
 	
@@ -84,4 +85,5 @@ def estimate_phase(unitary,
 			  nancillas)
 	
 if __name__ == "__main__":
-	estimate_phase("""QASM\nH q[4]""")
+	estimate_phase("""QASM\nRz q[0], 1.57075""",
+				desired_bit_accuracy = 3)
