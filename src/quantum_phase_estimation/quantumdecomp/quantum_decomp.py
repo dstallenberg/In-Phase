@@ -117,7 +117,12 @@ def matrix_to_qsharp(A, control, nancilla, **kwargs):
     return 'QASM' + '\n' + code
 
 def U_to_CU(n, control, nancilla, code):
+    """Given a arbitrary unitary function U, it returns a controllable version of
+    the function (C-U). It does this using two controllable swap gates, one before U and one after U.
+    """
+
     code_tot = "{"
+
 
     for i in range(0, n):
         code_tot+=("prep_z q[%d]" % (nancilla+n+i))
