@@ -12,6 +12,20 @@ def get_unitary_operators_array(operator, nancillas):
     if isinstance(operator, (np.ndarray, np.generic)):
         # It is a matrix
         matrix = operator
+    elif 'QASM' in operator:
+        array = []
+
+        for i in range(1, nancillas + 1):
+            power = 2 ** (nancillas - i)
+
+            operation = '\n'.join(operator.split('\n')[1:])
+            result_operation = 'QASM\n' + operation
+            for j in range(power - 1):
+                result_operation += operation
+
+            array.append(result_operation)
+
+        return array
     else:
         # It is an operator key
         matrix = operator_to_matrix(operator, arg)
