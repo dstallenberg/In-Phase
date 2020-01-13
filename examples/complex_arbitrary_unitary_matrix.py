@@ -8,7 +8,7 @@ from quantuminspire.api import QuantumInspireAPI
 from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
-from src.quantum_phase_estimation.classical_postprocessing import print_result
+from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -57,4 +57,4 @@ result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=
 
 plot_results(result, nancillas, qubits, p_succes)
 
-print_result(find_maximum(result), desired_bit_accuracy, qubits)
+print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, qubits)
