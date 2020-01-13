@@ -42,7 +42,6 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 qubits = 2
 
 w = np.exp((2j/3) * np.pi)
-
 unitary_operation = np.array([[1, 1, 1, 0],
                               [1, w, w * w, 0],
                               [1, w * w, w, 0],

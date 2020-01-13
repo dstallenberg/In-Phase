@@ -207,13 +207,13 @@ def matrix_to_operator(matrix, arg=None):
             # R
             if matrix[0][1] == 0 and matrix[1][0] == 0:
                 # Rz
-                return 'TODO'
+                return 2*math.acos(matrix[0,0].real)
             elif isinstance(matrix[1, 0], complex):
                 # Rx
-                return 'TODO'
+                return 2*math.acos(matrix[0,0])
             else:
                 # Ry
-                return 'TODO'
+                return 2*math.acos(matrix[0,0])
         elif matrix.shape == (4, 4):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
