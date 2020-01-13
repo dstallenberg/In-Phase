@@ -27,7 +27,6 @@ def optimize(qasm_code, total_qubits):
 
 
 def can_optimize(qasm_code, total_qubits):
-
     for i in range(total_qubits):
         for single in single_operators:
             if f'{single} q[{i}]\n{single} q[{i}]\n' in qasm_code:
@@ -38,6 +37,10 @@ def can_optimize(qasm_code, total_qubits):
 
             for k in range(total_qubits):
                 # SWAP gate
+                if k == 0 and j == 10 and i == 11:
+                    print(k, j, i)
+                    print(f'Toffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\n')
+                    print(qasm_code)
                 if f'Toffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{j}], q[{i}]\nToffoli q[{k}], q[{i}], q[{j}]\nToffoli q[{k}], q[{j}], q[{i}]\n' in qasm_code:
                     return True
 

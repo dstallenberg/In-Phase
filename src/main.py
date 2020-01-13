@@ -41,16 +41,21 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 """"Specify the number of qubits in the initial state """
 
-qubits = 2#int(np.log2(unitary_operation.shape[0]))
+qubits = 1#int(np.log2(unitary_operation.shape[0]))
 
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 
-unitary_operation = "QASM CZ q[0] q[1]"
+unitary_operation = f'''QASM
+Rz q[0], 1'''
+
+initial = """prep_z q[0]
+x q[0]
+"""
 
 """Generate and print QASM code"""
 
-final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
+final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation, initial)
 print(final_qasm)
 
 """"Calculate results using QuantumInspire"""
