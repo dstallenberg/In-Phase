@@ -44,7 +44,7 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
-            result_operator = matrix_to_qasm(result_matrix, i, nancillas)
+            result_operator = matrix_to_qasm(result_matrix, i-1, nancillas)
 
         array.append(result_operator)
 

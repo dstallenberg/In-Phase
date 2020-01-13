@@ -47,6 +47,7 @@ unitary_operation = np.array([[1,1,1,0],
     [1,w*w,w,0],
      [0,0,0,-1j*np.sqrt(3)]]) / np.sqrt(3)
 
+print(nancillas)
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
 print(final_qasm)
