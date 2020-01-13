@@ -1,6 +1,6 @@
 import numpy as np
 import cmath
-from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qsharp
+from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qasm
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
 
 
@@ -46,7 +46,7 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
-            result_operator = matrix_to_qsharp(result_matrix, i, nancillas)
+            result_operator = matrix_to_qasm(result_matrix, i, nancillas)
 
         print(result_operator)
         array.append(result_operator)
