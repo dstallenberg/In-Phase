@@ -117,10 +117,14 @@ def matrix_to_qsharp(A, control, nancilla, **kwargs):
     return 'QASM' + '\n' + code
 
 def U_to_CU(n, control, nancilla, code):
-    code_tot = ""
+    code_tot = "{"
 
     for i in range(0, n):
-        code_tot+=("prep_z q[%d] \n" % (nancilla+n+i))
+        code_tot+=("prep_z q[%d]" % (nancilla+n+i))
+        if i < n-1:
+            code_tot += "|"
+
+    code_tot += "} \n"
 
     for i in range(0, n):
         code_tot+=("Toffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \nToffoli q[%d], q[%d], q[%d] \n" %(
@@ -169,6 +173,5 @@ def matrix_to_cirq_circuit(A, **kwargs):
             cirquit.append(cgate.on(*arg_gates))
         elif isinstance(gate, GateSingle):
             cirquit.append(gate_to_cirq(gate.gate2).on(qubits[gate.qubit_id]))
-        else:
-            raise RuntimeError('Unknown gate type.')
+        else: RuntimeError('Unknown gate type.')
     return cirquit
