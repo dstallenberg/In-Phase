@@ -50,7 +50,8 @@ def estimate_phase(unitary,
 				   initial = "# No initialization given",
 				   print_qasm = False,
 				   graph = False,
-				   max_qubits = 26):
+				   max_qubits = 26,
+				   shots = 512):
 	
 	
 	
@@ -79,7 +80,7 @@ def estimate_phase(unitary,
 	
 	""""Calculate results using QuantumInspire"""
 	backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-	result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
+	result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=shots)
 	
 	"""Generate graphs using the acquired data"""
 	if graph:
