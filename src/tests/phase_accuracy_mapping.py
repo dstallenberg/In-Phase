@@ -44,7 +44,7 @@ def plot_results(points, results, show=0):
 
 if __name__ == "__main__":
 	# Create points to map
-	points = np.linspace(0, 2 * np.pi, 5)
+	points = np.linspace(0, 2 * np.pi, 100)
 
 	results = map_phase(points, 5, 0.5, estimations_per_point=1)
 
