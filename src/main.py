@@ -50,12 +50,6 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 unitary_operation = 'QASM H q[0]'
 print(unitary_operation)
 
-
-if type(unitary_operation) != str:
-    qubits = int(np.log2(unitary_operation.shape[0]))
-else:
-    qubits =
-
 qubits = find_qubits_from_unitary(unitary_operation)
 
 
