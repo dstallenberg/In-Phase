@@ -1,0 +1,27 @@
+﻿1. Bericht van Menno
+Zoek het uit, zie je woensdag
+
+2. Wat hebben we gedaan vandaag?
+Bugs gvonden en gefixt. Blijkbaar deed 'ie het niet eens? We zijn er nog niet klaar mee.
+Problemen:
+-	4x4 rotation matrices
+-	Geen negatieve waardes
+-	
+
+Wat werkt wel?
+-	We hebben 4 examples
+-	We vinden eigenwaarden, maar vgm niet de juiste
+
+Te testen:
+-	Hogere orde matrices
+
+PSA: Als je een test doet, doe het dan in test.
+
+3. Wat gaan we morgen doen?
+(bijna) Niks
+
+4. Wat gaan woensdag doen?
+Door met de problemen in (2). Voorbeelden zoeken. Om 10:00
+
+5. Wat gaan we aan Menno vertellen/vragen?
+Menno ons product laten zien, wat zijn coole ideeën? Of een nieuwe tak in gaan?
