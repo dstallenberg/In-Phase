@@ -251,12 +251,6 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
     else:
         sep = [operator, '']
 
-    print(operator)
-    print(control_bits)
-    print(qubit)
-    print(nancillas)
-    print(qubits)
-
     result = {
         'X': f'''CNOT {controls_string}, q[{qubit}]\n''',
         'Y': f'''Sdag q[{qubit}]\nCNOT {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
