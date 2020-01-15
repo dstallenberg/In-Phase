@@ -17,8 +17,6 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
             custom_prepare = custom_prepare.replace(f'q[{i}]', f'q[{i + nancillas}]')
 
     total = nancillas + qubits
-    print(qubits)
-    print(total)
     final_qasm = f"""version 1.0
 
 qubits {total + qubits}
@@ -43,7 +41,6 @@ prep_z q[0:{total - 1}]
     final_qasm += '\n# Apply controlled unitary operations\n.controlled_unitary_operations\n'
 
     unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
-
     for i in range(nancillas):
         operation = unitary_operations[i]
         if operation == 'I':

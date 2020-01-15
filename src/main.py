@@ -47,7 +47,7 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
  or with a matrix respresentation of U."""
 
 
-unitary_operation = 'QASM H q[0]'
+unitary_operation = 'QASM\nH q[0]\n'
 print(unitary_operation)
 
 qubits = find_qubits_from_unitary(unitary_operation)
