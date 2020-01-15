@@ -39,7 +39,7 @@ p_succes_min = 0.5
 nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
 qubits = 1
-unitary_operation = 'QASM\nH q[0]\nCNOT q[0], q[1]\nH q[0]\n'
+unitary_operation = 'QASM\nRz q[0], 3.1415\n'
 
 final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
 
