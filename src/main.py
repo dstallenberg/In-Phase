@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+import cmath
 from getpass import getpass
 from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
 from quantuminspire.api import QuantumInspireAPI
@@ -45,8 +45,7 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 
-unitary_operation = np.array([[1,0],[0, 1]])
-print(unitary_operation)
+unitary_operation = np.array([[1,1],[1,-1]]/np.sqrt(2))
 qubits = int(np.log2(unitary_operation.shape[0]))
 
 initial = """prep_z q[0]
