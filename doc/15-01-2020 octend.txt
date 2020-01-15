@@ -1,0 +1,12 @@
+1.  Goedemorgen!
+
+
+2.  Vreemd gedrag laten zien in phase accuracy mapping
+
+
+3. Hoe lang duurt het om onze code uit te voeren? Zit de tijd in QI of in onze python?
+
+
+4.  Wat gaan we doen voor we Menno zien?
+- p_succes testen
+- interessante matrices?

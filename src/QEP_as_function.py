@@ -26,7 +26,7 @@ def find_qubits_from_unitary(unitary):
 	if type(unitary) == np.ndarray:
 		return int(np.log2(unitary.shape[0]))
 	else:
-		result = [e for e in re.split("[^0-9]", unitary) if e != '']
+		result = [e for e in re.split("[^0-9.]", unitary) if e != '' and not '.' in e]
 		return max(map(int, result)) + 1
 		
 def get_authentication():
@@ -49,7 +49,9 @@ def estimate_phase(unitary,
 				   p_succes_min = 0.5, 
 				   initial = "# No initialization given",
 				   print_qasm = False,
-				   graph = False):
+				   graph = False,
+				   max_qubits = 26,
+				   shots = 512):
 	
 	
 	
@@ -65,23 +67,32 @@ def estimate_phase(unitary,
 	
 	qubits = find_qubits_from_unitary(unitary)#int(np.log2(unitary_operation.shape[0]))
 	
+	
+	if 2*qubits + nancillas > max_qubits:
+		raise ValueError(f"Need more qubits than allowed! (need {2*qubits + nancillas}, maximum is {max_qubits})")
+	
 	"""Generate and print QASM code"""
 	
 	final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial)
+	
 	if print_qasm:
 		print(final_qasm)
 	
 	""""Calculate results using QuantumInspire"""
 	backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-	result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
+	result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=shots)
 	
 	"""Generate graphs using the acquired data"""
 	if graph:
 	    plot_results(result, nancillas, qubits, p_succes)
 	
-	return print_result(remove_degeneracy(result, nancillas), 
-			  desired_bit_accuracy, 
+	fraction, error = print_result(remove_degeneracy(result, nancillas), 
+			  desired_bit_accuracy,
 			  nancillas)
+	return fraction, error, p_succes
 	
 if __name__ == "__main__":
-	estimate_phase("""QASM\nH q[4]""")
+	for i in range(1):
+		print(estimate_phase("""QASM
+Rz q[0], 1.57075""",
+					desired_bit_accuracy = 10))
