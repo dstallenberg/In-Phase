@@ -44,14 +44,12 @@ def get_unitary_operators_array(operator, nancillas, qubits):
 
         result_matrix = result_matrix.round(decimals=5)
 
-        print(result_matrix)
         result_operator = matrix_to_operator(result_matrix)
 
         if 'Invalid' in result_operator:
             result_operator = matrix_to_qasm(result_matrix, i-1, nancillas)
 
         array.append(result_operator)
-
     return array
 
 
@@ -224,7 +222,6 @@ def matrix_to_operator(matrix, arg=None):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:
                 # This checks if the matrix is diagonalized
-                print(matrix)
                 if matrix[0][0] == matrix[1][1] == matrix[2][2] == 1:
                     # This checks whether the first 3 diagonal entries are 1
                     polar_coords = cmath.polar(matrix[3][3])
@@ -249,6 +246,17 @@ def matrix_to_operator(matrix, arg=None):
 
 def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits):
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
+    if ' ' in operator:
+        sep = operator.split(' ')
+    else:
+        sep = [operator, '']
+
+    print(operator)
+    print(control_bits)
+    print(qubit)
+    print(nancillas)
+    print(qubits)
+
     result = {
         'X': f'''CNOT {controls_string}, q[{qubit}]\n''',
         'Y': f'''Sdag q[{qubit}]\nCNOT {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
@@ -257,8 +265,9 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
         'CY': f'''Sdag q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
         'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
-    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, operator + f' q[{qubit}]'))
+    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}], ' + sep[1] + f'\n'))
 
+    print(result)
     if result == 'Invalid operator':
         raise Exception('Operator not supported yet! Operator: ' + operator)
 
