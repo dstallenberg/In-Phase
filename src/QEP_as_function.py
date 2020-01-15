@@ -27,7 +27,10 @@ def find_qubits_from_unitary(unitary):
 		return int(np.log2(unitary.shape[0]))
 	else:
 		result = [e for e in re.split("[^0-9.]", unitary) if e != '' and not '.' in e]
-		return max(map(int, result)) + 1
+		if len(result) == 0:
+			return 1
+		else:
+			return max(map(int, result)) + 1
 		
 def get_authentication():
 	""" Gets the authentication for connecting to the Quantum Inspire API."""
@@ -89,7 +92,7 @@ def estimate_phase(unitary,
 	fraction, error = print_result(remove_degeneracy(result, nancillas), 
 			  desired_bit_accuracy,
 			  nancillas)
-	return fraction, error, p_succes
+	return fraction, error, 1-(1-p_succes)**shots
 	
 if __name__ == "__main__":
 	for i in range(1):
