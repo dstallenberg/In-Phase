@@ -1,6 +1,6 @@
 import os
 import numpy as np
-
+import cmath
 from getpass import getpass
 from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
 from quantuminspire.api import QuantumInspireAPI
@@ -9,6 +9,7 @@ from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
 from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
+from src.QEP_as_function import find_qubits_from_unitary
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -45,9 +46,9 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 
-unitary_operation = np.array([[1,0],[0, 1]])
+unitary_operation = 'QASM\nH q[0]\n'
 
-qubits = int(np.log2(unitary_operation.shape[0]))
+qubits = find_qubits_from_unitary(unitary_operation)
 
 initial = """prep_z q[0]
 x q[0]

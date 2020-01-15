@@ -1,40 +1,25 @@
 from src.QEP_as_function import estimate_phase
 import numpy as np
 import matplotlib.pyplot as plt
-from src.runner import async_calls
 
 
 def map_phase(points, desired_bit_accuracy=3, p_succes=0.5, estimations_per_point=1):
+	result = []
 	print("Phase	Iteration	Result")
-
-	# Create arguments
-	arguments = []
 	for i in points:
 		for j in range(estimations_per_point):
 			print(f"{(i/(2*np.pi)):0.{int(-np.floor(np.log10(2**-desired_bit_accuracy)))}f}	{j+1}			", end='')
 			unitary = f"QASM\n" \
 					  f"Rz q[0], {-i}"
-
-			arguments.append([unitary, desired_bit_accuracy, p_succes, "# No initialization given", False, False, 26, 1])
-
-
-	print('\n', arguments)
-	result = async_calls(estimate_phase, arguments)
-	print(result)
-	# for i in points:
-	# 	for j in range(estimations_per_point):
-	# 		print(f"{(i/(2*np.pi)):0.{int(-np.floor(np.log10(2**-desired_bit_accuracy)))}f}	{j+1}			", end='')
-	# 		unitary = f"QASM\n" \
-	# 				  f"Rz q[0], {-i}"
-	# 		try:
-	# 			result.append(
-	# 				estimate_phase(unitary=unitary,
-	# 							   desired_bit_accuracy=desired_bit_accuracy,
-	# 							   p_succes_min=p_succes,
-	# 							   shots=1)
-	# 			)
-	# 		except:
-	# 			result.append(np.array([np.nan, np.nan, np.nan]))
+			try:
+				result.append(
+					estimate_phase(unitary=unitary,
+								   desired_bit_accuracy=desired_bit_accuracy,
+								   p_succes_min=p_succes,
+								   shots=1)
+				)
+			except:
+				result.append(np.array([np.nan, np.nan, np.nan]))
 
 	return np.array(result)
 
@@ -59,17 +44,13 @@ def plot_results(points, results, show=0):
 
 if __name__ == "__main__":
 	# Create points to map
-	desired_bit_accuracy = 5
-	p = 1/(2**-desired_bit_accuracy)
-	print(p)
+	p=50
+	t=3
 	points = np.linspace(0, 2 * np.pi, p)
 
-	results = map_phase(points, desired_bit_accuracy, 0.5, estimations_per_point=3)
-
 	# Some large results you probably want to save
-	if True:
-		times = int(results.shape[0] / points.size)
-		np.save(f"../../generated/tests/phase_mapping/results_{points.size}_points_{times}_times.npy", results)
+	results = np.load(f"../../generated/tests/phase_mapping/results_{p}_points_{t}_times.npy")
+	print(results)
 
 	# Plot the data
-	plot_results(points, results, show=True)
+	plot_results(points, results[0], show=True)

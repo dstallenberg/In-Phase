@@ -19,7 +19,6 @@ def get_unitary_operators_array(operator, nancillas, qubits):
 
         for i in range(1, nancillas + 1):
             power = 2 ** (nancillas - i)
-
             operation = '\n'.join(operator.split('\n')[1:])
             result_operation = operation
             for j in range(power - 1):
@@ -248,6 +247,9 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
     if ' ' in operator:
         sep = operator.split(' ')
+        sep.append(',')
+    else:
+        sep = [operator, '', '']
 
     result = {
         'X': f'''CNOT {controls_string}, q[{qubit}]\n''',
@@ -257,9 +259,8 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
         'CY': f'''Sdag q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
         'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
-    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}], ' + sep[1] + f'\n'))
+    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}]' + sep[2] + sep[1] + f'\n'))
 
-    print(result)
     if result == 'Invalid operator':
         raise Exception('Operator not supported yet! Operator: ' + operator)
 
