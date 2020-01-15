@@ -53,8 +53,6 @@ def estimate_phase(unitary,
 				   max_qubits = 26,
 				   shots = 512):
 	
-	
-	
 	authentication = get_authentication()
 	qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 	

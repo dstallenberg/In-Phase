@@ -46,7 +46,7 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
  or with a matrix respresentation of U."""
 
 unitary_operation = np.array([[1,0],[0, 1]])
-print(unitary_operation)
+
 qubits = int(np.log2(unitary_operation.shape[0]))
 
 initial = """prep_z q[0]
