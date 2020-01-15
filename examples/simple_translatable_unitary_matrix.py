@@ -5,10 +5,7 @@ from getpass import getpass
 from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
 from quantuminspire.api import QuantumInspireAPI
 
-from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
-from src.quantum_phase_estimation.error_estimation import error_estimate
-from src.quantum_phase_estimation.plot_results import plot_results
-from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
+from src.QEP_as_function import estimate_phase
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -33,23 +30,16 @@ def get_authentication():
 authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
-## Variables
-desired_bit_accuracy = 8
-p_succes_min = 0.5
+unitary = np.array([[0, 1], [1, 0]])
 
-nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
+fraction, error, correct_chance = estimate_phase(unitary,
+                   desired_bit_accuracy=5,
+                   p_succes_min=0.8,
+                   print_qasm=False,
+                   graph=False,
+                   max_qubits=26,
+                   shots=512)
 
-qubits = 1
-unitary_operation = np.array([[0, 1], [1, 0]])
-
-final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary_operation)
-
-print(final_qasm)
-
-backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-
-result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=512)
-
-plot_results(result, nancillas, qubits, p_succes)
-
-print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, qubits)
+print('Fraction: ', fraction)
+print('Error: ', error)
+print('Correct chance: ', correct_chance)

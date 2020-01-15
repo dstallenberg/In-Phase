@@ -1,0 +1,25 @@
+language: python
+matrix:
+  include:
+  - python: 3.6
+  - python: 3.7
+    sudo: true
+    dist: xenial
+install:
+- pip install --upgrade mypy
+- pip install --upgrade . coveralls
+env:
+- API_URL=https://staging.quantum-inspire.com
+script:
+- echo "running unit tests"
+- coverage run --source="./src/quantum_phase_estimation" -m unittest discover -s src/tests -t
+  src -v
+- echo "running mypy"
+- MYPYPATH=./src mypy --strict --ignore-missing-imports -p quantuminspire
+- echo "running examples"
+- python ./examples/complex_arbitrary_unitary_matrix.py
+- python ./examples/complex_qasm_code.py
+- python ./examples/simple_translatable_unitary_matrix.py
+- python ./examples/simple_unitary_operator.py
+after_success:
+- coveralls

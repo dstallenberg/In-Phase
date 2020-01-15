@@ -15,7 +15,7 @@ def is_unitary(A):
     if (A.shape != (n, n)):
         raise ValueError("Matrix is not square.")
     A = np.array(A)
-    return np.allclose(np.eye(n), A @ A.conj().T)
+    return np.allclose(np.eye(n), A @ A.conj().T, atol=1e-05)
 
 
 def is_real(x):
