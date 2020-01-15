@@ -248,11 +248,14 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
     if ' ' in operator:
         sep = operator.split(' ')
-        sep.append(", ")
     else:
-        sep = [operator, '', '']
+        sep = [operator, '']
 
-    print(sep)
+    print(operator)
+    print(control_bits)
+    print(qubit)
+    print(nancillas)
+    print(qubits)
 
     result = {
         'X': f'''CNOT {controls_string}, q[{qubit}]\n''',

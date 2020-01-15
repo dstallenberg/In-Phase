@@ -1,12 +1,14 @@
 1.  Goedemorgen!
-
+Tof we zijn allemaal te laat, Daniel was een kwartier eerder!
 
 2.  Vreemd gedrag laten zien in phase accuracy mapping
-
+Dat gaaan we uitzoeken. In het Histogram kijken. Zelfde waardes voor pi en 2 pi.
 
 3. Hoe lang duurt het om onze code uit te voeren? Zit de tijd in QI of in onze python?
-
+Kijken of we n requests tegelijk kunnen doen. Als ze het toelaten moeten we het gewoon doen.
+Flooden met requests gaat Dimitri doen!
 
 4.  Wat gaan we doen voor we Menno zien?
-- p_succes testen
-- interessante matrices?
+-	p_succes testen
+-	interessante matrices?
+-	Aan menno laten zien waar het niet goed gaat
