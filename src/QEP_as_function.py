@@ -47,14 +47,14 @@ def get_authentication():
 			email, password = QI_EMAIL, QI_PASSWORD
 		return get_basic_authentication(email, password)
 	
-def estimate_phase(unitary, 
-				   desired_bit_accuracy = 3, 
-				   p_succes_min = 0.5, 
-				   initial = "# No initialization given",
-				   print_qasm = False,
-				   graph = False,
-				   max_qubits = 26,
-				   shots = 512):
+def estimate_phase(unitary,
+					desired_bit_accuracy=3,
+					p_succes_min=0.5,
+					initial="# No initialization given",
+					print_qasm=False,
+					graph=False,
+					max_qubits=26,
+					shots=512):
 	
 	authentication = get_authentication()
 	qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
