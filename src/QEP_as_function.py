@@ -120,7 +120,6 @@ def generate_qasm(unitary,
 
     return final_qasm, qubits, nancillas, p_succes
 
-
 if __name__ == "__main__":
     for i in range(1):
         print(estimate_phase("""QASM
