@@ -44,17 +44,13 @@ def plot_results(points, results, show=0):
 
 if __name__ == "__main__":
 	# Create points to map
-	desired_bit_accuracy = 5
-	p = 1/(2**-desired_bit_accuracy)
-	print(p)
+	p=50
+	t=3
 	points = np.linspace(0, 2 * np.pi, p)
 
-	results = map_phase(points, desired_bit_accuracy, 0.5, estimations_per_point=3)
-
 	# Some large results you probably want to save
-	if True:
-		times = int(results.shape[0] / points.size)
-		np.save(f"../../generated/tests/phase_mapping/results_{points.size}_points_{times}_times.npy", results)
+	results = np.load(f"../../generated/tests/phase_mapping/results_{p}_points_{t}_times.npy")
+	print(results)
 
 	# Plot the data
-	plot_results(points, results, show=True)
+	plot_results(points, results[0], show=True)
