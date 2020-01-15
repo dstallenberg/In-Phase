@@ -10,7 +10,7 @@ from concurrent.futures import as_completed, ProcessPoolExecutor
 def async_calls(function, arguments):
     workers = 20
     result_vector = []
-    print(arguments)
+    #print(arguments)
     with ProcessPoolExecutor(max_workers=workers) as executor:
         futures = []
 
