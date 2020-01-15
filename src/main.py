@@ -46,7 +46,7 @@ nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 """"The unitary operator U is specified below. This can be done with QASM code describing the unitary's circuit, 
  or with a matrix respresentation of U."""
 
-unitary_operation = 'QASM H q[0]'
+unitary_operation = 1/np.sqrt(2)*np.array([[1,1],[1,-1]])
 print(unitary_operation)
 qubits = find_qubits_from_unitary(unitary_operation)
 
