@@ -123,5 +123,5 @@ def generate_qasm(unitary,
 if __name__ == "__main__":
     for i in range(1):
         print(estimate_phase("""QASM
-Rz q[0], -1.57075""",
-                             desired_bit_accuracy=10))
+Rz q[0], -3.141592""",
+                             desired_bit_accuracy=10, graph=True, shots=1))
