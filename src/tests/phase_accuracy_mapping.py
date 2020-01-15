@@ -41,6 +41,27 @@ def plot_results(points, results, show=0):
 	if show:
 		plt.show()
 
+def plot_results_on_unit_cricle(points, results, show=0, size=7):
+	# Plot with error
+	fig = plt.figure(figsize=(size,size))
+	ax = fig.gca()
+	ax.errorbar(np.real(np.exp(results[::, 0] * 2 * np.pi*1j)),
+				np.imag(np.exp(results[::, 0] * 2 * np.pi*1j)),
+				label="QPE",
+				fmt='.')
+	ax.plot(np.real(np.exp(points*1j)), np.imag(np.exp(points*1j)), '.-', label="Actual phase")
+
+	# Formatting
+	ax.set_xlabel("Input phase [rad]")
+	ax.set_ylabel("Output phase [rad]")
+	ax.set_title("Phase mapping with $p_{succes}=%s$"%results[0, 2])
+	plt.legend()
+
+	# Saving and displaying
+	plt.savefig(f"../../img/phase_map_{points.size}_points_on_circle.png")
+	if show:
+		plt.show()
+
 
 if __name__ == "__main__":
 	# Create points to map
