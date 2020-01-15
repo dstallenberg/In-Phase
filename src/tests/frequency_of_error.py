@@ -27,6 +27,10 @@ def frequency_of_error(sample_size, phase, desired_bit_accuracy=3, p_succes=0.5)
 def calc_freq(results, phase, show=0):
     # Plot with error
     print("{0}+/-{1} within {2}".format(results[::, 0], phase/(2*np.pi), results[0, 1]))
+
+    plt.hist(results[::,0])
+    plt.show()
+
     return np.sum(np.isclose(results[::, 0], phase/(2*np.pi), atol=results[0, 1]))/results[::, 0].size
 
 
