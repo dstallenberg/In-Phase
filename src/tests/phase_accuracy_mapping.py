@@ -15,7 +15,7 @@ def map_phase(points, desired_bit_accuracy=3, p_succes=0.5, estimations_per_poin
 			unitary = f"QASM\n" \
 					  f"Rz q[0], {-i}"
 
-			arguments.append([unitary, desired_bit_accuracy, p_succes, "# No initialization given", True, False, 26, 1])
+			arguments.append([unitary, desired_bit_accuracy, p_succes, "# No initialization given", False, False, 26, 1])
 
 
 	#print('\n', arguments)
@@ -80,7 +80,7 @@ def plot_results_on_unit_cricle(points, results, show=0, size=7):
 
 if __name__ == "__main__":
 	# Create points to map
-	desired_bit_accuracy = 5
+	desired_bit_accuracy = 4
 	p = 1/(2**-desired_bit_accuracy)
 	print(p)
 	points = np.linspace(0, 2 * np.pi, p)
