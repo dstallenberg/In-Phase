@@ -129,20 +129,22 @@ def plot_heatmap(result, bits):
 
 def get_results(qasm, none=None):
 	"""Calculate results using QuantumInspire"""
-	global counter
 	# Get authentication
-	authentication = get_authentication()
-	qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
-	backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-	result = qi.execute_qasm(qasm, backend_type=backend_type)
-	print("One done")
-	return result['histogram']
+	try:
+		authentication = get_authentication()
+		qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+		backend_type = qi.get_backend_type_by_name('QX single-node simulator')
+		result = qi.execute_qasm(qasm, backend_type=backend_type)
+		print("One done")
+		return result['histogram']
+	except:
+		return get_results(qasm)
 
 if __name__ == "__main__":
-	bit=4
+	bit=12
 	p=0.5
-	if 0:
-		result = make_heatmap(bit)
-	else:
+	try:
 		result = np.load(f"heatmap_{bit}.npy", allow_pickle = True)
+	except:
+		result = make_heatmap_multi(bit)
 	plot_heatmap(result, bits=bit)
