@@ -15,21 +15,34 @@ def introduce_error(qasm_code, mu, sigma):
     for single_line in lines:
         for j in no_arg_gates:
             if j in single_line:
-                target_qubit = single_line[single_line.rfind("[") + 1]
                 final_qasm += single_line + "\n"
-                final_qasm += "%s q[%s], %f\n" % (random.choice(rotation), target_qubit, np.random.normal(mu, sigma))
+                if "|" in single_line:
+                    start = 0
+                    for x in range(single_line.count("|")+1):
+                        if x < single_line.count("|"):
+                            end = single_line.find("|", start)
+                            begin_target = single_line.rfind("[", start, end)
+                            end_target = single_line.rfind("]", start, end)
+                            target_qubit = single_line[begin_target+1:end_target]
+                            start = single_line.find("|", start)
+                        else:
+                            target_qubit = single_line[single_line.rfind("[", start)+1:single_line.rfind("]", start)]
+                        final_qasm += "%s q[%s], %f\n" % (
+                        random.choice(rotation), target_qubit, np.random.normal(mu, sigma))
+                else:
+                    target_qubit = single_line[single_line.rfind("[") + 1:single_line.rfind("]")]
+                    final_qasm += "%s q[%s], %f\n" % (random.choice(rotation), target_qubit, np.random.normal(mu, sigma))
                 break
             else:
                 if j == "CZ":
                     for j in arg_gates:
                         if j in single_line:
-                            val = single_line[single_line.rfind(",") + 2:]
+                            val = single_line[single_line.rfind(",") + 1:]
                             final_qasm += single_line.replace(val, str(float(val) + np.random.normal(mu, sigma))) + "\n"
                             break
                         else:
                             if j == "CR":
                                 final_qasm += single_line + "\n"
-
     return final_qasm
 
 def find_all(a_str, sub):

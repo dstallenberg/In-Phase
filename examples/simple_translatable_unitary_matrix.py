@@ -33,18 +33,20 @@ qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
 
 # Offset and standard deviation for phase errors enduced by gates
-mu = 0
-sigma = 0
+mu = 0.25
+sigma = 0.5
+error_toggle = 1
 
 fraction, error, correct_chance = estimate_phase(unitary,
-                   mu,
-                   sigma,
                    desired_bit_accuracy=5,
                    p_succes_min=0.8,
                    print_qasm=False,
                    graph=False,
                    max_qubits=26,
-                   shots=512)
+                   shots=512,
+                   mu=0.25,
+                   sigma=0.5,
+                   error_toggle=1)
 print('Fraction: ', fraction)
 print('Error: ', error)
 print('Correct chance: ', correct_chance)

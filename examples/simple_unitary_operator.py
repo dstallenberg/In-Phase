@@ -35,18 +35,18 @@ unitary = 'X'
 # Offset and standard deviation for phase errors enduced by gates
 mu = 0
 sigma = 0
-
+error_toggle = 0
 fraction, error, correct_chance = estimate_phase(unitary,
-                   mu,
-                   sigma,
                    desired_bit_accuracy=5,
                    p_succes_min=0.8,
                    print_qasm=False,
                    graph=True,
                    max_qubits=26,
                    shots=512,
-                   mu,
-                   sigma)
+                   mu = 0.25,
+                   sigma = 0.5,
+                   error_toggle = 0)
+
 
 print('Fraction: ', fraction)
 print('Error: ', error)
