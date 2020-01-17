@@ -46,7 +46,7 @@ def can_optimize(qasm_code, total_qubits):
 
             if f'CNOT q[{i}], q[{j}]\nCNOT q[{j}], q[{i}]\nCNOT q[{i}], q[{j}]\nCNOT q[{i}], q[{j}]\nCNOT q[{j}], q[{i}]\nCNOT q[{i}], q[{j}]\n' in qasm_code:
                 return True
-            
+
             for double in double_operators:
                 if f'{double} q[{i}], q[{j}]\n{double} q[{i}], q[{j}]\n' in qasm_code:
                     return True

@@ -60,6 +60,9 @@ def estimate_phase(unitary,
                    graph=False,
                    max_qubits=26,
                    shots=512,
+                   mu=0,
+                   sigma=0,
+                   error_toggle=0,
                    topology=None):
     """You can use this function if you want to use the QI backend. To use your own backend, combine generate_qasm() and
     classical_postprocessing() in the intended way."""
@@ -71,6 +74,9 @@ def estimate_phase(unitary,
     """The desired bit accuracy and minimal succes determine the number of ancillas used.
     A higher desired accuracy corresponds to a higher number of ancillas used"""
     qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
+                                                      mu,
+                                                      sigma,
+                                                      error_toggle,
                                                       desired_bit_accuracy,
                                                       p_succes_min,
                                                       initial,
@@ -96,11 +102,14 @@ def estimate_phase(unitary,
 
 def classical_postprocessing(result, nancillas, desired_bit_accuracy, shots):
     """Do classical postprocessing on the result. result['histogram'] contains an ordered dict of keys and values."""
-    fraction, error = print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, nancillas)
+    fraction, error = print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)
     return fraction, error
 
 
 def generate_qasm(unitary,
+                  mu,
+                  sigma,
+                  error_toggle,
                   desired_bit_accuracy=3,
                   p_succes_min=0.5,
                   initial="# No initialization given",
@@ -132,13 +141,12 @@ def generate_qasm(unitary,
         raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
 
     """Generate and print QASM code"""
-    final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial, extra_empty_bits=extra_empty_bits)
+    final_qasm = generate_quantum_inspire_code(mu, sigma, error_toggle, nancillas, qubits, unitary, initial, extra_empty_bits=extra_empty_bits)
 
     if topology is not None:
         final_qasm = map_to_topology(topology, final_qasm)
 
     final_qasm = optimize(final_qasm, nancillas + qubits + qubits + extra_empty_bits)
-
 
     if print_qasm:
         print(final_qasm)

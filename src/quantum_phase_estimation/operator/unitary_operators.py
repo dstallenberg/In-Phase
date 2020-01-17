@@ -25,7 +25,6 @@ def get_unitary_operators_array(operator, nancillas, qubits):
                 result_operation += operation
 
             result_operation = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operation)
-
             array.append(result_operation)
 
         return array

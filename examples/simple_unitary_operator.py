@@ -45,6 +45,11 @@ topology = [['0', '1'],
          ['6', '7'],
          ['7', '8']]
 
+# Offset and standard deviation for phase errors enduced by gates
+mu = 0
+sigma = 0
+error_toggle = 0
+
 fraction, error, correct_chance = estimate_phase(unitary,
                    desired_bit_accuracy=5,
                    p_succes_min=0.8,
@@ -52,7 +57,10 @@ fraction, error, correct_chance = estimate_phase(unitary,
                    graph=True,
                    max_qubits=26,
                    shots=512,
-                   topology=topology)
+                   topology=topology,
+                   mu = 0.25,
+                   sigma = 0.5,
+                   error_toggle = 0)
 
 print('Fraction: ', fraction)
 print('Error: ', error)
