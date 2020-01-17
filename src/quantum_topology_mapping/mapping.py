@@ -1,8 +1,8 @@
 from src.quantum_topology_mapping.dijkstra import Graph
-
+import numpy as np
 
 def map_to_topology(graph):
-    print(graph.dijkstra("8", "0"))
+    return graph.dijkstra("8", "0")
 
 graph = Graph([])
 Graph.add_edge(graph,"0","1")
@@ -19,4 +19,5 @@ Graph.add_edge(graph,"6","7")
 Graph.add_edge(graph,"7","8")
 
 
-map_to_topology(graph)
+path = list(map_to_topology(graph))
+print(path)
