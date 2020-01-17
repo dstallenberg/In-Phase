@@ -3,9 +3,7 @@ from src.quantum_phase_estimation.classical_postprocessing import remove_degener
 
 def to_array(result, bit):
     data = np.zeros(shape=(2, 2**bit, 2**bit))
-    print(result)
     for i, r in enumerate(result):
-        print(r)
         values, keys = remove_degeneracy(r['histogram'], bit)
         keys = np.array([int(x, 2) for x in keys])
         data[0, i, ::] = np.pad(keys, (0, 2**bit-keys.size), constant_values = 0)

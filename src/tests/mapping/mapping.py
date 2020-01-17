@@ -4,7 +4,7 @@ from src.tests.mapping.plotting import heatmap, graph
 
 if __name__ == "__main__":
     bit = 4
-    result = get_results(bit, try_from_file=False)
+    result = get_results(bit, try_from_file=True)
     data = to_array(result, bit)
     #heatmap(sort_array(data)[1])
     binary_fractions = decimal_to_binary_fracion(find_keys(data), bit)

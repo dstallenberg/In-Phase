@@ -8,7 +8,6 @@ import numpy as np
 from collections import OrderedDict
 
 def remove_degeneracy(result, nancillas):
-	print(result)
 	if result == OrderedDict():
 		raise ValueError("Received empty dict from QI, there is likely a syntax error in the qasm.")
 
