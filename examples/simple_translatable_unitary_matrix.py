@@ -35,6 +35,7 @@ unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
 # Offset and standard deviation for phase errors enduced by gates
 mu = 0.25
 sigma = 0.5
+error_toggle = 1
 
 fraction, error, correct_chance = estimate_phase(unitary,
                    desired_bit_accuracy=5,
@@ -44,7 +45,8 @@ fraction, error, correct_chance = estimate_phase(unitary,
                    max_qubits=26,
                    shots=512,
                    mu=0.25,
-                   sigma=0.5)
+                   sigma=0.5,
+                   error_toggle=1)
 print('Fraction: ', fraction)
 print('Error: ', error)
 print('Correct chance: ', correct_chance)

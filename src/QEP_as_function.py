@@ -59,7 +59,8 @@ def estimate_phase(unitary,
                    max_qubits=26,
                    shots=512,
                    mu=0,
-                   sigma=0):
+                   sigma=0,
+                   error_toggle=0):
     """You can use this function if you want to use the QI backend. To use your own backend, combine generate_qasm() and
     classical_postprocessing() in the intended way."""
 
@@ -72,6 +73,7 @@ def estimate_phase(unitary,
     qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
                                                       mu,
                                                       sigma,
+                                                      error_toggle,
                                                       desired_bit_accuracy,
                                                       p_succes_min,
                                                       initial,
@@ -103,6 +105,7 @@ def classical_postprocessing(result, nancillas, desired_bit_accuracy, shots):
 def generate_qasm(unitary,
                   mu,
                   sigma,
+                  error_toggle,
                   desired_bit_accuracy=3,
                   p_succes_min=0.5,
                   initial="# No initialization given",
@@ -119,7 +122,7 @@ def generate_qasm(unitary,
         raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
 
     """Generate and print QASM code"""
-    final_qasm = generate_quantum_inspire_code(mu, sigma, nancillas, qubits, unitary, initial)
+    final_qasm = generate_quantum_inspire_code(mu, sigma, error_toggle, nancillas, qubits, unitary, initial)
 
     if print_qasm:
         print(final_qasm)
