@@ -37,8 +37,8 @@ unitary = np.array([[1, 1, 1, 0],
                     [0, 0, 0, -1j*np.sqrt(3)]]) / np.sqrt(3)
 
 # Offset and standard deviation for phase errors enduced by gates
-mu = 0.4
-sigma = 0.8
+mu = 0
+sigma = 0
 
 fraction, error, correct_chance = estimate_phase(unitary,
                    mu,
