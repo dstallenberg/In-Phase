@@ -36,7 +36,7 @@ fraction, error, correct_chance = estimate_phase(unitary,
                    desired_bit_accuracy=5,
                    p_succes_min=0.8,
                    print_qasm=False,
-                   graph=False,
+                   graph=True,
                    max_qubits=26,
                    shots=512)
 
