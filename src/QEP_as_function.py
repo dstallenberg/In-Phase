@@ -17,6 +17,8 @@ from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
 from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
+from src.quantum_topology_mapping.mapping import map_to_topology
+from src.quantum_phase_estimation.optimizer import optimize
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
@@ -57,7 +59,8 @@ def estimate_phase(unitary,
                    print_qasm=False,
                    graph=False,
                    max_qubits=26,
-                   shots=512):
+                   shots=512,
+                   topology=None):
     """You can use this function if you want to use the QI backend. To use your own backend, combine generate_qasm() and
     classical_postprocessing() in the intended way."""
 
@@ -72,7 +75,8 @@ def estimate_phase(unitary,
                                                       p_succes_min,
                                                       initial,
                                                       print_qasm,
-                                                      max_qubits)
+                                                      max_qubits,
+                                                      topology=topology)
 
     """Calculate results using QuantumInspire"""
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
@@ -101,19 +105,40 @@ def generate_qasm(unitary,
                   p_succes_min=0.5,
                   initial="# No initialization given",
                   print_qasm=False,
-                  max_qubits=26):
+                  max_qubits=26,
+                  topology=None):
     """Generate qasm to send to backend"""
+    qubits_in_top = False
+    if topology is not None:
+        found_max = 0
+        for edge in topology:
+            found_max = max(found_max, int(edge[0]) + 1)
+            found_max = max(found_max, int(edge[1]) + 1)
+
+        qubits_in_top = found_max
+
+
     nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
     """"Specify the number of qubits in the initial state """
 
     qubits = find_qubits_from_unitary(unitary)  # int(np.log2(unitary_operation.shape[0]))
 
+    extra_empty_bits = 0
+    if qubits_in_top:
+        extra_empty_bits = (qubits_in_top - 2 * qubits - nancillas)
+
     if 2 * qubits + nancillas > max_qubits:
         raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
 
     """Generate and print QASM code"""
-    final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial)
+    final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial, extra_empty_bits=extra_empty_bits)
+
+    if topology is not None:
+        final_qasm = map_to_topology(topology, final_qasm)
+
+    final_qasm = optimize(final_qasm, nancillas + qubits + qubits + extra_empty_bits)
+
 
     if print_qasm:
         print(final_qasm)

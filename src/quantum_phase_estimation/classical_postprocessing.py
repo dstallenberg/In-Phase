@@ -10,7 +10,7 @@ from collections import OrderedDict
 def remove_degeneracy(result, nancillas):
 	if result['histogram'] == OrderedDict():
 		print("Received empty dict from QI, there is a syntax error in the qasm.")
-		raise
+		raise Exception(result['raw_text'])
 
 	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in result['histogram'].keys() ])
 	vals = np.array([val for val in result['histogram'].values()])

@@ -2,7 +2,7 @@ from src.quantum_phase_estimation.circuit.fourier_transform import generate_inve
 from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_operators_array, find_controlled_equivalent
 from src.quantum_phase_estimation.optimizer import optimize
 
-def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user'):
+def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user', extra_empty_bits=0):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 
     if isinstance(unitary_operation, str) and 'QASM' in unitary_operation and not unitary_operation.endswith('\n'):
@@ -19,10 +19,11 @@ def generate_quantum_inspire_code(nancillas, qubits, unitary_operation, custom_p
     total = nancillas + qubits
     final_qasm = f"""version 1.0
 
-qubits {total + qubits}
+qubits {total + qubits + extra_empty_bits}
 
 # Prepare qubits \n.preparation\n
 prep_z q[0:{total - 1}]
+{ '' if extra_empty_bits == 0 else f'prep_z q[{total + qubits + extra_empty_bits - 1}]' if extra_empty_bits == 1 else f'prep_z q[{total + qubits}:{total + qubits + extra_empty_bits - 1}]' }
 
 # Custom prepare
 {custom_prepare}
@@ -52,13 +53,6 @@ prep_z q[0:{total - 1}]
             final_qasm += operation
             continue
 
-        # If there are multiple qubits
-        # if qubits > 1:
-        #     controls = []
-        #     controls.extend(range(nancillas - 1, total - 1))
-        #     final_qasm += transform_controlled_unitary_to_toffoli(operation, controls, total - 1)
-        # else:
-
         if qubits > 2:
             # This is weird why do we have multiple qubits while the operation is a single non controlled operation
             raise Exception('This is weird why do we have more than 3 qubits while the operation is a single non controlled operation')
@@ -73,7 +67,7 @@ prep_z q[0:{total - 1}]
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
-    final_qasm = optimize(final_qasm, nancillas + qubits + qubits)
+    final_qasm = optimize(final_qasm, nancillas + qubits + qubits + extra_empty_bits)
 
     # for i in range(total - 1):
     #     if i != 0:

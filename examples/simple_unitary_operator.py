@@ -32,13 +32,27 @@ qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 unitary = 'X'
 
+topology = [['0', '1'],
+         ['0', '3'],
+         ['1', '2'],
+         ['1', '4'],
+         ['2', '5'],
+         ['3', '4'],
+         ['3', '6'],
+         ['4', '5'],
+         ['4', '7'],
+         ['5', '8'],
+         ['6', '7'],
+         ['7', '8']]
+
 fraction, error, correct_chance = estimate_phase(unitary,
                    desired_bit_accuracy=5,
                    p_succes_min=0.8,
                    print_qasm=False,
                    graph=True,
                    max_qubits=26,
-                   shots=512)
+                   shots=512,
+                   topology=topology)
 
 print('Fraction: ', fraction)
 print('Error: ', error)
