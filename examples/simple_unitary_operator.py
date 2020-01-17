@@ -44,9 +44,7 @@ fraction, error, correct_chance = estimate_phase(unitary,
                    print_qasm=False,
                    graph=True,
                    max_qubits=26,
-                   shots=512,
-                   mu,
-                   sigma)
+                   shots=512)
 
 print('Fraction: ', fraction)
 print('Error: ', error)
