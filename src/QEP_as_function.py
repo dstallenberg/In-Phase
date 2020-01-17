@@ -51,6 +51,8 @@ def get_authentication():
 
 
 def estimate_phase(unitary,
+                   mu,
+                   sigma,
                    desired_bit_accuracy=3,
                    p_succes_min=0.5,
                    initial="# No initialization given",
@@ -68,6 +70,8 @@ def estimate_phase(unitary,
     """The desired bit accuracy and minimal succes determine the number of ancillas used.
     A higher desired accuracy corresponds to a higher number of ancillas used"""
     qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
+                                                      mu,
+                                                      sigma,
                                                       desired_bit_accuracy,
                                                       p_succes_min,
                                                       initial,
@@ -75,6 +79,7 @@ def estimate_phase(unitary,
                                                       max_qubits)
 
     """Calculate results using QuantumInspire"""
+    print(qasm)
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
     result = qi.execute_qasm(qasm,
                              backend_type=backend_type,
@@ -97,6 +102,8 @@ def classical_postprocessing(result, nancillas, desired_bit_accuracy, shots):
 
 
 def generate_qasm(unitary,
+                  mu,
+                  sigma,
                   desired_bit_accuracy=3,
                   p_succes_min=0.5,
                   initial="# No initialization given",
@@ -113,7 +120,7 @@ def generate_qasm(unitary,
         raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
 
     """Generate and print QASM code"""
-    final_qasm = generate_quantum_inspire_code(nancillas, qubits, unitary, initial)
+    final_qasm = generate_quantum_inspire_code(mu, sigma, nancillas, qubits, unitary, initial)
 
     if print_qasm:
         print(final_qasm)
