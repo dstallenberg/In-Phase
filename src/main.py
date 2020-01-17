@@ -66,4 +66,4 @@ result = qi.execute_qasm(final_qasm, backend_type=backend_type, number_of_shots=
 if nancillas < 5:
     plot_results(result, nancillas, qubits, p_succes)
 
-print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, nancillas)
+print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)
