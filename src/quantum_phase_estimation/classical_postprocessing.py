@@ -8,10 +8,9 @@ import numpy as np
 from collections import OrderedDict
 
 def remove_degeneracy(result, nancillas):
+	print(result)
 	if result == OrderedDict():
-		print("Received empty dict from QI, there is likely a syntax error in the qasm.")
-		raise
-
+		raise ValueError("Received empty dict from QI, there is likely a syntax error in the qasm.")
 	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in result.keys() ])
 	vals = np.array([val for val in result.values()])
 	

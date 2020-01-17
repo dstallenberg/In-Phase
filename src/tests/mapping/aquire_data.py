@@ -1,6 +1,48 @@
 import numpy as np
 from src.runner import async_calls
-from src.QEP_as_function import estimate_phase
+from src.QEP_as_function import get_authentication, generate_qasm
+from quantuminspire.api import QuantumInspireAPI
+import os
+
+QI_EMAIL = os.getenv('QI_EMAIL')
+QI_PASSWORD = os.getenv('QI_PASSWORD')
+QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
+
+def get_from_qi(unitary,
+                   desired_bit_accuracy=3,
+                   p_succes_min=0.5,
+                   initial="# No initialization given",
+                   print_qasm=False,
+                   graph=False,
+                   max_qubits=26,
+                   shots=512,
+                   mu=0,
+                   sigma=0):
+    """You can use this function if you want to use the QI backend. To use your own backend, combine generate_qasm() and
+    classical_postprocessing() in the intended way."""
+
+    # Get authentication
+    authentication = get_authentication()
+    qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+
+    """The desired bit accuracy and minimal succes determine the number of ancillas used.
+    A higher desired accuracy corresponds to a higher number of ancillas used"""
+    qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
+                                                      mu,
+                                                      sigma,
+                                                      desired_bit_accuracy,
+                                                      p_succes_min,
+                                                      initial,
+                                                      print_qasm,
+                                                      max_qubits)
+
+    """Calculate results using QuantumInspire"""
+    backend_type = qi.get_backend_type_by_name('QX single-node simulator')
+    result = qi.execute_qasm(qasm,
+                             backend_type=backend_type,
+                             number_of_shots=shots)
+
+    return result
 
 def get_results(bit=5, try_from_file = True):
     if try_from_file:
@@ -11,11 +53,12 @@ def get_results(bit=5, try_from_file = True):
             return data
         except:
             print(f"No file '{fname}' found. Gathering from QI...")
-    return from_qi(bit)
+    return from_qi(bit, multi=True)
 
-def from_qi(bit, save=True, succes=0.5):
+def from_qi(bit, save=True, succes=0.5, multi=True):
     arguments = []
     points = np.linspace(0, 2*np.pi, 2**bit)
+    print(points)
     print(f"Preparing to send {2**bit} jobs to QI")
     for i in points:
         #print(f"{(i / (2 * np.pi)):0.{int(-np.floor(np.log10(2 ** -bit)))}f}	{1}			")
@@ -26,13 +69,19 @@ def from_qi(bit, save=True, succes=0.5):
             [unitary, bit, succes, "# No initialization given", False, False, 26, 1])
 
     print("QASM is generated. Sending jobs...")
-    result = async_calls(estimate_phase, arguments)
+    if multi == True:
+        result = async_calls(get_from_qi, arguments)
+    else:
+        result = []
+        print(arguments)
+        for i in range(2**bit):
+            result.append(get_from_qi(*arguments[i]))
     print("Recieved all jobs!")
     if save:
         fname = f"generated/tests/mapping/heatmap_{bit}.npy"
         print(f"Saving to {fname}")
         np.save(fname, result)
-    return np.array(result)[::, 0]
+    return result
 
 if __name__ == "__main__":
     np.load("generated/tests/mapping/heatmap_4.npy", allow_pickle=True)
