@@ -18,9 +18,9 @@ def map_phase(points, desired_bit_accuracy=3, p_succes=0.5, estimations_per_poin
 			arguments.append([unitary, desired_bit_accuracy, p_succes, "# No initialization given", False, False, 26, 1])
 
 
-	print('\n', arguments)
+	#print('\n', arguments)
 	result = async_calls(estimate_phase, arguments)
-	print(result)
+	#print(result)
 	# for i in points:
 	# 	for j in range(estimations_per_point):
 	# 		print(f"{(i/(2*np.pi)):0.{int(-np.floor(np.log10(2**-desired_bit_accuracy)))}f}	{j+1}			", end='')
@@ -80,7 +80,7 @@ def plot_results_on_unit_cricle(points, results, show=0, size=7):
 
 if __name__ == "__main__":
 	# Create points to map
-	desired_bit_accuracy = 5
+	desired_bit_accuracy = 4
 	p = 1/(2**-desired_bit_accuracy)
 	print(p)
 	points = np.linspace(0, 2 * np.pi, p)
