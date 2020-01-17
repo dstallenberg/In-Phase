@@ -30,7 +30,7 @@ def get_authentication():
 authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
-unitary = np.array([[0, 1], [1, 0]])
+unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
 
 # Offset and standard deviation for phase errors enduced by gates
 mu = 0

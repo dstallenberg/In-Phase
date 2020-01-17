@@ -4,7 +4,11 @@ import numpy as np
 rotation = ["Rx", "Ry", "Rz"]
 arg_gates = ["Rx", "Ry", "Rz", "CR"]
 no_arg_gates = ["H", "X", "Y", "Z", "CNOT", "Toffoli", "CZ", ]
+
 def introduce_error(qasm_code, mu, sigma):
+    # This function takes the generated QASM code and adds errors. These errors get randomly generated with a Gaussian distribution and get applied to each
+    # gate in the QASM code. For gates who don't take in an argument, an extra Rx, Ry or Rz gate gets added with a random argument. Which rotation gate it is gets
+    # chosen randomly. For gates who take an argument, e.g. Rx, Ry etc, this error gets added to the original argument.
 
     lines = qasm_code.splitlines()
     final_qasm = ''
