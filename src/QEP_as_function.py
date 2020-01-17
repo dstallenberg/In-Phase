@@ -51,15 +51,15 @@ def get_authentication():
 
 
 def estimate_phase(unitary,
-                   mu,
-                   sigma,
                    desired_bit_accuracy=3,
                    p_succes_min=0.5,
                    initial="# No initialization given",
                    print_qasm=False,
                    graph=False,
                    max_qubits=26,
-                   shots=512):
+                   shots=512,
+                   mu=0,
+                   sigma=0):
     """You can use this function if you want to use the QI backend. To use your own backend, combine generate_qasm() and
     classical_postprocessing() in the intended way."""
 
@@ -79,7 +79,6 @@ def estimate_phase(unitary,
                                                       max_qubits)
 
     """Calculate results using QuantumInspire"""
-    print(qasm)
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
     result = qi.execute_qasm(qasm,
                              backend_type=backend_type,
@@ -97,7 +96,7 @@ def estimate_phase(unitary,
 
 def classical_postprocessing(result, nancillas, desired_bit_accuracy, shots):
     """Do classical postprocessing on the result. result['histogram'] contains an ordered dict of keys and values."""
-    fraction, error = print_result(remove_degeneracy(result, nancillas), desired_bit_accuracy, nancillas)
+    fraction, error = print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)
     return fraction, error
 
 
