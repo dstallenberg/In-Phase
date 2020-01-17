@@ -78,7 +78,6 @@ prep_z q[0:{total - 1}]
     if error_toggle == 1:
         final_qasm = introduce_error(final_qasm, mu, sigma)
 
-    print(final_qasm)
     # for i in range(total - 1):
     #     if i != 0:
     #         final_qasm += f'H q[{i}]\n'
