@@ -43,7 +43,6 @@ def introduce_error(qasm_code, mu, sigma):
                         else:
                             if j == "CR":
                                 final_qasm += single_line + "\n"
-    print(final_qasm)
     return final_qasm
 
 def find_all(a_str, sub):
