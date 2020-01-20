@@ -11,7 +11,7 @@ def heatmap(data, show=True):
     ax.set_xlabel("Input phase")
     ax.set_ylabel("Output phase")
 
-    fig.savefig(f"img/heatmap_{np.log2(data.shape[0])}.png")
+    fig.savefig(f"../../../img/heatmap_{np.log2(data.shape[0])}.png")
 
     if show:
         plt.show()
@@ -25,7 +25,7 @@ def graph(data, show=True):
     ax.set_xlabel("Input")
     ax.set_ylabel("Output")
 
-    fig.savefig(f"img/heatmap_{np.log2(data.shape[0])}.png")
+    fig.savefig(f"../../../img/heatmap_{np.log2(data.shape[0])}.png")
 
     if show:
         plt.show()

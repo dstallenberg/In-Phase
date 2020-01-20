@@ -29,7 +29,7 @@ def get_authentication():
 authentication = get_authentication()
 qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
-unitary = 'QASM\nRz q[0], 1.5\n'
+unitary = 'QASM\nRz q[0], -0.8377580409572781\n'
 
 topology = [['0', '1'],
          ['0', '3'],
@@ -56,10 +56,9 @@ fraction, error, correct_chance = estimate_phase(unitary,
                    graph=False,
                    max_qubits=26,
                    shots=512,
-                   topology=topology,
                    mu=0.25,
                    sigma=0.5,
-                   error_toggle=1)
+                   error_toggle=0)
 
 print('Fraction: ', fraction)
 print('Error: ', error)

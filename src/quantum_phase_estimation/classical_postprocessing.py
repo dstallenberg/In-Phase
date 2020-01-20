@@ -13,21 +13,22 @@ def remove_degeneracy(result, nancillas):
 
 	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in result.keys() ])
 	vals = np.array([val for val in result.values()])
-	
-	processed_list = []
-	keys = []
-	
-	temp = np.zeros(shape = vals.shape)
-	
-	for s in bin_string_processed:
-		if np.sum((bin_string_processed == s) * temp) == False:
-			index = bin_string_processed == s
-			temp += index
-			processed_list.append(np.sum(vals[index]))
-			keys.append(s)
-			
-	#print(bin_string_processed.size, '\n', processed_list.size, '\n',np.sum(processed_list), '\n', temp)
-	return np.array(processed_list), keys
+
+	bin_string_processed, vals = (np.array(list(t)) for t in zip(*sorted(zip(bin_string_processed, vals))))
+
+	current = ''
+	final_keys = []
+	final_values = []
+
+	for index in range(len(bin_string_processed)):
+		if bin_string_processed[index] != current:
+			final_keys.append(bin_string_processed[index])
+			current = bin_string_processed[index]
+			final_values.append(vals[index])
+		else:
+			final_values[len(final_values) - 1] += vals[index]
+
+	return np.array(final_values), final_keys
 
 def binary_fraction_to_decimal(processed_tuple, desired_accuracy, nancillas):
 	"""Returns the decimal fraction of a binary fraction formatted as a binary 

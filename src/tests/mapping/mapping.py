@@ -3,10 +3,10 @@ from src.tests.mapping.process_data import to_array, sort_array, find_keys, deci
 from src.tests.mapping.plotting import heatmap, graph
 
 if __name__ == "__main__":
-    bit = 4
+    bit = 6
     result = get_results(bit, try_from_file=True)
     data = to_array(result, bit)
-    #heatmap(sort_array(data)[1])
+    heatmap(data[1])
     binary_fractions = decimal_to_binary_fracion(find_keys(data), bit)
-    print(binary_fractions)
+    # print(binary_fractions)
     graph(binary_fractions)

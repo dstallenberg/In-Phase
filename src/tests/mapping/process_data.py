@@ -8,7 +8,6 @@ def to_array(result, bit):
         keys = np.array([int(x, 2) for x in keys])
         data[0, i, ::] = np.pad(keys, (0, 2**bit-keys.size), constant_values = 0)
         data[1, i, ::] = np.pad(values, (0, 2**bit-values.size), constant_values = 0)
-    #print(data)
     return(data)
 
 def sort_array(data):
@@ -21,8 +20,8 @@ def find_keys(data):
     ind = np.argmax(data[1], axis=1)
     temp = np.zeros(shape=data.shape[1])
     for i in range(temp.size):
-        temp[i] = data[0,i,ind[i]]
-    print(temp)
+        temp[i] = data[0, i, ind[i]]
+
     return temp.astype(int)
 
 def decimal_to_binary_fracion(list, bit):

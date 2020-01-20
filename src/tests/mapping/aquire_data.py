@@ -30,6 +30,7 @@ def get_from_qi(unitary,
     qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
                                                       mu,
                                                       sigma,
+                                                      0,
                                                       desired_bit_accuracy,
                                                       p_succes_min,
                                                       initial,
@@ -42,12 +43,15 @@ def get_from_qi(unitary,
                              backend_type=backend_type,
                              number_of_shots=shots)
 
+    print(unitary)
+    print(result['histogram'])
     return result
 
 def get_results(bit=5, try_from_file = True):
+    print('testing file')
     if try_from_file:
         try:
-            fname = f"generated/tests/mapping/heatmap_{bit}.npy"
+            fname = f"../../../generated/tests/mapping/heatmap_{bit}.npy"
             data = np.load(fname, allow_pickle=True)
             print(f"Loaded data from {fname}")
             return data
@@ -58,31 +62,28 @@ def get_results(bit=5, try_from_file = True):
 def from_qi(bit, save=True, succes=0.5, multi=True):
     arguments = []
     points = np.linspace(0, 2*np.pi, 2**bit)
-    print(points)
     print(f"Preparing to send {2**bit} jobs to QI")
     for i in points:
-        #print(f"{(i / (2 * np.pi)):0.{int(-np.floor(np.log10(2 ** -bit)))}f}	{1}			")
         unitary = f"QASM\n" \
                   f"Rz q[0], {-i}"
 
         arguments.append(
-            [unitary, bit, succes, "# No initialization given", False, False, 26, 1])
+            [unitary, bit, succes, "# No initialization given", False, False, 26, 512, 0, 0])
 
     print("QASM is generated. Sending jobs...")
     if multi == True:
         result = async_calls(get_from_qi, arguments)
     else:
         result = []
-        print(arguments)
         for i in range(2**bit):
             result.append(get_from_qi(*arguments[i]))
-    print("Recieved all jobs!")
+    print("Received all jobs!")
     if save:
-        fname = f"generated/tests/mapping/heatmap_{bit}.npy"
+        fname = f"../../../generated/tests/mapping/heatmap_{bit}.npy"
         print(f"Saving to {fname}")
         np.save(fname, result)
     return result
 
 if __name__ == "__main__":
-    np.load("generated/tests/mapping/heatmap_4.npy", allow_pickle=True)
+    np.load("../../../generated/tests/mapping/heatmap_4.npy", allow_pickle=True)
     get_results(4)
