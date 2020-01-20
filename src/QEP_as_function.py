@@ -17,7 +17,7 @@ from src.quantum_phase_estimation.generator import generate_quantum_inspire_code
 from src.quantum_phase_estimation.error_estimation import error_estimate
 from src.quantum_phase_estimation.plot_results import plot_results
 from src.quantum_phase_estimation.classical_postprocessing import print_result, remove_degeneracy
-from src.quantum_topology_mapping.mapping import map_to_topology
+from src.quantum_topology_mapping.mapping import map_to_topology, graph
 from src.quantum_phase_estimation.optimizer import optimize
 
 QI_EMAIL = os.getenv('QI_EMAIL')
@@ -84,6 +84,7 @@ def estimate_phase(unitary,
                                                       max_qubits,
                                                       topology=topology)
 
+
     """Calculate results using QuantumInspire"""
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
     result = qi.execute_qasm(qasm,
@@ -113,7 +114,7 @@ def generate_qasm(unitary,
                   desired_bit_accuracy=3,
                   p_succes_min=0.5,
                   initial="# No initialization given",
-                  print_qasm=False,
+                  print_qasm=True,
                   max_qubits=26,
                   topology=None):
     """Generate qasm to send to backend"""
@@ -125,7 +126,7 @@ def generate_qasm(unitary,
             found_max = max(found_max, int(edge[1]) + 1)
 
         qubits_in_top = found_max
-
+        max_qubits = qubits_in_top
 
     nancillas, p_succes = error_estimate(desired_bit_accuracy, p_succes_min)
 
@@ -156,5 +157,5 @@ def generate_qasm(unitary,
 if __name__ == "__main__":
     for i in range(1):
         print(estimate_phase("""QASM
-Rz q[0], -3.141592""",
-                             desired_bit_accuracy=10, graph=True, shots=1))
+Rz q[0], 1""",
+                             desired_bit_accuracy=4, graph=True, shots=1, topology=graph))
