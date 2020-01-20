@@ -3,6 +3,8 @@ from src.quantum_phase_estimation.operator.unitary_operators import get_unitary_
 from src.quantum_phase_estimation.optimizer import optimize
 
 from src.quantum_phase_estimation.error_introducer import introduce_error
+
+
 def generate_quantum_inspire_code(mu, sigma, error_toggle, nancillas, qubits, unitary_operation, custom_prepare='# No custom preparation given by user', extra_empty_bits=0):
     # Check if QASM en then replace q[i] with q[i + nancilla] etc
 

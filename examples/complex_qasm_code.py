@@ -26,8 +26,8 @@ def get_authentication():
         return get_basic_authentication(email, password)
 
 
-authentication = get_authentication()
-qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+authentication = ''#get_authentication()
+qi = ''#QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 unitary = 'QASM\nRz q[0], -0.8377580409572781\n'
 
@@ -52,7 +52,7 @@ error_toggle = 0
 fraction, error, correct_chance = estimate_phase(unitary,
                    desired_bit_accuracy=3,
                    p_succes_min=0.8,
-                   print_qasm=False,
+                   print_qasm=True,
                    graph=False,
                    max_qubits=26,
                    shots=512,

@@ -3,7 +3,7 @@ from src.tests.mapping.process_data import to_array, sort_array, find_keys, deci
 from src.tests.mapping.plotting import heatmap, graph
 
 if __name__ == "__main__":
-    bit = 6
+    bit = 4
     result = get_results(bit, try_from_file=True)
     data = to_array(result, bit)
     heatmap(data[1])
