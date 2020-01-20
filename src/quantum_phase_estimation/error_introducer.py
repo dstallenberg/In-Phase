@@ -38,7 +38,7 @@ def introduce_error(qasm_code, mu, sigma):
                     for j in arg_gates:
                         if j in single_line:
                             val = single_line[single_line.rfind(",") + 1:]
-                            final_qasm += single_line.replace(val, ' ' + str( +float(val) + np.random.normal(mu, sigma))) + "\n"
+                            final_qasm += single_line.replace(val, ' ' + str(+float(val) + np.random.normal(mu, sigma))) + "\n"
                             break
                         else:
                             if j == "CR":
