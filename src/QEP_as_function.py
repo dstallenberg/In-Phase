@@ -73,6 +73,7 @@ def estimate_phase(unitary,
 
     """The desired bit accuracy and minimal succes determine the number of ancillas used.
     A higher desired accuracy corresponds to a higher number of ancillas used"""
+    print("in")
     qasm, qubits, nancillas, p_succes = generate_qasm(unitary,
                                                       mu,
                                                       sigma,
