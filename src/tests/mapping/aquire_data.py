@@ -38,14 +38,27 @@ def get_from_qi(unitary,
                                                       max_qubits)
 
     """Calculate results using QuantumInspire"""
-    backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-    result = qi.execute_qasm(qasm,
-                             backend_type=backend_type,
-                             number_of_shots=shots)
+    try:
+        backend_type = qi.get_backend_type_by_name('QX single-node simulator')
+        result = qi.execute_qasm(qasm,
+                                 backend_type=backend_type,
+                                 number_of_shots=shots)
 
-    print(unitary)
-    print(result['histogram'])
-    return result
+        print(unitary)
+        #print(result['histogram'])
+        return result
+    except:
+        print("Got error from QI")
+        return get_from_qi(unitary,
+                   desired_bit_accuracy,
+                   p_succes_min,
+                   initial,
+                   print_qasm,
+                   graph,
+                   max_qubits,
+                   shots,
+                   mu,
+                   sigma)
 
 def get_results(bit=5, try_from_file = True):
     print('testing file')

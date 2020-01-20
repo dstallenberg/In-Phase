@@ -6,8 +6,8 @@ def to_array(result, bit):
     for i, r in enumerate(result):
         values, keys = remove_degeneracy(r['histogram'], bit)
         keys = np.array([int(x, 2) for x in keys])
-        data[0, i, ::] = np.pad(keys, (0, 2**bit-keys.size), constant_values = 0)
-        data[1, i, ::] = np.pad(values, (0, 2**bit-values.size), constant_values = 0)
+        data[0, i, ::] = np.pad(keys, (0, 2**bit-keys.size), constant_values = 0, mode='constant')
+        data[1, i, ::] = np.pad(values, (0, 2**bit-values.size), constant_values = 0, mode='constant')
     return(data)
 
 def sort_array(data):
