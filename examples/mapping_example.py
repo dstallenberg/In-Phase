@@ -9,64 +9,66 @@ from src.quantum_phase_estimation.util_functions import error_estimate
 from src.quantum_phase_estimation.util_functions import decimal_to_binary_fracion, find_max_value_keys, to_array
 from src.quantum_phase_estimation.processing.plotting import heatmap, graph
 
-QI_EMAIL = os.getenv('QI_EMAIL')
-QI_PASSWORD = os.getenv('QI_PASSWORD')
-QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
-authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD)
-qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+if __name__ == "__main__":
+    QI_EMAIL = os.getenv('QI_EMAIL')
+    QI_PASSWORD = os.getenv('QI_PASSWORD')
+    QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
-# variables
-desired_bit_accuracy = 4
-minimum_chance_of_success = 0.5
-mu = 0
-sigma = 0.05
-use_error_model = True
-topology = [['0', '1'],
-            ['0', '3'],
-            ['1', '2'],
-            ['1', '4'],
-            ['2', '5'],
-            ['3', '4'],
-            ['3', '6'],
-            ['4', '5'],
-            ['4', '7'],
-            ['5', '8'],
-            ['6', '7'],
-            ['7', '8']]
-shots = 512
+    authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD)
+    qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
-name = f'heatmap_{desired_bit_accuracy}_{minimum_chance_of_success}_{topology is not None if "True" else "False"}_{use_error_model if f"{use_error_model}_{mu}_{sigma}" else f"{use_error_model}"}'
-file = f'generated/tests/mapping/{name}.npy'
+    # variables
+    desired_bit_accuracy = 4
+    minimum_chance_of_success = 0.5
+    mu = 0
+    sigma = 0.05
+    use_error_model = True
+    topology = [['0', '1'],
+                ['0', '3'],
+                ['1', '2'],
+                ['1', '4'],
+                ['2', '5'],
+                ['3', '4'],
+                ['3', '6'],
+                ['4', '5'],
+                ['4', '7'],
+                ['5', '8'],
+                ['6', '7'],
+                ['7', '8']]
+    shots = 512
 
-data = None
-if file is not None:
-    print('testing file')
+    name = f'heatmap_{desired_bit_accuracy}_{minimum_chance_of_success}_{topology is not None if "True" else "False"}_{use_error_model if f"{use_error_model}_{mu}_{sigma}" else f"{use_error_model}"}'
+    file = f'generated/tests/mapping/{name}.npy'
 
-    try:
-        data = np.load(file, allow_pickle=True)
-        print(f"Loaded data from {file}")
-    except:
-        print(f"No file '{file}' found. Gathering from QI...")
+    data = None
+    if file is not None:
+        print('testing file')
 
-if data is None:
-    arguments = []
-    points = np.linspace(0, 2 * np.pi, 2 ** desired_bit_accuracy)
+        try:
+            data = np.load(file, allow_pickle=True)
+            print(f"Loaded data from {file}")
+        except:
+            print(f"No file '{file}' found. Gathering from QI...")
 
-    print(f"Preparing to send {2 ** desired_bit_accuracy} jobs to QI")
+    if data is None:
+        arguments = []
+        points = np.linspace(0, 2 * np.pi, 2 ** desired_bit_accuracy)
 
-    for i in points:
-        unitary = f"QASM\n" \
-                  f"Rz q[0], {-i}"
+        print(f"Preparing to send {2 ** desired_bit_accuracy} jobs to QI")
 
-        arguments.append(
-            [qi, unitary, desired_bit_accuracy, minimum_chance_of_success, 512, topology, use_error_model, mu, sigma])
+        for i in points:
+            unitary = f"QASM\n" \
+                      f"Rz q[0], {-i}"
 
-    data = generate_data(arguments, True, file)
+            arguments.append(
+                [qi, unitary, desired_bit_accuracy, minimum_chance_of_success, 512, topology, use_error_model, mu, sigma])
 
-nancilla, p_succes = error_estimate(desired_bit_accuracy, 0.5)
-data = to_array(data, desired_bit_accuracy, nancilla)
-binary_fractions = decimal_to_binary_fracion(find_max_value_keys(data), nancilla)
+        data = generate_data(arguments, True, file)
 
-heatmap(data[1], name)
-graph(binary_fractions)
+    nancilla, p_succes = error_estimate(desired_bit_accuracy, 0.5)
+    data = to_array(data, desired_bit_accuracy, nancilla)
+    binary_fractions = decimal_to_binary_fracion(find_max_value_keys(data), nancilla)
+
+    heatmap(data[1], name)
+    graph(binary_fractions)

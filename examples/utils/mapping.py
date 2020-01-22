@@ -48,3 +48,6 @@ def generate_data(arguments, multi, file=None):
         np.save(file, result)
 
     return result
+
+if __name__ == "__main__":
+    pass
