@@ -27,7 +27,7 @@ def optimize(qasm_code, total_qubits):
                 qasm_code = qasm_code.replace(f'{{{single} q[{i}]}}\n{{{single} q[{i}]}}\n', '')
 
             for single in single_operators_arg:
-                matches = re.findall(rf'({single} q\[{i}], -?\d.?\d*\n{single} q\[{i}], -?\d.?\d*\n)', qasm_code)
+                matches = re.findall(rf'({single} q\[{i}], -?\d+.?\d*\n{single} q\[{i}], -?\d+.?\d*\n)', qasm_code)
                 for match in matches:
                     qasm_code = qasm_code.replace(match, two_to_one(match))
 
@@ -58,7 +58,7 @@ def can_optimize(qasm_code, total_qubits):
                 return True
 
         for single in single_operators_arg:
-            matches = re.findall(rf'({single} q\[{i}], -?\d.?\d*\n{single} q\[{i}], -?\d.?\d*\n)', qasm_code)
+            matches = re.findall(rf'({single} q\[{i}], -?\d+.?\d*\n{single} q\[{i}], -?\d+.?\d*\n)', qasm_code)
             if len(matches):
                 return True
 

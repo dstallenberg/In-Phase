@@ -1,6 +1,8 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
+from src.quantum_phase_estimation.error_estimation import error_estimate
+
 def heatmap(data, show=True):
     fig = plt.figure(figsize=(7,7))
     ax = plt.gca()
@@ -20,10 +22,18 @@ def graph(data, show=True):
     fig = plt.figure(figsize=(7, 7))
     ax = plt.gca()
 
-    ax.plot(np.linspace(0, 2*np.pi, data.size), data)
+    ax.errorbar(np.linspace(0, 2*np.pi, data.size),
+                data,
+                yerr=(np.repeat(0, data.shape[0]),
+                      np.repeat(2**(-np.log2(data.shape[0])), data.shape[0])),
+                fmt='.',
+                label="From QI")
+
+    ax.plot(np.linspace(0, 2*np.pi, data.size), np.linspace(0, 1, data.size), label="Expected")
 
     ax.set_xlabel("Input")
     ax.set_ylabel("Output")
+    plt.legend()
 
     fig.savefig(f"../../../img/heatmap_{np.log2(data.shape[0])}.png")
 
