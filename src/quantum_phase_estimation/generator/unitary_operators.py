@@ -29,7 +29,7 @@ def get_unitary_operators_array(operator, nancillas, qubits):
 
         return array
     else:
-        # It is an operator key
+        # It is an generator key
         matrix = operator_to_matrix(operator, arg)
 
     array = []
@@ -69,7 +69,7 @@ def operator_to_matrix(operator, arg=None):
                              [0, 1, 0, 0],
                              [0, 0, 1, 0],
                              [0, 0, 0, cmath.exp((2 * cmath.pi * 1j) / 2 ** arg)]]),
-        }.get(operator, 'Invalid operator: There should be no argument for operator: ' + operator)
+        }.get(operator, 'Invalid generator: There should be no argument for generator: ' + operator)
 
     return {
         'X': np.array([[0, 1],
@@ -118,7 +118,7 @@ def operator_to_matrix(operator, arg=None):
                              [0, 0, 0, 0, 0, 1, 0, 0],
                              [0, 0, 0, 0, 0, 0, 0, 1],
                              [0, 0, 0, 0, 0, 0, 1, 0]])
-    }.get(operator, 'Invalid operator: The given operator does not exist: ' + operator)
+    }.get(operator, 'Invalid generator: The given generator does not exist: ' + operator)
 
 
 def matrix_to_operator(matrix, arg=None):
@@ -202,7 +202,7 @@ def matrix_to_operator(matrix, arg=None):
             if np.isclose(matrix, value).all():
                 return key + ' ' + str(arg)
 
-        return 'Invalid operator: The given matrix does not require an argument or the matrix is invalid'
+        return 'Invalid generator: The given matrix does not require an argument or the matrix is invalid'
     else:
         # No argument is given so we try to find the R gate ourselves
         if matrix.shape == (2, 2):
@@ -236,9 +236,9 @@ def matrix_to_operator(matrix, arg=None):
 
                         return 'CR ' + str(phi)
 
-            return 'Invalid operator'
+            return 'Invalid generator'
         else:
-            return 'Invalid operator'
+            return 'Invalid generator'
     return 'Something went wrong'
 
 
@@ -260,7 +260,7 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
     }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}]' + sep[2] + sep[1] + f'\n'))
 
-    if result == 'Invalid operator':
+    if result == 'Invalid generator':
         raise Exception('Operator not supported yet! Operator: ' + operator)
 
     return result

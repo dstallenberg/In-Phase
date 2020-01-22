@@ -1,6 +1,6 @@
 import numpy as np
-from src.runner import async_calls
-from src.QEP_as_function import get_authentication, generate_qasm
+from src.quantum_phase_estimation.runner import async_calls
+from src.quantum_phase_estimation.QEP_as_function import get_authentication, generate_qasm
 from quantuminspire.api import QuantumInspireAPI
 import os
 
@@ -44,8 +44,6 @@ def get_from_qi(unitary,
                                  backend_type=backend_type,
                                  number_of_shots=shots)
 
-        print(unitary)
-        #print(result['histogram'])
         return result
     except:
         print("Got error from QI")
@@ -84,18 +82,21 @@ def from_qi(bit, save=True, succes=0.5, multi=True):
             [unitary, bit, succes, "# No initialization given", False, False, 26, 512, 0, 0])
 
     print("QASM is generated. Sending jobs...")
-    if multi == True:
+    if multi:
         result = async_calls(get_from_qi, arguments)
     else:
         result = []
         for i in range(2**bit):
             result.append(get_from_qi(*arguments[i]))
+
     print("Received all jobs!")
     if save:
         fname = f"../../../generated/tests/mapping/heatmap_{bit}.npy"
         print(f"Saving to {fname}")
         np.save(fname, result)
+
     return result
+
 
 if __name__ == "__main__":
     np.load("../../../generated/tests/mapping/heatmap_4.npy", allow_pickle=True)

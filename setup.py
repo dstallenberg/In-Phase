@@ -13,7 +13,7 @@ setup(
     long_description=get_long_description(),
     long_description_content_type='text/markdown',
     version='1.0',
-    packages=['quantum_phase_estimation', 'quantum_phase_estimation.circuit', 'quantum_phase_estimation.operator', 'quantum_phase_estimation.quantumdecomp'],
+    packages=['quantum_phase_estimation', 'quantum_phase_estimation.circuit', 'quantum_phase_estimation.generator', 'quantum_phase_estimation.quantumdecomp'],
     url='',
     license='Apache 2.0',
     author='Group7',

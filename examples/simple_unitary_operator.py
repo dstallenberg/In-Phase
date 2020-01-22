@@ -1,11 +1,10 @@
 import os
-import numpy as np
 
 from getpass import getpass
 from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
 from quantuminspire.api import QuantumInspireAPI
 
-from src.QEP_as_function import estimate_phase
+from src.quantum_phase_estimation.QEP_as_function import estimate_phase
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')

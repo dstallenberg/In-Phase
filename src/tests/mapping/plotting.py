@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-from src.quantum_phase_estimation.error_estimation import error_estimate
+from src.quantum_phase_estimation.util_functions import error_estimate
 
 def heatmap(data, show=True):
     fig = plt.figure(figsize=(7,7))
