@@ -1,7 +1,10 @@
 import matplotlib.pyplot as plt
 import numpy as np
+import os
 
-def heatmap(data, show=True):
+current_path = os.path.abspath(__file__)
+
+def heatmap(data, name, show=True):
     fig = plt.figure(figsize=(7,7))
     ax = plt.gca()
 
@@ -23,7 +26,8 @@ def heatmap(data, show=True):
     y_labels = ['{0:0.3f}'.format(y) for y in np.linspace(yticks[0]/yticks[-1], yticks[-1]/data.shape[1], len(yticks))]
     ax.set_yticklabels(reversed(y_labels))
 
-    fig.savefig(f"img/heatmap_{np.log2(data.shape[0])}.png")
+    print(current_path)
+    fig.savefig(f"img/{name}.png")
 
     if show:
         plt.show()

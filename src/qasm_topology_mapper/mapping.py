@@ -3,7 +3,6 @@ import re
 
 # array must consist of the index of qubits
 def map_to_topology(array, qasm_code):
-    prep = re.compile(r'prep')
     qubit = re.compile(r'q\[\d]')
     qubit_combo = re.compile(r'q\[\d], q\[\d]')
     qubit_toffoli = re.compile(r'q\[\d], q\[\d], q\[\d]')

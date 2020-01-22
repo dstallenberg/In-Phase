@@ -7,6 +7,8 @@ Created on Fri Jan 10 13:03:06 2020
 import numpy as np
 import re
 
+from src.quantum_phase_estimation.processing.classical_postprocessing import remove_degeneracy
+
 
 def error_estimate(desired_bit_accuracy, probability_of_succes):
 	"""Given desired bit accuracy and desired probability of succes, returns
@@ -50,3 +52,38 @@ def find_qubits_from_unitary(unitary, nancillas, topology=None, max_qubits=26):
 		raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
 
 	return qubits, extra_empty_bits
+
+
+def decimal_to_binary_fracion(list, ancilla):
+	output = np.zeros(shape=list.size, dtype=np.float)
+
+	for i, dec in enumerate(list):
+		for j, b in enumerate( str(bin(dec))[2:].rjust(ancilla, '0') ):
+			output[i] += 2**(-j-1)*int(b)
+
+	return output
+
+
+def find_max_value_keys(data):
+	ind = np.argmax(data[1], axis=1)
+	temp = np.zeros(shape=ind.size)
+
+	for i in range(temp.size):
+		temp[i] = data[0, i, ind[i]]
+
+	return temp.astype(int)
+
+
+def to_array(result, bit, nancilla):
+	data = np.zeros(shape=(2, 2**bit, 2**nancilla))
+
+	for i, r in enumerate(result):
+		values, keys = remove_degeneracy(r['histogram'], nancilla)
+		keys = np.array([int(x, 2) for x in keys])
+
+		for j in range(2**nancilla):
+			if np.sum(keys == j):
+				data[0, i, j] = keys[keys == j]
+				data[1, i, j] = values[keys == j]
+
+	return data
