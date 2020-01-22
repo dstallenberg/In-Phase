@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-
 def heatmap(data, show=True):
     fig = plt.figure(figsize=(7,7))
     ax = plt.gca()

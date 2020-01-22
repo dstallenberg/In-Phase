@@ -1,33 +1,16 @@
 import os
 
-from getpass import getpass
-from quantuminspire.credentials import load_account, get_token_authentication, get_basic_authentication
+from src.connecting.quantum_inspire import get_authentication
 from quantuminspire.api import QuantumInspireAPI
 
-from src.QEP_as_function import estimate_phase
+from src.quantum_phase_estimation.QEP_as_function import estimate_phase
 
 QI_EMAIL = os.getenv('QI_EMAIL')
 QI_PASSWORD = os.getenv('QI_PASSWORD')
 QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
-def get_authentication():
-    """ Gets the authentication for connecting to the Quantum Inspire API."""
-    token = load_account()
-    if token is not None:
-        return get_token_authentication(token)
-    else:
-        if QI_EMAIL is None or QI_PASSWORD is None:
-            print('Enter email')
-            email = input()
-            print('Enter password')
-            password = getpass()
-        else:
-            email, password = QI_EMAIL, QI_PASSWORD
-        return get_basic_authentication(email, password)
-
-
-authentication = ''#get_authentication()
-qi = ''#QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD)
+qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
 unitary = 'QASM\nRz q[0], -0.8377580409572781\n'
 

@@ -1,4 +1,4 @@
-from src.quantum_topology_mapping.dijkstra import Graph
+from src.qasm_topology_mapper.dijkstra import Graph
 import re
 
 # array must consist of the index of qubits

@@ -17,8 +17,8 @@ def two_to_one(code):
     return f'{parts_1[0]}, {final_arg}\n'
 
 
-def optimize(qasm_code, total_qubits):
-
+def optimize(qasm_code, nancillas, qubits, empty_qubits):
+    total_qubits = nancillas + qubits + qubits + empty_qubits
     # qasm_code = re.sub(r'(H q\[\d]\n){2}', qasm_code)
     while can_optimize(qasm_code, total_qubits):
         for i in range(total_qubits):

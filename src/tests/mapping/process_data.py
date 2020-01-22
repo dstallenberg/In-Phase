@@ -1,5 +1,6 @@
 import numpy as np
-from src.quantum_phase_estimation.classical_postprocessing import remove_degeneracy
+from src.quantum_phase_estimation.processing.classical_postprocessing import remove_degeneracy
+
 
 
 def to_array(result, bit, nancilla):
