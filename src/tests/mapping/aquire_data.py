@@ -55,7 +55,7 @@ def get_results(bit=5, try_from_file = True):
         print('testing file')
 
         try:
-            fname = f"../../../generated/tests/mapping/heatmap_{bit}.npy"
+            fname = f"generated/tests/mapping/heatmap_{bit}.npy"
             data = np.load(fname, allow_pickle=True)
             print(f"Loaded data from {fname}")
 
@@ -93,7 +93,7 @@ def from_qi(bit, save=True, succes=0.5, multi=True):
     print("Received all jobs!")
 
     if save:
-        fname = f"../../../generated/tests/mapping/heatmap_{bit}.npy"
+        fname = f"generated/tests/mapping/heatmap_{bit}.npy"
         print(f"Saving to {fname}")
 
         np.save(fname, result)
@@ -101,5 +101,5 @@ def from_qi(bit, save=True, succes=0.5, multi=True):
     return result
 
 if __name__ == "__main__":
-    np.load("../../../generated/tests/mapping/heatmap_4.npy", allow_pickle=True)
+    np.load("generated/tests/mapping/heatmap_4.npy", allow_pickle=True)
     get_results(4)
