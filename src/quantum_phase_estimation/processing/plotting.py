@@ -27,7 +27,7 @@ def heatmap(data, name, show=True):
     ax.set_yticklabels(reversed(y_labels))
 
     print(current_path)
-    fig.savefig(f"img/{name}.png")
+    fig.savefig(f"generated/img/{name}.png")
 
     if show:
         plt.show()
@@ -55,7 +55,7 @@ def graph(data, show=True):
     ax.set_ylabel("Output phase [$\cdot 2\pi$]")
     plt.legend()
 
-    fig.savefig(f"img/graph_{np.log2(data.shape[0])}.png")
+    fig.savefig(f"generated/img/graph_{np.log2(data.shape[0])}.png")
 
     if show:
         plt.show()
