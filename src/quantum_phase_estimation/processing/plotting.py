@@ -1,8 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-import os
 
-current_path = os.path.abspath(__file__)
 
 def heatmap(data, name, show=True):
     fig = plt.figure(figsize=(7,7))
@@ -15,18 +13,15 @@ def heatmap(data, name, show=True):
     # Set up xlabels
     ax.set_xlabel(r"Input phase $\varphi/2\pi$")
     xticks = ax.get_xticks()
-    print(xticks)
     x_labels = ['{0:0.3f}'.format(x) for x in np.linspace(xticks[0]/xticks[-1], xticks[-1]/data.shape[0], len(xticks))]
     ax.set_xticklabels(x_labels)
 
     # Set up ylabels
     ax.set_ylabel(r"Output phase $\varphi/2\pi$")
     yticks = ax.get_yticks()
-    print(yticks)
     y_labels = ['{0:0.3f}'.format(y) for y in np.linspace(yticks[0]/yticks[-1], yticks[-1]/data.shape[1], len(yticks))]
     ax.set_yticklabels(reversed(y_labels))
 
-    print(current_path)
     fig.savefig(f"generated/img/{name}.png")
 
     if show:
