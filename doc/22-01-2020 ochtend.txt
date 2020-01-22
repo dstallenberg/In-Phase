@@ -1,0 +1,11 @@
+Wat gaan we doen vandaag? Welke stappen moeten er gezet worden?
+
+-	Dat ene probleem met die gaten (mio)
+-	Aan het verslag beginnen
+	-	Abstract
+	-	Begin
+	-	Conclusie
+	Maar dat kunnen we niet doen voor de plotjes werken.
+	-	Code in LaTeX zetten
+-	Presentatie maken
+-	Mail van Menno, dat uitvoeren
