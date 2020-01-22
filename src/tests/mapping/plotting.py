@@ -10,8 +10,8 @@ def heatmap(data, show=True):
     cs = ax.imshow(data)
     fig.colorbar(cs)
 
-    ax.set_xlabel("Input phase")
-    ax.set_ylabel("Output phase")
+    ax.set_xlabel("Input phase [$\cdot 2\pi$]")
+    ax.set_ylabel("Output phase [$\cdot 2\pi$]")
 
     fig.savefig(f"../../../img/heatmap_{np.log2(data.shape[0])}.png")
 
@@ -31,8 +31,8 @@ def graph(data, show=True):
 
     ax.plot(np.linspace(0, 1, data.size), np.linspace(0, 1, data.size), label="Expected")
 
-    ax.set_xlabel("Input")
-    ax.set_ylabel("Output")
+    ax.set_xlabel("Input phase [$\cdot 2\pi$]")
+    ax.set_ylabel("Output phase [$\cdot 2\pi$]")
     plt.legend()
 
     fig.savefig(f"../../../img/heatmap_{np.log2(data.shape[0])}.png")
