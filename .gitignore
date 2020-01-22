@@ -212,3 +212,4 @@ dmypy.json
 
 # Manual additions
 venv
+generated
