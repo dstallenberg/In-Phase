@@ -42,7 +42,7 @@ if __name__ == "__main__":
 
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
-    qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas)
+    qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas, topology=topology)
 
     final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits)
 
@@ -51,7 +51,8 @@ if __name__ == "__main__":
     if error_toggle:
         final_qasm = introduce_error(final_qasm, mu, sigma)
 
-    final_qasm = map_to_topology(topology, final_qasm)
+    if topology is not None:
+        final_qasm = map_to_topology(topology, final_qasm)
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 

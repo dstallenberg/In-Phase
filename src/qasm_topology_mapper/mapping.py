@@ -1,6 +1,7 @@
 from src.qasm_topology_mapper.dijkstra import Graph
 import re
 
+
 # array must consist of the index of qubits
 def map_to_topology(array, qasm_code):
     qubit = re.compile(r'q\[\d]')
