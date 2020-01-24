@@ -25,7 +25,7 @@ class GateSingle(Gate):
         elif self.gate2.name == 'R1':
             return 'R1(%.15f, q[%d]);' % (round(self.gate2.arg, 10), self.qubit_id + nancillas)
         elif self.gate2.name == 'X':
-            return 'X q[%d]' % (self.qubit_id + nancillas)
+            return 'X q[%d];' % (self.qubit_id + nancillas)
 
     def to_matrix(self):
         """Tensor product I x I x ... x `gate2.to_matrix()` x I x ... x I."""
@@ -89,11 +89,11 @@ class GateFC(Gate):
         if self.gate2.name in ('Rx', 'Ry', 'Rz'):
             # QSharp uses different sign.
             return 'CNOT q[%d], q[%d] \n%s q[%d], %.15f \nCNOT q[%d], q[%d] \n%s q[%d], %.15f' % (
-                control_ids[0], self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, round(self.gate2.arg, 10), control_ids[0], self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -round(self.gate2.arg, 10))
+                control_ids[0] + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, round(self.gate2.arg, 10), control_ids[0] + nancillas, self.qubit_id + nancillas, self.gate2.name, self.qubit_id + nancillas, -round(self.gate2.arg, 10))
 
         elif self.gate2.name == 'R1':
-            return 'CR %s, q[%d], %.15f' % (
-                controls, self.qubit_id + nancillas, round(self.gate2.arg, 10))
+            return 'CR q[%d], q[%d], %.15f' % (
+                control_ids[0] + nancillas, self.qubit_id + nancillas, round(self.gate2.arg, 10))
         elif self.gate2.name == 'X':
             if self.qubit_count == 2:
                 return 'CNOT q[%d], q[%d]' % (
