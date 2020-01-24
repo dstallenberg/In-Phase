@@ -43,6 +43,7 @@ def remove_degeneracy(result, nancillas):
 		raise ValueError("Received empty dict from QI, there is likely a syntax error in the qasm.")
 
 	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in result.keys() ])
+
 	vals = np.array([val for val in result.values()])
 
 	bin_string_processed, vals = (np.array(list(t)) for t in zip(*sorted(zip(bin_string_processed, vals))))
@@ -81,9 +82,9 @@ def print_result(processed_tuple, desired_accuracy, nancillas):
 	"""Prints the phase shift."""
 	print("Phase shift is {0:0.{accuracy}f}+/-{1:0.{accuracy}f} times two pi for binary string {2}".format(
 			binary_fraction_to_decimal(processed_tuple, desired_accuracy, nancillas),
-			2**(-desired_accuracy+1), 
+			2**(-desired_accuracy),
 			processed_tuple[1][processed_tuple[0].argmax()],
 			accuracy=decimal_accuracy(desired_accuracy)
 			)
 		)
-	return binary_fraction_to_decimal(processed_tuple, desired_accuracy, nancillas)+2**(-desired_accuracy)/2, 2**(-desired_accuracy)
+	return binary_fraction_to_decimal(processed_tuple, desired_accuracy, nancillas), 2**(-desired_accuracy)

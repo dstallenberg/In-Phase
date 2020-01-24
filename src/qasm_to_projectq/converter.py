@@ -38,10 +38,12 @@ def qasm_to_projectq(qasm_code):
     result = ['from projectq import MainEngine', 'from projectq.backends import Simulator']
 
     projectq_code, total_bits, used_gates = convert_qasm_to_projectq(qasm_code)
+    used_gates.append('Measure')
+    used_gates.append('All')
 
     unique_gates = set(used_gates)
     gates_string = ', '.join(unique_gates)
-    result.append(f'from projectq.ops import {gates_string}, Measure')
+    result.append(f'from projectq.ops import {gates_string}')
     result.append('def calc_probs():')
     result.append('\tsim = Simulator()')
 
