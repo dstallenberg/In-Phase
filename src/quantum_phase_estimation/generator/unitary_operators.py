@@ -46,16 +46,14 @@ def get_unitary_operators_array(operator, nancillas, qubits):
 
         if 'Invalid' in result_operator:
             result_operator = matrix_to_qasm(result_matrix, i-1, nancillas)
-        else:
-            # This means there is an argument
-            if ' ' in result_operator:
-                parts = result_operator.split(' ')
-                result_operator = f'{parts[0]} q[{nancillas}], {parts[1]}'
-            elif 'I' == result_operator:
-                continue
-            else:
-                result_operator = f'{result_operator} q[{nancillas}]'
-            result_operator = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator + '\n')
+        # else:
+        #     # This means there is an argument
+        #     if ' ' in result_operator:
+        #         parts = result_operator.split(' ')
+        #         result_operator = f'{parts[0]} q[{nancillas}], {parts[1]}'
+        #     else:
+        #         result_operator = f'{result_operator} q[{nancillas}]'
+        #     result_operator = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator + '\n')
 
         array.append(result_operator)
     return array
@@ -253,7 +251,11 @@ def matrix_to_operator(matrix, arg=None):
 
 
 def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits):
+    if operator.startswith('C'):
+        control_bits.push(nancillas)
+
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
+
     if ' ' in operator:
         sep = operator.split(' ')
         sep.append(',')
@@ -269,6 +271,8 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
         'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
     }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}]' + sep[2] + sep[1] + f'\n'))
+
+    # 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator + '\n')
 
     if result == 'Invalid generator':
         raise Exception('Operator not supported yet! Operator: ' + operator)
