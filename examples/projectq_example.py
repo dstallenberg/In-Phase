@@ -1,26 +1,16 @@
-import os
 import numpy as np
-
-from src.connecting.quantum_inspire import get_authentication
-from quantuminspire.api import QuantumInspireAPI
 
 from src.quantum_phase_estimation.util_functions import error_estimate, find_qubits_from_unitary
 from src.quantum_phase_estimation.generator.generator import generate_qasm_code
 from src.qasm_optimizer.optimizer import optimize
 from src.qasm_error_introducer.error_introducer import introduce_error
 from src.qasm_topology_mapper.mapping import map_to_topology
-from src.quantum_phase_estimation.processing.classical_postprocessing import print_result, remove_degeneracy
-from src.quantum_phase_estimation.plot_results import plot_results
-from quantuminspire.credentials import load_account
+from src.quantum_phase_estimation.processing.classical_postprocessing import print_result, remove_degeneracy_projectq
+from src.quantum_phase_estimation.plot_results import plot_results_projectq
+from src.qasm_to_projectq.converter import qasm_to_projectq
+
 
 if __name__ == "__main__":
-    QI_EMAIL = os.getenv('QI_EMAIL')
-    QI_PASSWORD = os.getenv('QI_PASSWORD')
-    QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
-
-    authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=load_account())
-    qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
-
     # variables
     unitary = 'QASM\nRz q[0], 3.1415'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
     desired_bit_accuracy = 5
@@ -58,15 +48,20 @@ if __name__ == "__main__":
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
-    backend_type = qi.get_backend_type_by_name('QX single-node simulator')
-    result = qi.execute_qasm(final_qasm,
-                             backend_type=backend_type,
-                             number_of_shots=shots)
+    projecq_code = qasm_to_projectq(final_qasm)
 
-    plot_results(result, nancillas, qubits, p_succes)
+    file = open('generated/code/generated.py', 'w')
+    file.write(projecq_code)
+    file.close()
+
+    from generated.code.generated import calc_probs
+
+    result = calc_probs()
+
+    plot_results_projectq(result, nancillas, qubits, p_succes)
 
     # Classical postprocessing
-    fraction, error = print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)
+    fraction, error = print_result(remove_degeneracy_projectq(result, nancillas), desired_bit_accuracy, nancillas)
 
     print('Fraction: ', fraction)
     print('Error: ', error)

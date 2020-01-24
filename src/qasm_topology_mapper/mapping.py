@@ -4,9 +4,9 @@ import re
 
 # array must consist of the index of qubits
 def map_to_topology(array, qasm_code):
-    qubit = re.compile(r'q\[\d]')
-    qubit_combo = re.compile(r'q\[\d], q\[\d]')
-    qubit_toffoli = re.compile(r'q\[\d], q\[\d], q\[\d]')
+    qubit = re.compile(r'q\[\d+]')
+    qubit_combo = re.compile(r'q\[\d+], q\[\d+]')
+    qubit_toffoli = re.compile(r'q\[\d+], q\[\d+], q\[\d+]')
 
     graph = generate_graph_from_array(array)
 

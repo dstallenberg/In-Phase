@@ -21,7 +21,7 @@ if __name__ == "__main__":
     qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation'), tokens))
 
     # variables
-    desired_bit_accuracy = 10
+    desired_bit_accuracy = 6
     minimum_chance_of_success = 0.5
     mu = 0
     sigma = 0.05
