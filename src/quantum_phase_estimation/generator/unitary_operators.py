@@ -251,7 +251,7 @@ def matrix_to_operator(matrix, arg=None):
 
 
 def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits):
-    if operator.startswith('C'):
+    if operator.startswith('C') or operator.startswith('SWAP'):
         control_bits.append(nancillas)
 
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
@@ -270,9 +270,15 @@ def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits)
         'CY': f'''Sdag q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nS q[{qubit}]\n''',
         'CZ': f'''H q[{qubit}]\nToffoli {controls_string}, q[{qubit}]\nH q[{qubit}]\n''',
         'CNOT': f'''Toffoli {controls_string}, q[{qubit}]\n'''
-    }.get(operator, U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}]' + sep[2] + sep[1] + f'\n'))
+    }.get(operator, 'Invalid')
 
-    # 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator + '\n')
+    if result == 'Invalid':
+        if operator == 'Toffoli':
+            result = U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{nancillas}], q[{nancillas + 1}], q[{qubit}]' + f'\n')
+        elif operator == 'SWAP':
+            result = U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}], q[{nancillas}]' + f'\n')
+        else:
+            result = U_to_CU(qubits, control_bits[0], nancillas, sep[0] + f' q[{qubit}]' + sep[2] + sep[1] + f'\n')
 
     if result == 'Invalid generator':
         raise Exception('Operator not supported yet! Operator: ' + operator)
