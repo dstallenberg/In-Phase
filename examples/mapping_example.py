@@ -26,7 +26,7 @@ if __name__ == "__main__":
     mu = 0
     sigma = 0.05
     use_error_model = False
-    use_multiple = False
+    use_multiple = True
     topology = [['0', '1'],
                 ['0', '3'],
                 ['1', '2'],
