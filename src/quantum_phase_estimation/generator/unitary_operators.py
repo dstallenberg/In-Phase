@@ -252,7 +252,7 @@ def matrix_to_operator(matrix, arg=None):
 
 def find_controlled_equivalent(operator, control_bits, qubit, nancillas, qubits):
     if operator.startswith('C'):
-        control_bits.push(nancillas)
+        control_bits.append(nancillas)
 
     controls_string = ', '.join(map(lambda c: f'q[{c}]', control_bits))
 
