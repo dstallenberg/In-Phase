@@ -25,10 +25,10 @@ pip install .
 Run main.py
 
 ## Usage
-First you must import our main function:
-```python
-from src.quantum_phase_estimation.QEP_as_function import estimate_phase
-```
+
+#TODO 
+
+
 This function has several possible arguments. The most important argument is the unitary which is also the only required argument. This unitary can be one of the following:
 * A string containing a singular gate and one argument if the gate requires it.
 ```python

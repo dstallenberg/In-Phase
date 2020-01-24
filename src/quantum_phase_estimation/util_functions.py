@@ -32,8 +32,6 @@ def find_qubits_from_unitary(unitary, nancillas, topology=None, max_qubits=26):
 			found_max = max(found_max, int(edge[1]) + 1)
 
 		qubits_in_top = found_max
-		max_qubits = qubits_in_top
-
 
 	if type(unitary) == np.ndarray:
 		qubits = int(np.log2(unitary.shape[0]))
@@ -48,8 +46,16 @@ def find_qubits_from_unitary(unitary, nancillas, topology=None, max_qubits=26):
 	if qubits_in_top:
 		extra_empty_bits = (qubits_in_top - 2 * qubits - nancillas)
 
-	if 2 * qubits + nancillas > max_qubits:
-		raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas}, maximum is {max_qubits})")
+	if extra_empty_bits < 0:
+		raise ValueError(f"Need more qubits than your topology allows! (need {2 * qubits + nancillas}, maximum is {qubits_in_top})")
+
+
+	if 2 * qubits + nancillas + extra_empty_bits > qubits_in_top:
+		raise ValueError(f"Need more qubits than your topology allows! (need {2 * qubits + nancillas + extra_empty_bits}, maximum is {qubits_in_top})")
+
+
+	if 2 * qubits + nancillas + extra_empty_bits > max_qubits:
+		raise ValueError(f"Need more qubits than allowed! (need {2 * qubits + nancillas + extra_empty_bits}, maximum is {max_qubits})")
 
 	return qubits, extra_empty_bits
 
