@@ -50,8 +50,12 @@ def get_unitary_operators_array(operator, nancillas, qubits):
             # This means there is an argument
             if ' ' in result_operator:
                 parts = result_operator.split(' ')
-                result_operator = f'{parts[0]} q[{nancillas}], {parts[1]}\n'
-            result_operator = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator)
+                result_operator = f'{parts[0]} q[{nancillas}], {parts[1]}'
+            elif 'I' == result_operator:
+                continue
+            else:
+                result_operator = f'{result_operator} q[{nancillas}]'
+            result_operator = 'QASM\n' + U_to_CU(qubits, i - 1, nancillas, result_operator + '\n')
 
         array.append(result_operator)
     return array
