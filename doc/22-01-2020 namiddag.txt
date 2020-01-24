@@ -1,0 +1,25 @@
+Wat wordt onze conclusie?
+-   Wat zouden we willen vertellen tijdens de presentatie?
+        Heatmap als leidraad, fungeert als validation.
+        Deze tool kan gebruikt worden om te validaten of je shit werkt op je topology.
+-   Wat is het nut van wat we hebben gedaan?
+        We hebben een tool gemaakt die heel snel kijkt voor bepaalde unitaries of het... werkt.
+        Het is een phase estimator voor een bepaalde topology. Je kunt testen of het kan.
+        We hebben een error gesimuleerd.
+
+Even duidelijk: Wat wordt onze conclusie? Maar wat is de vraag?
+
+Welke vraag willen we beantwoorden?
+Kunnen we QPE implementeren op een arbitrary mapping van een arbitrary unitary operator?
+Kun je een tool schrijven om een real-life scenario te simuleren en te bekijken hoe nauwkeurig onze resultaten zijn?
+Is er een quantum advantage?
+Wat hebben we gebouwd; het werkt; vergelijking met klassieke resultaten.
+
+Vrijdag: vergelijking met klassieke resultaten doen.
+
+Maandag: Verslag moet af zijn.
+
+Dus conclusie:
+We hebben een model gemaakt om een fysiek circuit te modelleren. Hij kan uitgebreid worden om andere errors ook mee te
+nemen. Er zijn nog meerdere limitaties, maar we zijn dichter bij een realistisch model. Heatmap demonstreert validiteit.
+Voorbeelden gebruiken. Rz rotatie. topology errors, mapping met errors, ideaal, topology zonder errors.
