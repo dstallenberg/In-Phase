@@ -1,0 +1,31 @@
+Indeling presentatie
+
+Grove richtlijn: verslag volgen
+
+Introductie:
+Korte uitleg van QPE
+Wat kan In-Phase?
+-   QPE voor arbitrary unitary matrices
+-   Input your unitary operator as QASM, a matrix or a single QASM operator
+-   Input your desired bit accuracy and probability of succes
+-   QASM is generated depending on these inputs
+-   QASM is optimized
+    -   Examples:
+        -   XX->I,
+        -   CNOT CNOT -> I,
+        -   Rz(\phi) Rz(\varphi) -> Rz(\phi+\varphi)
+-   You can map this QASM to an arbitrary topology (animation of qubit swapping)
+-   Errors can be introduced on every gate using a gaussian distribution to simulate a physical system
+Hoe werkt sturen naar QI?
+-   Job per job
+-   Jobs in queue
+-   Multithreaden
+Results:
+-   Heatmap plots
+Conclusie:
+-   Compare:
+    -   Ideal simulation
+    -   Ideal simulation with mapping
+    -   Realistic simulation
+    -   Realistic simulation with mapping
+-   Our tool works as intended
