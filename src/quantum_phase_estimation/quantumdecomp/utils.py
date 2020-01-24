@@ -23,7 +23,7 @@ def is_real(x):
 
 
 def is_special_unitary(A):
-    return is_unitary(A) and np.allclose(np.linalg.det(A), 1.0)
+    return is_unitary(A) and np.allclose(np.linalg.det(A), 1.0, atol=1e-02)
 
 
 def is_power_of_two(x):
