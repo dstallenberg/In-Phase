@@ -1,4 +1,5 @@
 import os
+import time
 import numpy as np
 
 from src.connecting.quantum_inspire import get_authentication
@@ -8,6 +9,7 @@ from examples.utils.mapping import generate_data
 from src.quantum_phase_estimation.util_functions import error_estimate
 from src.quantum_phase_estimation.util_functions import decimal_to_binary_fracion, find_max_value_keys, to_array
 from src.quantum_phase_estimation.processing.plotting import heatmap, graph
+from quantuminspire.credentials import load_account
 
 
 if __name__ == "__main__":
@@ -15,15 +17,16 @@ if __name__ == "__main__":
     QI_PASSWORD = os.getenv('QI_PASSWORD')
     QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
-    authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD)
-    qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
+    tokens = [load_account(), 'd0c633e7036f671741bef0baef90ecbeeda31efa', '2f19f001d2aee0cb5e493a1fb8deac1bad4cb927', '1bbbb6e690f829d77f78e00b517cfa19781445fa']
+    qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation'), tokens))
 
     # variables
-    desired_bit_accuracy = 4
+    desired_bit_accuracy = 10
     minimum_chance_of_success = 0.5
     mu = 0
     sigma = 0.05
-    use_error_model = True
+    use_error_model = False
+    use_multiple = False
     topology = [['0', '1'],
                 ['0', '3'],
                 ['1', '2'],
@@ -35,7 +38,13 @@ if __name__ == "__main__":
                 ['4', '7'],
                 ['5', '8'],
                 ['6', '7'],
-                ['7', '8']]
+                ['7', '8'],
+                ['8', '9'],
+                ['9', '10'],
+                ['10', '11'],
+                ['11', '12'],
+                ['12', '13'],
+                ['13', '14']]
     shots = 512
 
     name = f'heatmap_{desired_bit_accuracy}_{minimum_chance_of_success}_{topology is not None if "True" else "False"}_{use_error_model if f"{use_error_model}_{mu}_{sigma}" else f"{use_error_model}"}'
@@ -57,14 +66,25 @@ if __name__ == "__main__":
 
         print(f"Preparing to send {2 ** desired_bit_accuracy} jobs to QI")
 
-        for i in points:
+        for i in range(len(points)):
+            val = points[i]
             unitary = f"QASM\n" \
-                      f"Rz q[0], {-i}"
+                      f"Rz q[0], {-val}"
+
+            use_qi = qis[0]
+
+            if use_multiple:
+                qi_num = i % len(qis)
+                use_qi = qis[qi_num]
+                print(qi_num)
 
             arguments.append(
-                [qi, unitary, desired_bit_accuracy, minimum_chance_of_success, 512, topology, use_error_model, mu, sigma])
+                [use_qi, unitary, desired_bit_accuracy, minimum_chance_of_success, 512, topology, use_error_model, mu, sigma])
 
+        start = time.time()
         data = generate_data(arguments, True, file)
+        total = time.time() - start
+        print('Total time: ', total, ' seconds')
 
     nancilla, p_succes = error_estimate(desired_bit_accuracy, 0.5)
     data = to_array(data, desired_bit_accuracy, nancilla)
