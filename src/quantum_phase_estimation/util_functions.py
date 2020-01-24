@@ -46,11 +46,11 @@ def find_qubits_from_unitary(unitary, nancillas, topology=None, max_qubits=26):
 	if qubits_in_top:
 		extra_empty_bits = (qubits_in_top - 2 * qubits - nancillas)
 
-	if extra_empty_bits < 0:
+	if extra_empty_bits:
 		raise ValueError(f"Need more qubits than your topology allows! (need {2 * qubits + nancillas}, maximum is {qubits_in_top})")
 
 
-	if 2 * qubits + nancillas + extra_empty_bits > qubits_in_top:
+	if qubits_in_top and 2 * qubits + nancillas + extra_empty_bits > qubits_in_top:
 		raise ValueError(f"Need more qubits than your topology allows! (need {2 * qubits + nancillas + extra_empty_bits}, maximum is {qubits_in_top})")
 
 
