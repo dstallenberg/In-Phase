@@ -93,10 +93,19 @@ def generate_inverse_qft(qubits):
         raise Exception('For inverse QFT generation qubits must be larger or equal to 1!')
 
     iQFT = []
-    for i in range(qubits):
-        k = (qubits - 1) - i
-        for j in range(k):
-            iQFT.append(f'CR q[{k}], q[{j}], {-math.pi/float(2**(k - j))}')
-    iQFT.append(f'H q[0:{qubits-1}]')
+    for target in reversed(range(qubits)):
+        #print(qubits, target)
+        if target == qubits:
+            print("you fucked up", target, qubits)
+        if target == qubits - 1:
+            pass
+        else:
+            for offset in reversed(range(qubits-target -1)):
+                control = offset + target + 1
+                k = control-target+1
+                #print(target, control, k)
+                iQFT.append(f'CR q[{qubits-control -1}], q[{qubits-target-1}], {-2*math.pi/float(2**k)}')
+        iQFT.append(f'H q[{qubits-target-1}]')
+
 
     return '\n'.join(iQFT)

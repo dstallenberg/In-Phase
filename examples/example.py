@@ -23,13 +23,13 @@ if __name__ == "__main__":
     qi = QuantumInspireAPI(QI_URL, authentication, 'testing2')
 
     # variables
-    phase = 0.3
+    phase = 0.6
     unitary_qasm = f"QASM\nRz q[0], {-phase*2*np.pi}"
-    unitary_matrix = np.array([[np.exp(phase*1j*np.pi), 0],
-                               [0, np.exp(-phase*1j*np.pi)]])
+    unitary_matrix = np.array([[np.exp(phase*2j*np.pi), 0],
+                               [0, np.exp(-phase*2j*np.pi)]])
     unitary = unitary_matrix
-    custom_prepare = "prep_z q[0]"
-    desired_bit_accuracy = 7
+    custom_prepare = "#prep_z q[0]"
+    desired_bit_accuracy = 8
     minimum_chance_of_success = 0.5
     mu = 0.5
     sigma = 0.5
@@ -56,7 +56,7 @@ if __name__ == "__main__":
                              backend_type=backend_type,
                              number_of_shots=shots)
 
-    plot_results(result, nancillas, qubits, p_succes)
+    #plot_results(result, nancillas, qubits, p_succes)
 
     # Classical postprocessing
     fraction, error = print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)

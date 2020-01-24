@@ -21,30 +21,13 @@ if __name__ == "__main__":
     qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation'), tokens))
 
     # variables
-    desired_bit_accuracy = 10
+    desired_bit_accuracy = 8
     minimum_chance_of_success = 0.5
     mu = 0
     sigma = 0.05
     use_error_model = False
     use_multiple = True
-    topology = [['0', '1'],
-                ['0', '3'],
-                ['1', '2'],
-                ['1', '4'],
-                ['2', '5'],
-                ['3', '4'],
-                ['3', '6'],
-                ['4', '5'],
-                ['4', '7'],
-                ['5', '8'],
-                ['6', '7'],
-                ['7', '8'],
-                ['8', '9'],
-                ['9', '10'],
-                ['10', '11'],
-                ['11', '12'],
-                ['12', '13'],
-                ['13', '14']]
+    topology = None
     shots = 512
 
     name = f'heatmap_{desired_bit_accuracy}_{minimum_chance_of_success}_{topology is not None if "True" else "False"}_{use_error_model if f"{use_error_model}_{mu}_{sigma}" else f"{use_error_model}"}'
