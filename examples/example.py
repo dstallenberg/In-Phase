@@ -20,16 +20,17 @@ if __name__ == "__main__":
     QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
     authentication = get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=load_account())
-    qi = QuantumInspireAPI(QI_URL, authentication, 'testing2')
+    qi = QuantumInspireAPI(QI_URL, authentication, 'matrix')
 
     # variables
-    phase = 0.6
+    phase = 0.08
+    print(phase)
     unitary_qasm = f"QASM\nRz q[0], {-phase*2*np.pi}"
-    unitary_matrix = np.array([[np.exp(phase*2j*np.pi), 0],
-                               [0, np.exp(-phase*2j*np.pi)]])
+    unitary_matrix = np.array([[np.exp(phase*1j*np.pi), 0],
+                               [0, np.exp(-phase*1j*np.pi)]])
     unitary = unitary_matrix
-    custom_prepare = "#prep_z q[0]"
-    desired_bit_accuracy = 8
+    custom_prepare = "prep_z q[0]\n X q[0]"
+    desired_bit_accuracy = 5
     minimum_chance_of_success = 0.5
     mu = 0.5
     sigma = 0.5
@@ -42,14 +43,14 @@ if __name__ == "__main__":
 
     final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits, custom_prepare=custom_prepare)
 
-    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+    #final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
     #final_qasm = introduce_error(final_qasm, mu, sigma)
 
     if topology is not None:
         final_qasm = map_to_topology(topology, final_qasm)
 
-    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+    #final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
     result = qi.execute_qasm(final_qasm,

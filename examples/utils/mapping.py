@@ -12,7 +12,7 @@ def execute_example(qi, unitary, desired_bit_accuracy, minimum_chance_of_success
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
     qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas, topology=topology)
 
-    final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits)
+    final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits, custom_prepare="X q[0]")
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 

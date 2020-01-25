@@ -3,6 +3,7 @@ import cmath
 import string
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import matrix_to_qasm
 from src.quantum_phase_estimation.quantumdecomp.quantum_decomp import U_to_CU
+from src.quantum_phase_estimation.util_functions import change_domain
 
 
 def get_unitary_operators_array(operator, nancillas, qubits):
@@ -40,10 +41,10 @@ def get_unitary_operators_array(operator, nancillas, qubits):
         for j in range(power - 1):
             result_matrix = np.dot(matrix, result_matrix)
 
-        result_matrix = result_matrix.round(decimals=5)
+        #result_matrix = result_matrix.round(decimals=9)
 
         result_operator = matrix_to_operator(result_matrix)
-
+        #print(result_matrix)
         if 'Invalid' in result_operator:
             result_operator = matrix_to_qasm(result_matrix, i-1, nancillas)
         # else:
@@ -132,8 +133,8 @@ def operator_to_matrix(operator, arg=None):
 def matrix_to_operator(matrix, arg=None):
     eye = np.identity(matrix.shape[0])
 
-    if np.isclose(matrix, eye).all():
-        return 'I'
+    #if np.isclose(matrix, eye).all():
+    #    return 'I'
 
     operator = {
         'X': np.array([[0, 1],
@@ -185,6 +186,7 @@ def matrix_to_operator(matrix, arg=None):
     for key, value in operator.items():
         if matrix.shape == value.shape:
             if np.isclose(matrix, value).all():
+                print('Rounded')
                 return key
 
     if arg is not None:
@@ -217,13 +219,13 @@ def matrix_to_operator(matrix, arg=None):
             # R
             if matrix[0][1] == 0 and matrix[1][0] == 0:
                 # Rz
-                return 'Rz ' + str(2 * cmath.acos(matrix[0, 0].real).real)
+                return 'Rz ' + str(2 * -change_domain(cmath.phase(matrix[0,0]), new_domain=[0, 2*np.pi]))
             elif isinstance(matrix[1, 0], complex):
                 # Rx
-                return 'Rx ' + str(2 * cmath.acos(matrix[0, 0]).real)
+                return 'Rx ' + str(2 * change_domain(cmath.acos(matrix[0,0]).real))
             else:
                 # Ry
-                return 'Ry ' + str(2 * cmath.acos(matrix[0, 0]).real)
+                return 'Ry ' + str(2 * change_domain(cmath.acos(matrix[0,0]).real))
         elif matrix.shape == (4, 4):
             # Controlled R
             if np.count_nonzero(matrix - np.diag(np.diagonal(matrix))) == 0:

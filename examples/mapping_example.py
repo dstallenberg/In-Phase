@@ -18,7 +18,7 @@ if __name__ == "__main__":
     QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
     tokens = [load_account(), 'd0c633e7036f671741bef0baef90ecbeeda31efa', '2f19f001d2aee0cb5e493a1fb8deac1bad4cb927', '1bbbb6e690f829d77f78e00b517cfa19781445fa']
-    qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation'), tokens))
+    qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation matrix'), tokens))
 
     # variables
     desired_bit_accuracy = 6
@@ -51,8 +51,11 @@ if __name__ == "__main__":
 
         for i in range(len(points)):
             val = points[i]
-            unitary = f"QASM\n" \
-                      f"Rz q[0], {-val}"
+            #unitary = f"QASM\n" \
+            #          f"Rz q[0], {-val}"
+
+            unitary = np.array([[np.exp(val * 0.5j), 0],
+                                [0, np.exp(-val * 0.5j )]])
 
             use_qi = qis[0]
 
