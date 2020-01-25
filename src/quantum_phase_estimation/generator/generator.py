@@ -31,18 +31,16 @@ prep_z q[0:{total - 1}]
 
 # Create superposition
 """
-    if nancillas == 1 and qubits == 1:
-        final_qasm += f'{{ H q[0] | X q[1] }}'
-    elif nancillas == 1:
-        final_qasm += f'{{ H q[0] | X q[1:{total - 1}] }}'
-    elif qubits == 1:
-        final_qasm += f'{{ H q[0:{nancillas - 1}] | X q[{total - 1}] }}'
+
+    if nancillas == 1:
+        final_qasm += f'H q[0]'
     else:
-        final_qasm += f'{{ H q[0:{nancillas - 1}] | X q[{nancillas}:{total - 1}] }}'
+        final_qasm += f'H q[0:{nancillas - 1}]'
 
     final_qasm += '\n# Apply controlled unitary operations\n.controlled_unitary_operations\n'
 
     unitary_operations = get_unitary_operators_array(unitary_operation, nancillas, qubits)
+
     for i in range(nancillas):
         operation = unitary_operations[i]
         if operation == 'I':

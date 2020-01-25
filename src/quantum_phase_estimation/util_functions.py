@@ -93,3 +93,11 @@ def to_array(result, bit, nancilla):
 				data[1, i, j] = values[keys == j]
 
 	return data
+
+
+def change_domain(x, new_domain=[0, 2*np.pi]):
+	while x < new_domain[0]:
+		x += new_domain[1] - new_domain[0]
+	while x > new_domain[1]:
+		x -= new_domain[1] - new_domain[0]
+	return x
