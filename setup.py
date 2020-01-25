@@ -13,7 +13,7 @@ setup(
     long_description=get_long_description(),
     long_description_content_type='text/markdown',
     version='1.0',
-    packages=['quantum_phase_estimation', 'quantum_phase_estimation.circuit', 'quantum_phase_estimation.generator', 'quantum_phase_estimation.quantumdecomp'],
+    packages=['quantum_phase_estimation', 'qasm_topology_mapper', 'qasm_to_projectq', 'qasm_optimizer', 'qasm_error_introducer', 'connecting'],
     url='',
     license='Apache 2.0',
     author='Group7',
@@ -22,4 +22,5 @@ setup(
     python_requires='>=3.6',
     install_requires=['pytest>=3.3.1', 'matplotlib>=2.1', 'numpy', 'quantuminspire'],
     package_dir={'': 'src'},
+    extras_require={'projectq': ["projectq>=0.4"]}
 )
