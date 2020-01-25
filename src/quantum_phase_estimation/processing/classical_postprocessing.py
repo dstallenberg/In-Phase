@@ -9,18 +9,8 @@ from collections import OrderedDict
 
 
 def remove_degeneracy_projectq(result, nancillas):
-	res = dict()
-
-	for r in result:
-		if r[0] not in res:
-			res[r[0]] = r[1]
-		else:
-			res[r[0]] += r[1]
-
-	print(res)
-
-	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in res.keys() ])
-	vals = np.array([val for val in res.values()])
+	bin_string_processed = np.array([str(bin(int(k)))[2::].rjust(nancillas, '0')[-nancillas::] for k in result.keys() ])
+	vals = np.array([val for val in result.values()])
 
 	bin_string_processed, vals = (np.array(list(t)) for t in zip(*sorted(zip(bin_string_processed, vals))))
 

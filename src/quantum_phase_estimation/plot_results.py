@@ -28,26 +28,17 @@ def plot_results(result, nancillas, qubits, p_succes):
 
 
 def plot_results_projectq(result, nancillas, qubits, p_succes):
-	res = dict()
-
-	for r in result:
-		if r[0] not in res:
-			res[r[0]] = r[1]
-		else:
-			res[r[0]] += r[1]
-
-	print(res)
 	print(
 		"Given the desired bit accuracy and probability of succes, {0} ancillas will be used resulting in a {1:0.3f} probability of succes.".format(
 			nancillas, p_succes))
-	binary_keys = [(str(bin(int(k)))[-nancillas::]).ljust(nancillas, '0') for k in res.keys()]
+	binary_keys = [(str(bin(int(k)))[-nancillas::]).ljust(nancillas, '0') for k in result.keys()]
 
 	fig = plt.figure(figsize=(8, 3))
 	ax = plt.gca()
 
 	ax.set_title("Phase estimation with {0}-bit accuracy and probability {1:0.3f}".format(nancillas, p_succes))
 
-	ax.bar(binary_keys, res.values())
+	ax.bar(binary_keys, result.values())
 	plt.xticks(rotation='vertical')
 	plt.show()
 	

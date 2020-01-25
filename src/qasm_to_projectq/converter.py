@@ -54,13 +54,15 @@ def qasm_to_projectq(qasm_code):
     result.append(f'\tAll(Measure) | [{bits_string}]')
 
     result.append('\teng.flush()')
-    result.append('\tresult = []')
+    result.append('\tresult = dict()')
 
     result.append('\tfor i in range(2**len(qubits)):')
-    result.append('\t\tif len(qubits) != len(\'{0:b}\'.format(i)):')
-    result.append('\t\t\tcontinue')
+    result.append('\t\tbinary = \'{0:b}\'.format(i)')
 
-    result.append('\t\tresult.append([\'{0:b}\'.format(i), sim.get_probability(\'{0:b}\'.format(i), qubits)])')
+    result.append('\t\tif len(qubits) != len(binary):')
+    result.append('\t\t\tbinary = (\'0\' * (len(qubits) - len(binary))) + binary')
+
+    result.append('\t\tresult[binary] = sim.get_probability(binary, qubits)')
     result.append('\treturn result')
 
     return '\n'.join(result)

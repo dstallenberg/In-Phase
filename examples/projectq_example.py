@@ -56,7 +56,19 @@ if __name__ == "__main__":
 
     from generated.code.generated import calc_probs
 
+
     result = calc_probs()
+
+    for i in range(shots - 1):
+        print(i)
+        res = calc_probs()
+        for key, val in res.items():
+            result[key] += val
+
+    for key, val in result.items():
+        result[key] = result[key] / shots
+
+    print(result)
 
     plot_results_projectq(result, nancillas, qubits, p_succes)
 
