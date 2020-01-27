@@ -23,7 +23,10 @@ def plot_results(result, nancillas, qubits, p_succes):
 	ax.set_title("Phase estimation with {0}-bit accuracy and probability {1:0.3f}".format(nancillas, p_succes))
 	
 	ax.bar(binary_keys, result['histogram'].values())
+
+	ax. set_ylabel(r"$P_{|\psi\rangle}$")
 	plt.xticks(rotation = 'vertical')
+	plt.tight_layout()
 	plt.show()
 
 

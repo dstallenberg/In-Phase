@@ -27,7 +27,27 @@ if __name__ == "__main__":
     sigma = 0.05
     use_error_model = False
     use_multiple = True
-    topology = None
+    if False:
+        topology = [['0', '1'],
+                    ['0', '3'],
+                    ['1', '2'],
+                    ['1', '4'],
+                    ['2', '5'],
+                    ['3', '4'],
+                    ['3', '6'],
+                    ['4', '5'],
+                    ['4', '7'],
+                    ['5', '8'],
+                    ['6', '7'],
+                    ['7', '8'],
+                    ['8', '9'],
+                    ['9', '10'],
+                    ['10', '11'],
+                    ['11', '12'],
+                    ['12', '13'],
+                    ['13', '14']]
+    else:
+        topology = None
     shots = 512
 
     name = f'heatmap_{desired_bit_accuracy}_{minimum_chance_of_success}_{topology is not None if "True" else "False"}_{use_error_model if f"{use_error_model}_{mu}_{sigma}" else f"{use_error_model}"}'
@@ -55,7 +75,7 @@ if __name__ == "__main__":
             #          f"Rz q[0], {-val}"
 
             unitary = np.array([[np.exp(val * 0.5j), 0],
-                                [0, np.exp(-val * 0.5j )]])
+                                [0, np.exp(-val * 0.5j)]])
 
             use_qi = qis[0]
 
