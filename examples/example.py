@@ -34,6 +34,7 @@ if __name__ == "__main__":
     minimum_chance_of_success = 0.5
     mu = 0.5
     sigma = 0.5
+    error_toggle = 0
     topology = None
     shots = 512
 
@@ -43,21 +44,22 @@ if __name__ == "__main__":
 
     final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits, custom_prepare=custom_prepare)
 
-    #final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
-
-    #final_qasm = introduce_error(final_qasm, mu, sigma)
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
     if topology is not None:
         final_qasm = map_to_topology(topology, final_qasm)
 
-    #final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+
+    if error_toggle:
+        final_qasm = introduce_error(final_qasm, mu, sigma)
+
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
     result = qi.execute_qasm(final_qasm,
                              backend_type=backend_type,
                              number_of_shots=shots)
-
-    #plot_results(result, nancillas, qubits, p_succes)
 
     # Classical postprocessing
     fraction, error = print_result(remove_degeneracy(result['histogram'], nancillas), desired_bit_accuracy, nancillas)

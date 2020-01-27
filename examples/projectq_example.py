@@ -12,7 +12,7 @@ from src.qasm_to_projectq.converter import qasm_to_projectq
 
 if __name__ == "__main__":
     # variables
-    unitary = 'QASM\nRz q[0], 3.1415'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
+    unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
     desired_bit_accuracy = 5
     minimum_chance_of_success = 0.5
     mu = 0
@@ -30,7 +30,7 @@ if __name__ == "__main__":
                 ['5', '8'],
                 ['6', '7'],
                 ['7', '8']]
-    shots = 512
+    shots = 100
 
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
@@ -40,11 +40,13 @@ if __name__ == "__main__":
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
-    if error_toggle:
-        final_qasm = introduce_error(final_qasm, mu, sigma)
-
     if topology is not None:
         final_qasm = map_to_topology(topology, final_qasm)
+
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+
+    if error_toggle:
+        final_qasm = introduce_error(final_qasm, mu, sigma)
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
@@ -56,17 +58,7 @@ if __name__ == "__main__":
 
     from generated.code.generated import calc_probs
 
-
     result = calc_probs()
-
-    for i in range(shots - 1):
-        print(i)
-        res = calc_probs()
-        for key, val in res.items():
-            result[key] += val
-
-    for key, val in result.items():
-        result[key] = result[key] / shots
 
     print(result)
 

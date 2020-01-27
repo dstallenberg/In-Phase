@@ -3,7 +3,7 @@ import re
 single_operators = ['H', 'X', 'Y', 'Z', 'prep_x', 'prep_y', 'prep_z']
 single_operators_arg = ['Rx', 'Ry', 'Rz']
 
-double_operators = ['CNOT', 'CX', 'CY', 'CZ']
+double_operators = ['CNOT', 'CX', 'CY', 'CZ', 'SWAP']
 
 
 def two_to_one(code):

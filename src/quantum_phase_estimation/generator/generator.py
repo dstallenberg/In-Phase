@@ -25,7 +25,6 @@ qubits {total + qubits + extra_empty_bits}
 # Prepare qubits \n.preparation\n
 prep_z q[0:{total - 1}]
 { '' if extra_empty_bits == 0 else f'prep_z q[{total + qubits + extra_empty_bits - 1}]' if extra_empty_bits == 1 else f'prep_z q[{total + qubits}:{total + qubits + extra_empty_bits - 1}]' }
-
 # Custom prepare
 {custom_prepare}
 
@@ -33,9 +32,14 @@ prep_z q[0:{total - 1}]
 """
 
     if nancillas == 1:
-        final_qasm += f'H q[0]'
+        final_qasm += f'H q[0]\n'
     else:
-        final_qasm += f'H q[0:{nancillas - 1}]'
+        final_qasm += f'H q[0:{nancillas - 1}]\n'
+
+    if qubits == 1:
+        final_qasm += f'X q[{nancillas}]\n'
+    else:
+        final_qasm += f'X q[{nancillas}:{total + qubits}]\n'
 
     final_qasm += '\n# Apply controlled unitary operations\n.controlled_unitary_operations\n'
 
@@ -55,18 +59,14 @@ prep_z q[0:{total - 1}]
         # If the operation is a single or double quantum unitary operation
         controls = [i]
 
-        # controls.extend(range(nancillas - 1, total - 1))
-
         final_qasm += find_controlled_equivalent(operation, controls, total - 1, nancillas, qubits)
 
     final_qasm += '\n# Apply inverse quantum phase estimation\n.Inverse_Quantum_Fourier_Transform\n'
 
     final_qasm += generate_inverse_qft(nancillas) + '\n'
 
-    # for i in range(total - 1):
-    #     if i != 0:
-    #         final_qasm += f'H q[{i}]\n'
-    #     final_qasm += f'Measure_{unitary_operation.lower()} q[{i}]\n'
+    # for i in range((total + qubits + extra_empty_bits) - 1):
+    #     final_qasm += f'Measure_z q[{i}]\n'
 
     return final_qasm
 
