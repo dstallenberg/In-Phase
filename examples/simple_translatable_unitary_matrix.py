@@ -22,7 +22,7 @@ if __name__ == "__main__":
     qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
     # variables
-    unitary = 'QASM\nRz q[0], 3.1415'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
+    unitary = 'QASM\nRz q[0], -1.6'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
     desired_bit_accuracy = 5
     minimum_chance_of_success = 0.5
     mu = 0
@@ -42,6 +42,7 @@ if __name__ == "__main__":
                 ['7', '8']]
     shots = 512
 
+    topology = None
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
     qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas, topology=topology)
@@ -50,11 +51,13 @@ if __name__ == "__main__":
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
-    if error_toggle:
-        final_qasm = introduce_error(final_qasm, mu, sigma)
-
     if topology is not None:
         final_qasm = map_to_topology(topology, final_qasm)
+
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+
+    if error_toggle:
+        final_qasm = introduce_error(final_qasm, mu, sigma)
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
@@ -63,6 +66,7 @@ if __name__ == "__main__":
                              backend_type=backend_type,
                              number_of_shots=shots)
 
+    print(result['histogram'])
     plot_results(result, nancillas, qubits, p_succes)
 
     # Classical postprocessing

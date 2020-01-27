@@ -48,11 +48,14 @@ if __name__ == "__main__":
 
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
+    if topology is not None:
+        final_qasm = map_to_topology(topology, final_qasm)
+
+    final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
+
     if error_toggle:
         final_qasm = introduce_error(final_qasm, mu, sigma)
 
-    if topology is not None:
-        final_qasm = map_to_topology(topology, final_qasm)
     final_qasm = optimize(final_qasm, nancillas, qubits, extra_empty_bits)
 
     backend_type = qi.get_backend_type_by_name('QX single-node simulator')
