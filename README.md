@@ -1,6 +1,5 @@
-# In-Phase tool
+# In-Phase
 > A quantum phase estimation tool
-Group 7
 
 Collaborators:
 * Beer de Zoeten
