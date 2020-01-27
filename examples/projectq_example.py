@@ -31,7 +31,6 @@ if __name__ == "__main__":
                 ['6', '7'],
                 ['7', '8']]
     shots = 100
-    topology = None
 
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)

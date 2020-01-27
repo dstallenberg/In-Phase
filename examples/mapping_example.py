@@ -17,7 +17,7 @@ if __name__ == "__main__":
     QI_PASSWORD = os.getenv('QI_PASSWORD')
     QI_URL = os.getenv('API_URL', 'https://api.quantum-inspire.com/')
 
-    tokens = [load_account(), 'd0c633e7036f671741bef0baef90ecbeeda31efa', '2f19f001d2aee0cb5e493a1fb8deac1bad4cb927', '1bbbb6e690f829d77f78e00b517cfa19781445fa']
+    tokens = [load_account()]
     qis = list(map(lambda x: QuantumInspireAPI(QI_URL, get_authentication(qi_email=QI_EMAIL, qi_password=QI_PASSWORD, token=x), 'Quantum Phase Estimation matrix'), tokens))
 
     # variables
@@ -62,7 +62,6 @@ if __name__ == "__main__":
             if use_multiple:
                 qi_num = i % len(qis)
                 use_qi = qis[qi_num]
-                print(qi_num)
 
             arguments.append(
                 [use_qi, unitary, desired_bit_accuracy, minimum_chance_of_success, 512, topology, use_error_model, mu, sigma])

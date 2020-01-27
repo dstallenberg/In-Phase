@@ -42,7 +42,6 @@ if __name__ == "__main__":
                 ['7', '8']]
     shots = 512
 
-    topology = None
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
     qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas, topology=topology)
