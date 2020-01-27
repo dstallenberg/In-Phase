@@ -22,7 +22,7 @@ if __name__ == "__main__":
     qi = QuantumInspireAPI(QI_URL, authentication, 'Quantum Phase Estimation')
 
     # variables
-    unitary = 'QASM\nRz q[0], -1.6'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
+    unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
     desired_bit_accuracy = 5
     minimum_chance_of_success = 0.5
     mu = 0
@@ -44,6 +44,7 @@ if __name__ == "__main__":
 
     # process
     nancillas, p_succes = error_estimate(desired_bit_accuracy, minimum_chance_of_success)
+
     qubits, extra_empty_bits = find_qubits_from_unitary(unitary, nancillas, topology=topology)
 
     final_qasm = generate_qasm_code(nancillas, qubits, unitary, extra_empty_bits=extra_empty_bits)

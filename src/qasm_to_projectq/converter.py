@@ -17,7 +17,7 @@ single_args = [['Rx', re.compile(r'Rx q\[\d+:?\d*], *-?\d+.?\d*'), 'Rx'],
 
 doubles = [['CNOT', re.compile(r'CNOT q\[\d+], *q\[\d+]'), 'X'],
            ['CZ', re.compile(r'CZ q\[\d+], *q\[\d+]'), 'Z'],
-           ['SWAP', re.compile(r'CZ q\[\d+], *q\[\d+]'), 'SwapGate']]
+           ['SWAP', re.compile(r'SWAP q\[\d+], *q\[\d+]'), 'SwapGate']]
 
 doubles_args = [['CR', re.compile(r'CR q\[\d+], *q\[\d+], *-?\d+.?\d*'), 'Rz']]
 
@@ -34,7 +34,6 @@ version = re.compile(r'version \d+.*\d*')
 
 
 def qasm_to_projectq(qasm_code):
-    print(qasm_code)
     result = ['from projectq import MainEngine', 'from projectq.backends import Simulator']
 
     projectq_code, total_bits, used_gates = convert_qasm_to_projectq(qasm_code)
@@ -139,10 +138,18 @@ def convert_qasm_to_projectq(qasm_code):
         # Doubles
         for double in doubles:
             if double[1].match(line):
+                found = True
                 used_gates.append('C')
+
+                if double[0] == 'SWAP':
+                    used_gates.append(f'X')
+                    result.append(f'C(X) | (q{bits[0]}, q{bits[1]})')
+                    result.append(f'C(X) | (q{bits[1]}, q{bits[0]})')
+                    result.append(f'C(X) | (q{bits[0]}, q{bits[1]})')
+                    break
+
                 used_gates.append(double[2])
                 result.append(f'C({double[2]}) | ({bits_string})')
-                found = True
                 break
 
         if found:

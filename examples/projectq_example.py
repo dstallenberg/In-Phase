@@ -12,7 +12,7 @@ from src.qasm_to_projectq.converter import qasm_to_projectq
 
 if __name__ == "__main__":
     # variables
-    unitary = 'QASM\nRz q[0], -1.6'#np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
+    unitary = np.array([[0.7071, -0.7071j], [-0.7071j, 0.7071]])
     desired_bit_accuracy = 5
     minimum_chance_of_success = 0.5
     mu = 0
